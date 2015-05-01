@@ -1,0 +1,14 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    newclear (1.0)
+      reset-sim
+    rake (10.4.2)
+    reset-sim (1.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  newclear
+  rake
