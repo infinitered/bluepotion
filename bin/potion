@@ -1,0 +1,288 @@
+#!/usr/bin/env ruby
+
+require "erb"
+require "rubygems"
+require 'open-uri'
+
+$:.unshift(File.join(File.dirname(__FILE__), "/../lib/project"))
+require "version"
+
+class PotionCommandLine
+  HELP_TEXT = %{     potion version #{BluePotion::VERSION}
+
+     Some things you can do with the bluepotion command:
+
+     > bluepotion create my_new_app
+     > bluepotion create my_new_app --skip-cdq # Setup application without CDQ
+
+     > bluepotion create model foo
+     > bluepotion create screen foo
+     > bluepotion create table_screen foo
+     > bluepotion create table_screen_cell bar_cell
+     > bluepotion create metal_table_screen foo
+     > bluepotion create collection_view_screen
+     > bluepotion create view bar
+     > bluepotion create shared some_class_used_app_wide
+     > bluepotion create lib some_class_used_by_multiple_apps
+
+     You can still create controllers, but you should create screens instead
+     > bluepotion create controller foos
+     > bluepotion create collection_view_controller foos
+     > bluepotion create table_view_controller bars
+
+     You can remove CDQ or afmotion if your project does not use it
+     > bluepotion remove cdq
+     > bluepotion remove afmotion
+
+     Misc
+     > bluepotion -h, --help
+     > bluepotion -v, --version
+
+     Documentation
+     > rmq docs
+     > rmq docs query
+     > rmq docs "background image" }
+
+  class << self
+    SKIP_FLAGS = [ "--skip-cdq", "--skip-afmotion" ]
+
+    VALID_CREATE_TYPES = [
+      :screen, :table_screen,
+      :table_screen_cell,
+      :model, :controller,
+      :metal_table_screen,
+      :collection_view_screen,
+      :view,
+      :shared,
+      :lib,
+      :collection_view_controller,
+      :table_view_controller
+    ]
+
+
+    def create(template_or_app_name, *options)
+      if template_or_app_name.nil?
+        puts "bluepotion - Invalid command, try adding an application name or template name."
+        return
+      end
+
+      options.compact!
+      # Dry Run option - TODO - change this to --dry_run to streamline
+      if options.first == 'dry_run'
+        @dry_run = true
+        options.slice!(0)
+      end
+
+      if options.count > 0
+        unless options.first.include?('--')
+          name = options.slice!(0)
+          unless VALID_CREATE_TYPES.include?(template_or_app_name.to_sym)
+            puts "bluepotion - Invalid command, do something like this: bluepotion create controller my_controller\n"
+            return
+          end
+        end
+      end
+
+      if name
+        insert_from_template(template_or_app_name, name)
+      else
+        #ensure_template_dir
+        create_app(template_or_app_name)
+        options.each do |option|
+          if SKIP_FLAGS.include?(option)
+            Dir.chdir("./#{template_or_app_name}")
+            remove(option.split('-').last, true)
+            Dir.chdir('..')
+          end
+        end
+      end
+    end
+
+    def create_app(app_name)
+      puts '     Creating app'
+
+      `motion create --template=git@github.com:infinitered/blutpotion-template.git #{app_name}`
+
+      puts %{
+      Complete. Things you should do:
+      > cd #{app_name}
+      > bundle
+      > rake pod:install
+      > rake spec
+      > rake
+      (main)> exit
+
+      Then try these:
+      > rake device_name='iPhone 4s'
+      > rake device_name='iPhone 5s'
+      > rake device_name='iPhone 5s' target=7.1
+      > rake device_name='iPhone 6 Plus'
+      > rake device_name='iPad Retina'
+      > rake device
+
+      Or for XCode 5.1
+      > rake retina=3.5
+      > rake retina=4
+      > rake device_family=ipad}
+
+    end
+
+    def template_dir
+      "#{Dir.home}/Library/RubyMotion/template/bluepotion-template"
+    end
+
+    # TODO Disabling for now, this needs to get latest template
+    def ensure_template_dir
+      return if Dir.exists?(template_dir)
+      `git clone git@github.com:infinitered/bluepotion-template.git #{template_dir}`
+    end
+
+    def template_path(template_name)
+      sub_path = "templates/#{template_name}/"
+
+      # First check local directory, use that if it exists
+      if Dir.exist?("#{Dir.pwd}/#{sub_path}")
+        "#{Dir.pwd}/#{sub_path}"
+      else # Then check the gem
+        begin
+          spec = Gem::Specification.find_by_name("bluepotion")
+          gem_root = spec.gem_dir
+          "#{gem_root}/#{sub_path}"
+        rescue Exception => e
+          puts "bluepotion - could not find template directory\n"
+          nil
+        end
+      end
+    end
+
+    def insert_from_template(template_name, name)
+      # TODO refactor this, it's less than wonderful
+      if %w{metal_table_screen view collection_view_screen table_screen_cell}.include? template_name
+        # Do nothing
+      elsif template_name =~ /.*screen/
+        @screen_base = template_name.split('_').collect(&:capitalize).join
+        template_name = 'screen'
+      elsif template_name == "model" && cdq_included?
+        puts `cdq create model #{name}`
+        return
+      else
+        # we dont have templates for these fallback to RMQ
+        puts `rmq create #{template_name} #{name}`
+        return
+      end
+
+      puts "\n     Creating #{template_name}: #{name}\n\n"
+
+      return unless (@template_path = template_path(template_name))
+      files = Dir["#{@template_path}**/*"].select {|f| !File.directory? f}
+
+      @name = name.gsub(/_?(screen|controller|stylesheet)/,'')
+      @name_camel_case = @name.split('_').map{|word| word.capitalize}.join
+
+      files.each do |template_file_path_and_name|
+        @in_app_path = File.dirname(template_file_path_and_name).gsub(@template_path, '')
+        @ext = File.extname(template_file_path_and_name)
+        @file_name = File.basename(template_file_path_and_name, @ext)
+
+        @new_file_name = @file_name.gsub('name', @name)
+        @new_file_path_name = "#{Dir.pwd}/#{@in_app_path}/#{@new_file_name}#{@ext}"
+
+        if @dry_run
+          puts "\n     Instance vars:"
+          self.instance_variables.each{|var| puts "     #{var} = #{self.instance_variable_get(var)}"}
+          puts
+        end
+
+        if Dir.exist?(@in_app_path)
+          puts "     Using existing directory: #{@in_app_path}"
+        else
+          puts "  \u0394  Creating directory: #{@in_app_path}"
+          Dir.mkdir(@in_app_path) unless @dry_run
+        end
+
+        results = load_and_parse_erb(template_file_path_and_name)
+
+        if File.exists?(@new_file_path_name)
+          puts "  X  File exists, SKIPPING: #{@new_file_path_name}"
+        else
+          puts "  \u0394  Creating file: #{@new_file_path_name}"
+          File.open(@new_file_path_name, 'w+') { |file| file.write(results) } unless @dry_run
+        end
+      end
+
+      puts "\n     Done"
+    end
+
+    def load_and_parse_erb(template_file_name_and_path)
+      template_file = File.open(template_file_name_and_path, 'r').read
+      erb = ERB.new(template_file)
+      erb.result(binding)
+    end
+
+    def remove(type, show_output=true)
+      case type
+      when 'cdq'
+        remove_lines('Gemfile', /gem ('|")cdq('|")/, show_output)
+        remove_lines('app/app_delegate.rb', /include CDQ|cdq.setup/, show_output)
+        remove_lines('Rakefile', /schema:build/, show_output)
+        File.delete('schemas/0001_initial.rb') if File.exists?('schemas/0001_initial.rb')
+        File.delete('resources/cdq.yml') if File.exists?('resources/cdq.yml')
+        Dir.delete('schemas') if Dir.exists?('schemas')
+      when 'afmotion'
+        remove_lines('Gemfile', /gem ('|")afmotion('|")/, show_output)
+      else
+        puts "bluepotion - Invalid command option '#{type}', bluepotion remove only works with cdq"
+      end
+    end
+
+    def remove_lines(file, match, show_output)
+      puts "Modifying #{file}" if show_output
+      data = IO.readlines(file)
+      File.open(file, 'w') do |f|
+        data.each do |line|
+          unless line =~ match
+            f.puts line
+          end
+        end
+      end
+    end
+
+    def cdq_included?
+      return false unless File.exist?("Gemfile.lock")
+      data = IO.readlines("Gemfile.lock")
+      data.any?{|l| l.match(/\s.cdq\s\(/) }
+    end
+  end
+end
+
+# Process input, execute actions
+unless ARGV.length > 0
+  puts "potion - Invalid command, do something like this: potion create my_new_app\n"
+  puts PotionCommandLine::HELP_TEXT
+  exit
+end
+
+action = ARGV[0]
+query = ARGV[1]
+
+case action
+when 'create'
+  PotionCommandLine.create(ARGV[1], ARGV[2], ARGV[3])
+when 'rmq_docs'
+  if query
+    query = URI::encode(query)
+    url = "http://rubymotionquery.com?s=#{query}&post_type=document"
+    `open #{url}`
+  else
+    `open http://rubymotionquery.com/documentation`
+  end
+when 'remove'
+  PotionCommandLine.remove(ARGV[1])
+when '--help', '-h'
+  puts PotionCommandLine::HELP_TEXT
+when '-v', '--version'
+  puts BluePotion::VERSION
+else
+  puts 'potion - Invalid action'
+  puts PotionCommandLine::HELP_TEXT
+end

@@ -1,0 +1,5 @@
+site_name: BluePotion
+pages:
+- [index.md, Docs,                                    "Home"]
+- [quick_start.md, Docs,                              "Quick start"]
+- [contributing.md, Docs,                             "Contributing"]
