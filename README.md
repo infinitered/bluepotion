@@ -1,4 +1,5 @@
-<img src="http://ir_wp.s3.amazonaws.com/wp-content/uploads/sites/11/2015/05/bluepotion_icon_1000w_on_white.png" style="max-width: 500px;">
+<img src="http://ir_wp.s3.amazonaws.com/wp-content/uploads/sites/11/2015/05/bluepotion_icon_inverted_1000w.png" style="width: 500px;">
+<br />
 
 # BluePotion
 

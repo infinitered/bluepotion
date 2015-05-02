@@ -1,6 +1,3 @@
-# Identical to iOS
-
-module RubyMotionQuery
   class RMQ
     # I'm purposly not including Enumerable,
     # please use to_a if you want one
@@ -92,6 +89,5 @@ module RubyMotionQuery
     alias :size :length
     alias :count :length
   end
-end
 
 

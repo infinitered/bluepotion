@@ -51,7 +51,7 @@ class View
   # but the really nice thing about rmq is its consistent API, and doing this
   # for one view: my_view.rmq and this for two views: rmq(my_view, my_other_view) sucks
   def rmq(*working_selectors)
-    RubyMotionQuery::RMQ.create_with_selectors(working_selectors, self).tap do |o|
+    RMQ.create_with_selectors(working_selectors, self).tap do |o|
       #if vc = self.rmq_data.view_controller
         #o.weak_view_controller = vc
       #end

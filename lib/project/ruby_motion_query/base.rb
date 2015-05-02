@@ -1,6 +1,4 @@
 # mq.wrap(rmq.root_view).find(ButtonView)
-module RubyMotionQuery
-
   class RMQ
     def initialize
       @selected_dirty = true
@@ -156,11 +154,11 @@ module RubyMotionQuery
       out
     end
 
-    def inspect
-      out = "RMQ #{self.object_id}. #{self.count} selected. selectors: #{self.selectors}. .log for more info"
-      out << "\n[#{selected.first}]" if self.count == 1
-      out
-    end
+    #def inspect
+      #out = "RMQ #{self.object_id}. #{self.count} selected. selectors: #{self.selectors}. .log for more info"
+      #out << "\n[#{selected.first}]" if self.count == 1
+      #out
+    #end
 
     def context_or_context_view
       #if @context.is_a?(Activity)
@@ -231,4 +229,3 @@ module RubyMotionQuery
     end
 
   end # RMQ
-end

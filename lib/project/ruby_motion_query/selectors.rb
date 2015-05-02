@@ -1,5 +1,3 @@
-module RubyMotionQuery
-
   class RMQ
     # Do not use
     def selectors=(value)
@@ -50,5 +48,3 @@ module RubyMotionQuery
       a
     end
   end
-
-end

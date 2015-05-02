@@ -1,4 +1,3 @@
-module RubyMotionQuery
   class RMQ
     # This is used internally, to get a new rmq instance, just call "rmq" in your view or controller or
     # just create a new one like so: RubyMotionQuery::RMQ.new
@@ -46,4 +45,3 @@ module RubyMotionQuery
     end
   end
 
-end

@@ -1,7 +1,6 @@
-module RubyMotionQuery
   class RMQ
     def root_view
-      RubyMotionQuery::FakeAndroidStuff.root_view
+      FakeAndroidStuff.root_view
     end
 
     def view_controller
@@ -69,4 +68,3 @@ module RubyMotionQuery
 
     end
   end
-end

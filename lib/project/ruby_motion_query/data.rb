@@ -1,6 +1,3 @@
-# Exactly the same as iOS
-
-module RubyMotionQuery
   class ViewData
     attr_accessor :events, :built
 
@@ -86,9 +83,9 @@ module RubyMotionQuery
     def validations=(value); @_validations = value; end
 
     def view_controller=(value)
-      #RubyMotionQuery::RMQ.debug.assert(value.is_a?(UIViewController), 'Invalid controller in ViewData', { controller: value })
+      #RMQ.debug.assert(value.is_a?(UIViewController), 'Invalid controller in ViewData', { controller: value })
 
-      @_view_controller = RubyMotionQuery::RMQ.weak_ref(value)
+      @_view_controller = RMQ.weak_ref(value)
     end
 
     def view_controller
@@ -99,5 +96,4 @@ module RubyMotionQuery
   class ControllerData
     attr_accessor :stylesheet, :cached_rmq
   end
-end
 

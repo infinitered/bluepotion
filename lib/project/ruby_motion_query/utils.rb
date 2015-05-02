@@ -1,4 +1,3 @@
-module RubyMotionQuery
   class RMQ
     class << self
 
@@ -7,8 +6,8 @@ module RubyMotionQuery
       end
 
       def is_blank?(o)
-        if o.is_a?(RubyMotionQuery::RMQ)
-          RubyMotionQuery::RMQ.is_blank?(o.to_a)
+        if o.is_a?(RMQ)
+          RMQ.is_blank?(o.to_a)
         else
           o.respond_to?(:empty?) ? o.empty? : !o
         end
@@ -32,4 +31,3 @@ module RubyMotionQuery
 
     end
   end
-end

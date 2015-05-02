@@ -1,4 +1,3 @@
-module RubyMotionQuery
   class RMQ
 
     # @return [RMQ]
@@ -25,4 +24,3 @@ module RubyMotionQuery
     end
 
   end
-end
