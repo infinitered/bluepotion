@@ -1,6 +1,13 @@
 # mq.wrap(rmq.root_view).find(ButtonView)
   class RMQ
-    def initialize
+    attr_accessor :view
+    attr_accessor :stylesheet
+    attr_accessor :context
+
+    def initialize(view, stylesheet, context)
+      @view = view
+      @stylesheet = stylesheet
+      @context = context
       @selected_dirty = true
     end
 
@@ -50,6 +57,9 @@
     end
 
     def get
+      # work-in-progress
+      return view
+
       sel = self.selected
       if sel.length == 1
         sel.first
@@ -228,4 +238,89 @@
       out
     end
 
+    # sigh
+    # RM-724 rears its ugly head - there's a method in the Jackson JSON parser called "append",
+    # and that's causing a compile-time conflict with our "append" :'(
+    def rmq_append(view_class, style=nil, opts={})
+      add_subview(view_class.new(context), style)
+    end
+
+    def rmq_append!(view_class, style=nil, opts={})
+      rmq_append(view_class, style, opts).get
+    end
+
+    def on(event, args={}, &block)
+      case event
+      when :tap
+        view.onClickListener = ClickHandler.new(&block)
+      else
+        raise "Unrecognized event: #{event}"
+      end
+    end
+
+    #
+    # these only work if widget is in a RelativeLayout
+    #
+    def align_to_left_of(other)
+      set_alignment_to(other, Android::Widget::RelativeLayout::LEFT_OF)
+    end
+
+    def align_to_right_of(other)
+      set_alignment_to(other, Android::Widget::RelativeLayout::RIGHT_OF)
+    end
+
+    def align_below(other)
+      set_alignment_to(other, Android::Widget::RelativeLayout::BELOW)
+    end
+
+    private
+
+    def set_alignment_to(other, rule)
+      params = @view.layoutParams
+      params.addRule(rule, other.get.id)
+      @view.setLayoutParams(params)
+    end
+
+    def add_subview(subview, style_name)
+      subview.setId(Android::View::View.generateViewId())
+      view.addView(subview)
+      if stylesheet
+        apply_style_to_view(subview, style_name)
+      end
+      RMQ.new(subview, stylesheet, context)
+    end
+
+    def apply_style_to_view(view, style_name)
+      styler = styler_for(view)
+      stylesheet.send(style_name, styler)
+      styler.finalize
+    end
+
+    def styler_for(view)
+      case view
+      when Android::Widget::RelativeLayout  then StylersRelativeLayoutStyler.new(view, context)
+      when Android::Widget::LinearLayout    then StylersLinearLayoutStyler.new(view, context)
+      when Android::Widget::TextView        then StylersTextViewStyler.new(view, context)
+      when Android::Widget::ImageView       then StylersImageViewStyler.new(view, context)
+      when Android::Widget::ImageButton     then StylersImageButtonStyler.new(view, context)
+      when Android::Widget::Button          then StylersButtonStyler.new(view, context)
+      else
+        StylersViewStyler.new(view, context)
+      end
+    end
+
   end # RMQ
+
+  class ClickHandler
+    attr_accessor :click_block
+
+    def initialize(&block)
+      @click_block = block
+    end
+
+    def onClick(view)
+      click_block.call(view)
+    end
+
+  end
+
