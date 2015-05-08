@@ -251,7 +251,7 @@
 
     def on(event, args={}, &block)
       case event
-      when :tap
+      when :click, :tap, :touch
         view.onClickListener = ClickHandler.new(&block)
       else
         raise "Unrecognized event: #{event}"
@@ -282,7 +282,7 @@
     end
 
     def add_subview(subview, style_name)
-      subview.setId(Android::View::View.generateViewId())
+      subview.setId(Potion::ViewIdGenerator.generate)
       view.addView(subview)
       if stylesheet
         apply_style_to_view(subview, style_name)

@@ -14,7 +14,7 @@
         @view = inflater.inflate(r(:layout, self.class.xml_resource), parent, false)
       else
         @view = Android::Widget::FrameLayout.new(activity)
-        @view.setId Android::View::View.generateViewId 
+        @view.setId Potion::ViewIdGenerator.generate
       end
       action_bar.hide if hide_action_bar?
       setup_xml_widgets
