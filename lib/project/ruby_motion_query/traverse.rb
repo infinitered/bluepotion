@@ -3,9 +3,10 @@
       FakeAndroidStuff.root_view
     end
 
-    def view_controller
+    def activity
     end
-    alias :screen :view_controller
+    alias :screen :activity
+    alias :view_controller :activity
 
     def filter(opts = {}, &block)
       out = []
