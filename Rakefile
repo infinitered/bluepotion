@@ -15,7 +15,7 @@ Motion::Project::App.setup do |app|
   app.application_class = "BluepotionApplication"
   app.theme = "@android:style/Theme.Holo.Light"
 
-  app.api_version = "18"
+  app.api_version = "16"
   app.development { app.archs << "x86" } # for genymotion support
 
   app.main_activity = "PMHomeActivity"
