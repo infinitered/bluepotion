@@ -1,16 +1,14 @@
   class RMQ
-    # @return [App]
     def app
-      App
+      RMQApp
     end
 
-    # @return [App]
     def self.app
-      App
+      RMQApp
     end
   end
 
-  class App
+  class RMQApp
     class << self
 
       def window
@@ -18,8 +16,9 @@
       end
 
       def current_activity
-        Activity.new
+        PMApplication.current_activity
       end
+
     end
   end
 

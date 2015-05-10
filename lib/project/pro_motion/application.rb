@@ -1,9 +1,9 @@
 # RM-773
 #module ProMotion
   class PMApplication < Android::App::Application
-    attr_accessor :current_activity
 
     class << self
+      attr_accessor :current_activity
       attr_reader :home_screen_class
 
       def home_screen(home_screen_class)

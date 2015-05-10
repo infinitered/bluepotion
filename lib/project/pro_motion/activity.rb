@@ -23,16 +23,6 @@
       super
     end
 
-    def rmq(*working_selectors)
-      crmq = RMQ.create_with_selectors([], self) # TODO
-
-      if working_selectors.length == 0
-        crmq
-      else
-        RMQ.create_with_selectors(working_selectors, self, crmq)
-      end
-    end
-
     def clear_references
       @app.current_activity = nil if @app.current_activity == self
     end

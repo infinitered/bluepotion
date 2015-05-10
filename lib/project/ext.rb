@@ -8,7 +8,7 @@ class Object
   end
 end
 
-class Activity
+class PMActivity < Android::App::Activity
   def rmq(*working_selectors)
     crmq = RubyMotionQuery::RMQ.create_with_selectors([], self) # TODO
 
@@ -20,7 +20,7 @@ class Activity
   end
 end
 
-class Fragment
+class PMScreen < Android::App::Fragment
 end
 
 class Window
