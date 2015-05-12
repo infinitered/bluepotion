@@ -1,8 +1,8 @@
-class RubyMotionQueryStylesheet
+class RMQStylesheet
 
   def initialize
-    unless RubyMotionQueryStylesheet.application_was_setup
-      RubyMotionQueryStylesheet.application_was_setup = true
+    unless RMQStylesheet.application_was_setup
+      RMQStylesheet.application_was_setup = true
       application_setup
     end
     setup
@@ -26,29 +26,8 @@ class RubyMotionQueryStylesheet
     RMQ.font
   end
 
-  def apply_style_to_view(view, style_name)
-    styler = styler_for(view)
-    stylesheet.send(style_name, styler)
-    styler.finalize
-  end
-
-  def styler_for(view)
-    case view
-    when Android::Widget::RelativeLayout  then StylersRelativeLayoutStyler.new(view, context)
-    when Android::Widget::LinearLayout    then StylersLinearLayoutStyler.new(view, context)
-    when Android::Widget::TextView        then StylersTextViewStyler.new(view, context)
-    when Android::Widget::ImageView       then StylersImageViewStyler.new(view, context)
-    when Android::Widget::ImageButton     then StylersImageButtonStyler.new(view, context)
-    when Android::Widget::Button          then StylersButtonStyler.new(view, context)
-    else
-      StylersViewStyler.new(view, context)
-    end
-  end
-
   class << self
     attr_accessor :application_was_setup
   end
-
-
 
 end

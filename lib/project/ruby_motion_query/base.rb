@@ -1,30 +1,30 @@
 # mq.wrap(rmq.root_view).find(ButtonView)
   class RMQ
-    attr_accessor :view
-    attr_accessor :stylesheet
-    attr_accessor :context
+    #attr_accessor :view
+    #attr_accessor :stylesheet
+    #attr_accessor :context
 
     def initialize
       @selected_dirty = true
     end
 
-    def context=(value)
+    def originated_from=(value)
       if value
         #if value.is_a?(Activity)
-          #@context = RubyMotionQuery::RMQ.weak_ref(value)
+          #@originated_from = RubyMotionQuery::RMQ.weak_ref(value)
         #elsif value.is_a?(View)
-          @context = value
+          @originated_from = value
         #else
-          #debug.log_detailed('Invalid context', objects: {value: value})
+          #debug.log_detailed('Invalid originated_from', objects: {value: value})
         #end
       else
-        @context = nil
+        @originated_from = nil
       end
-      @context
+      @originated_from
     end
 
-    def context
-      @context
+    def originated_from
+      @originated_from
     end
 
     def parent_rmq
@@ -42,14 +42,14 @@
     end
 
     def root?
-      (selected.length == 1) && (selected.first == @context)
+      (selected.length == 1) && (selected.first == @originated_from)
     end
 
-    def context_or_context_view
-      if @context.is_a?(Activity)
-        @context.view
+    def originated_from_or_its_view
+      if @originated_from.is_a?(Activity)
+        @originated_from.view
       else
-        @context
+        @originated_from
       end
     end
 
@@ -167,20 +167,12 @@
       #out
     #end
 
-    def context_or_context_view
-      #if @context.is_a?(Activity)
-        #@context.view
-      #else
-        @context
-      #end
-    end
-
     def selected
       if @selected_dirty
         @_selected = []
 
         if RMQ.is_blank?(self.selectors)
-          @_selected << context_or_context_view
+          @_selected << originated_from_or_its_view
         else
           working_selectors = self.selectors.dup
           extract_views_from_selectors(@_selected, working_selectors)
@@ -235,71 +227,4 @@
       out
     end
 
-
-    def on(event, args={}, &block)
-      case event
-      when :click, :tap, :touch
-        view.onClickListener = ClickHandler.new(&block)
-      else
-        raise "Unrecognized event: #{event}"
-      end
-    end
-
-    #
-    # these only work if widget is in a RelativeLayout
-    #
-    def align_to_left_of(other)
-      set_alignment_to(other, Android::Widget::RelativeLayout::LEFT_OF)
-    end
-
-    def align_to_right_of(other)
-      set_alignment_to(other, Android::Widget::RelativeLayout::RIGHT_OF)
-    end
-
-    def align_below(other)
-      set_alignment_to(other, Android::Widget::RelativeLayout::BELOW)
-    end
-
-    private
-
-    def set_alignment_to(other, rule)
-      params = @view.layoutParams
-      params.addRule(rule, other.get.id)
-      @view.setLayoutParams(params)
-    end
-
-
-    def apply_style_to_view(view, style_name)
-      styler = styler_for(view)
-      stylesheet.send(style_name, styler)
-      styler.finalize
-    end
-
-    def styler_for(view)
-      case view
-      when Android::Widget::RelativeLayout  then StylersRelativeLayoutStyler.new(view, context)
-      when Android::Widget::LinearLayout    then StylersLinearLayoutStyler.new(view, context)
-      when Android::Widget::TextView        then StylersTextViewStyler.new(view, context)
-      when Android::Widget::ImageView       then StylersImageViewStyler.new(view, context)
-      when Android::Widget::ImageButton     then StylersImageButtonStyler.new(view, context)
-      when Android::Widget::Button          then StylersButtonStyler.new(view, context)
-      else
-        StylersViewStyler.new(view, context)
-      end
-    end
-
   end # RMQ
-
-  class ClickHandler
-    attr_accessor :click_block
-
-    def initialize(&block)
-      @click_block = block
-    end
-
-    def onClick(view)
-      click_block.call(view)
-    end
-
-  end
-

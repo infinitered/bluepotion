@@ -25,7 +25,7 @@
       if opts[:return_array]
         out
       else
-        RMQ.create_with_array_and_selectors(out, selectors, @context, self)
+        RMQ.create_with_array_and_selectors(out, selectors, @originated_from, self)
       end
     end
 

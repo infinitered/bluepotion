@@ -11,6 +11,10 @@
   class RMQApp
     class << self
 
+      def context
+        PMContextManager.current_context
+      end
+
       def window
         current_activity.getWindow
       end
