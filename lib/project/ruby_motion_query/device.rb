@@ -27,5 +27,17 @@
         version.to_i <= sdk_version
       end
 
+      def display
+        RMQ.app.context.getSystemService(RMQ.app.context.WINDOW_SERVICE).defaultDisplay
+      end
+
+      def width
+        display.width
+      end
+
+      def height
+        display.height
+      end
+
     end
   end
