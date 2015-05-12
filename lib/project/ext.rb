@@ -8,20 +8,20 @@ class Object
   end
 end
 
-class PMActivity < Android::App::Activity
-  def rmq(*working_selectors)
-    crmq = RubyMotionQuery::RMQ.create_with_selectors([], self) # TODO
+#class PMActivity < Android::App::Activity
+  #def rmq(*working_selectors)
+    #crmq = RubyMotionQuery::RMQ.create_with_selectors([], self) # TODO
 
-    if working_selectors.length == 0
-      crmq
-    else
-      RubyMotionQuery::RMQ.create_with_selectors(working_selectors, self, crmq)
-    end
-  end
-end
+    #if working_selectors.length == 0
+      #crmq
+    #else
+      #RubyMotionQuery::RMQ.create_with_selectors(working_selectors, self, crmq)
+    #end
+  #end
+#end
 
-class PMScreen < Android::App::Fragment
-end
+#class PMScreen < Android::App::Fragment
+#end
 
 class Window
 end

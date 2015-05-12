@@ -10,7 +10,7 @@
 
     def onResume
       super
-      @app.current_activity = self
+      PMApplication.current_activity = self
     end
 
     def onPause
