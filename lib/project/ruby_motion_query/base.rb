@@ -4,10 +4,7 @@
     attr_accessor :stylesheet
     attr_accessor :context
 
-    def initialize(view, stylesheet, context)
-      @view = view
-      @stylesheet = stylesheet
-      @context = context
+    def initialize
       @selected_dirty = true
     end
 
@@ -238,16 +235,6 @@
       out
     end
 
-    # sigh
-    # RM-724 rears its ugly head - there's a method in the Jackson JSON parser called "append",
-    # and that's causing a compile-time conflict with our "append" :'(
-    def rmq_append(view_class, style=nil, opts={})
-      add_subview(view_class.new(context), style)
-    end
-
-    def rmq_append!(view_class, style=nil, opts={})
-      rmq_append(view_class, style, opts).get
-    end
 
     def on(event, args={}, &block)
       case event
@@ -281,14 +268,6 @@
       @view.setLayoutParams(params)
     end
 
-    def add_subview(subview, style_name)
-      subview.setId(Potion::ViewIdGenerator.generate)
-      view.addView(subview)
-      if stylesheet
-        apply_style_to_view(subview, style_name)
-      end
-      RMQ.new(subview, stylesheet, context)
-    end
 
     def apply_style_to_view(view, style_name)
       styler = styler_for(view)

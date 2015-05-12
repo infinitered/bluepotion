@@ -1,23 +1,15 @@
 class Object
   def rmq(*working_selectors)
-    if (app = RubyMotionQuery::RMQ.app) && (window = app.window) && (cvc = app.current_activity)
+    if (app = RMQ.app) && (window = app.window) && (cvc = app.current_activity)
       cvc.rmq(working_selectors)
     else
-      RubyMotionQuery::RMQ.create_with_array_and_selectors([], working_selectors, self)
+      RMQ.create_with_array_and_selectors([], working_selectors, self)
     end
   end
 end
 
 #class PMActivity < Android::App::Activity
-  #def rmq(*working_selectors)
-    #crmq = RubyMotionQuery::RMQ.create_with_selectors([], self) # TODO
 
-    #if working_selectors.length == 0
-      #crmq
-    #else
-      #RubyMotionQuery::RMQ.create_with_selectors(working_selectors, self, crmq)
-    #end
-  #end
 #end
 
 #class PMScreen < Android::App::Fragment

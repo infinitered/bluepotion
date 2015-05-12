@@ -27,6 +27,30 @@
       @app.current_activity = nil if @app.current_activity == self
     end
 
+    def rmq(*working_selectors)
+      crmq = RMQ.create_with_selectors([], self)
+
+      if working_selectors.length == 0
+        crmq
+      else
+        RMQ.create_with_selectors(working_selectors, self, crmq)
+      end
+    end
+
   end
+
+  #class PMActivity < Android::App::Activity
+    #def foo
+      #1
+    #end
+  #end
+
+
+  #class PMActivity < Android::App::Activity
+    #def bar
+      #2
+    #end
+  #end
+
 
 #end
