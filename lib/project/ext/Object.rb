@@ -1,7 +1,8 @@
 class Object
   def id
-    "FU LRZ"
+    0
   end
+
   def object_id
     id
   end

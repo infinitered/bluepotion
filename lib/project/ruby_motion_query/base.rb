@@ -1,9 +1,5 @@
 # mq.wrap(rmq.root_element).find(ButtonView)
   class RMQ
-    #attr_accessor :view
-    #attr_accessor :stylesheet
-    #attr_accessor :context
-
     def initialize
       @selected_dirty = true
     end
@@ -54,9 +50,6 @@
     end
 
     def get
-      # work-in-progress
-      return view
-
       sel = self.selected
       if sel.length == 1
         sel.first
@@ -86,9 +79,9 @@
       end
 
       wide = (opt == :wide)
-      out =  "\n id   | class                 | style_name              | frame                           |"
+      out =  "\n id          | class                 | style_name              | frame                           |"
       out << "\n" unless wide
-      out <<   " sv id       | superelement             | subelements count          | tags                            |"
+      out <<   " sv id       | superview             | subviews count          | tags                            |"
       line =   " - - - - - - | - - - - - - - - - - - | - - - - - - - - - - - - | - - - - - - - - - - - - - - - - |\n"
       out << "\n"
       out << line.chop if wide
@@ -97,6 +90,7 @@
       selected.each do |element|
         out << " #{element.id.to_s.ljust(12)}|"
         out << " #{element.class.name[0..21].ljust(22)}|"
+        out << " #{""[0..23].ljust(24)}|" # TODO change to real stylname
         #out << " #{(element.style_name || '')[0..23].ljust(24)}|" # TODO change to real stylname
 
         s = ""
@@ -110,7 +104,7 @@
         out << s.ljust(33)
         out << '|'
 
-        out << "\n" unless wide
+        #out << "\n" unless wide
         #out << " #{element.superelement.id.to_s.ljust(12)}|"
         #out << " #{(element.superelement ? element.superelement.class.name : '')[0..21].ljust(22)}|"
         #out << " #{element.subelement.length.to_s.ljust(23)} |"
@@ -185,7 +179,7 @@
             end
           end
 
-          @_selected.uniq!
+          @_selected = @_selected.uniq
         end
 
         @selected_dirty = false

@@ -1,4 +1,4 @@
-  class ViewData
+  class RMQViewData
     attr_accessor :events, :built
 
     # @return [Hash] Array of tag names assigned to to this view
@@ -93,7 +93,6 @@
     end
   end
 
-  class ControllerData
+  class RMQActivityData
     attr_accessor :stylesheet, :cached_rmq
   end
-

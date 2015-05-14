@@ -27,20 +27,6 @@
       @app.current_activity = nil if @app.current_activity == self
     end
 
-    def rmq(*working_selectors)
-      crmq = RMQ.create_with_selectors([], self)
-
-      if working_selectors.length == 0
-        crmq
-      else
-        RMQ.create_with_selectors(working_selectors, self, crmq)
-      end
-    end
-    alias :find :rmq
-
-    def root_element
-      getWindow.getDecorView.findViewById(Android::R::Id::Content)
-    end
   end
 
   #class PMActivity < Android::App::Activity

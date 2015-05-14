@@ -19,7 +19,7 @@
         elsif selector.is_a?(Symbol)
           # TODO, make this faster
           #return true if (view.rmq_data.has_style?(selector)) || view.rmq_data.has_tag?(selector)
-        elsif selector.is_a?(Integer)
+        elsif selector.is_a?(Java::Lang::Integer)
           # TODO, make this hugely faster
           #return true if view.object_id == selector
         elsif RMQ.is_class?(selector)
