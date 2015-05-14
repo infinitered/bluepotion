@@ -7,11 +7,13 @@ module Potion
   ImageView = Android::Widget::ImageView
   Button = Android::Widget::Button
   Toast = Android::Widget::Toast
+  View = Android::View::View
+  ViewGroup = Android::View::ViewGroup
+  Element = Android::View::ViewGroup
 
   # graphics
   Color = Android::Graphics::Color
   Typeface = Android::Graphics::Typeface
-
 end
 
 #

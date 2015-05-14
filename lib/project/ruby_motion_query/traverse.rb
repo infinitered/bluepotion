@@ -1,12 +1,13 @@
   class RMQ
-    def root_view
-      FakeAndroidStuff.root_view
+    def root_element
+      self.activity.root_element
     end
 
     def activity
+      # TODO use the real one
+      RMQApp.current_activity
     end
     alias :screen :activity
-    alias :view_controller :activity
 
     def filter(opts = {}, &block)
       out = []
@@ -30,7 +31,7 @@
     end
 
     def all
-      wrap(root_view).find
+      wrap(root_element).find
     end
 
     def children(*working_selectors)

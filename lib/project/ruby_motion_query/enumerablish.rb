@@ -86,8 +86,14 @@
     def length
       selected.length
     end
-    alias :size :length
-    alias :count :length
+    def size
+      length
+    end
+    def count
+      length
+    end
+    #alias :size :length
+    #alias :count :length
   end
 
 

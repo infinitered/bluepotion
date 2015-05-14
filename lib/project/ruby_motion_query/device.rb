@@ -12,15 +12,15 @@
     class << self
 
       def os_version
-        Android::Os::Build::VERSION.new.RELEASE.to_f
+        @os_version ||= Android::Os::Build::VERSION.new.RELEASE.to_f
       end
 
       def os_code_name
-        Android::Os::Build::VERSION.new.CODENAME
+        @os_code_name ||= Android::Os::Build::VERSION.new.CODENAME
       end
 
       def sdk_version
-        Android::Os::Build::VERSION.new.SDK_INT
+        @sdk_version ||= Android::Os::Build::VERSION.new.SDK_INT
       end
 
       def sdk_at_least?(version)
@@ -28,15 +28,15 @@
       end
 
       def display
-        RMQ.app.context.getSystemService(RMQ.app.context.WINDOW_SERVICE).defaultDisplay
+        @display ||= RMQ.app.context.getSystemService(RMQ.app.context.WINDOW_SERVICE).defaultDisplay
       end
 
       def width
-        display.width
+        @width ||= display.width
       end
 
       def height
-        display.height
+        @height ||= display.height
       end
 
     end

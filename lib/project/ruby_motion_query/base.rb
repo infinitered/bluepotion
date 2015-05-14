@@ -1,4 +1,4 @@
-# mq.wrap(rmq.root_view).find(ButtonView)
+# mq.wrap(rmq.root_element).find(ButtonView)
   class RMQ
     #attr_accessor :view
     #attr_accessor :stylesheet
@@ -69,7 +69,7 @@
       if pq = self.parent_rmq
         pq.selected
       else
-        root_view
+        root_element
       end
     end
 
@@ -86,49 +86,49 @@
       end
 
       wide = (opt == :wide)
-      out =  "\n object_id   | class                 | style_name              | frame                           |"
+      out =  "\n id   | class                 | style_name              | frame                           |"
       out << "\n" unless wide
-      out <<   " sv id       | superview             | subviews count          | tags                            |"
+      out <<   " sv id       | superelement             | subelements count          | tags                            |"
       line =   " - - - - - - | - - - - - - - - - - - | - - - - - - - - - - - - | - - - - - - - - - - - - - - - - |\n"
       out << "\n"
       out << line.chop if wide
       out << line
 
-      selected.each do |view|
-        out << " #{view.object_id.to_s.ljust(12)}|"
-        out << " #{view.class.name[0..21].ljust(22)}|"
-        out << " #{(view.style_name || '')[0..23].ljust(24)}|" # TODO change to real stylname
+      selected.each do |element|
+        out << " #{element.id.to_s.ljust(12)}|"
+        out << " #{element.class.name[0..21].ljust(22)}|"
+        #out << " #{(element.style_name || '')[0..23].ljust(24)}|" # TODO change to real stylname
 
         s = ""
-        #if view.origin
+        #if element.origin
           #format = '#0.#'
-          #s = " {l: #{RMQ.format.numeric(view.origin.x, format)}"
-          #s << ", t: #{RMQ.format.numeric(view.origin.y, format)}"
-          #s << ", w: #{RMQ.format.numeric(view.size.width, format)}"
-          #s << ", h: #{RMQ.format.numeric(view.size.height, format)}}"
+          #s = " {l: #{RMQ.format.numeric(element.origin.x, format)}"
+          #s << ", t: #{RMQ.format.numeric(element.origin.y, format)}"
+          #s << ", w: #{RMQ.format.numeric(element.size.width, format)}"
+          #s << ", h: #{RMQ.format.numeric(element.size.height, format)}}"
         #end
         out << s.ljust(33)
         out << '|'
 
         out << "\n" unless wide
-        out << " #{view.superview.object_id.to_s.ljust(12)}|"
-        out << " #{(view.superview ? view.superview.class.name : '')[0..21].ljust(22)}|"
-        out << " #{view.subviews.length.to_s.ljust(23)} |"
-        #out << "  #{view.subviews.length.to_s.rjust(8)} #{view.superview.class.name.ljust(20)} #{view.superview.object_id.to_s.rjust(10)}"
-        #out << " #{view.rmq_data.tag_names.join(',').ljust(32)}|"
+        #out << " #{element.superelement.id.to_s.ljust(12)}|"
+        #out << " #{(element.superelement ? element.superelement.class.name : '')[0..21].ljust(22)}|"
+        #out << " #{element.subelement.length.to_s.ljust(23)} |"
+        #out << "  #{element.subelement.length.to_s.rjust(8)} #{element.superelement.class.name.ljust(20)} #{element.superelement.id.to_s.rjust(10)}"
+        #out << " #{element.rmq_data.tag_names.join(',').ljust(32)}|"
         out << "\n"
         out << line unless wide
       end
 
-      out << "RMQ #{self.object_id}. #{self.count} selected. selectors: #{self.selectors}"
+      out << "RMQ #{self.id}. #{self.count} selected. selectors: #{self.selectors}"
 
       puts out
     end
 
-    def tree_to_s(selected_views, depth = 0)
+    def tree_to_s(selected_elements, depth = 0)
       out = ""
 
-      selected_views.each do |view|
+      selected_elements.each do |view|
 
         if depth == 0
           out << "\n"
@@ -140,32 +140,33 @@
 
         out << '───'
 
-        out << " #{view.class.name[0..21]}"
-        out << "  ( #{view.style_name[0..23]} )" if view.style_name
-        out << "  #{view.object_id}"
-        #out << "  [ #{view.rmq_data.tag_names.join(',')} ]" if view.rmq_data.tag_names.length > 0
+        out << " #{element.class.name[0..21]}"
+        out << "  ( #{element.style_name[0..23]} )" if element.style_name
+        out << "  #{element.id}"
+        #out << "  [ #{element.rmq_data.tag_names.join(',')} ]" if element.rmq_data.tag_names.length > 0
 
-        #if view.origin
+        #if element.origin
           #format = '#0.#'
-          #s = "  {l: #{RMQ.format.numeric(view.origin.x, format)}"
-          #s << ", t: #{RMQ.format.numeric(view.origin.y, format)}"
-          #s << ", w: #{RMQ.format.numeric(view.size.width, format)}"
-          #s << ", h: #{RMQ.format.numeric(view.size.height, format)}}"
+          #s = "  {l: #{RMQ.format.numeric(element.origin.x, format)}"
+          #s << ", t: #{RMQ.format.numeric(element.origin.y, format)}"
+          #s << ", w: #{RMQ.format.numeric(element.size.width, format)}"
+          #s << ", h: #{RMQ.format.numeric(element.size.height, format)}}"
           #out << s
         #end
 
         out << "\n"
-        out << tree_to_s(view.subviews, depth + 1)
+        out << tree_to_s(element.subelements, depth + 1)
       end
 
       out
     end
 
-    #def inspect
-      #out = "RMQ #{self.object_id}. #{self.count} selected. selectors: #{self.selectors}. .log for more info"
-      #out << "\n[#{selected.first}]" if self.count == 1
-      #out
-    #end
+    def inspect
+      out = "RMQ. #{self.count} selected. selectors: #{self.selectors}. .log for more info"
+      #out = "RMQ #{self.id}. #{self.count} selected. selectors: #{self.selectors}. .log for more info"
+      out << "\n[#{selected.first}]" if self.count == 1
+      out
+    end
 
     def selected
       if @selected_dirty
@@ -178,7 +179,7 @@
           extract_views_from_selectors(@_selected, working_selectors)
 
           unless RMQ.is_blank?(working_selectors)
-            subviews = all_subviews_for(root_view)
+            subviews = all_subviews_for(root_element)
             subviews.each do |subview|
               @_selected << subview if match(subview, working_selectors)
             end

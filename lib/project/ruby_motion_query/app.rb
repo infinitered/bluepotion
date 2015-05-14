@@ -12,26 +12,21 @@
     class << self
 
       def context
-        PMContextManager.current_context
+        @context ||= PMContextManager.current_context
       end
 
       def window
-        current_activity.getWindow
+        @window ||= current_activity.getWindow
       end
 
       def current_activity
         PMApplication.current_activity
       end
+      alias :current_screen :current_activity
 
       def home_screen_class
         PMApplication.home_screen_class
       end
-
-      def current_fragment
-        # TODO
-      end
-      alias :current_screen :current_fragment
-
 
       # @return [Symbol] Environment the app is running it
       def environment
