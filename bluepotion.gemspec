@@ -10,6 +10,7 @@ Gem::Specification.new do |spec|
   spec.summary       = %q{TODO: Write a gem summary}
   spec.homepage      = ""
   spec.license       = ""
+  spec.post_install_message = "  <>\n  ||\n (  )  BluePotion\n  ``"
 
   files = []
   files << 'README.md'
