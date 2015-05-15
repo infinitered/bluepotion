@@ -3,7 +3,6 @@
 
   class PMScreen < Android::App::Fragment
     include PMScreenModule
-    include RMQMethods
 
     attr_accessor :view
     attr_accessor :rmq
