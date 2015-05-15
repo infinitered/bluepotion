@@ -51,6 +51,8 @@
     end
 
     def open(screen_class, options={})
+      mp "ScreenModule open"
+      mp options[:activity]
       options[:activity] ||= PMSingleFragmentActivity
       # TODO: replace the fragment in the activity when possible
       # replace the fragment if we can; otherwise launch a new activity

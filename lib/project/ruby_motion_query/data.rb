@@ -82,14 +82,12 @@
     def validations; @_validations ||= []; end
     def validations=(value); @_validations = value; end
 
-    def view_controller=(value)
-      #RMQ.debug.assert(value.is_a?(UIViewController), 'Invalid controller in ViewData', { controller: value })
-
-      @_view_controller = RMQ.weak_ref(value)
+    def activity=(value)
+      @_activity = value
     end
 
-    def view_controller
-      @_view_controller
+    def activity
+      @_activity
     end
   end
 

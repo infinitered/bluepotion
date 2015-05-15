@@ -3,9 +3,16 @@
 
   class PMActivity < Android::App::Activity
 
-    def onCreate saved_instance_state
+    def onCreate(saved_instance_state)
+      puts "PMActivity onCreate"
       super
-      @app = self.getApplicationContext
+
+      if self.class.rmq_style_sheet_class
+        self.rmq.stylesheet = self.class.rmq_style_sheet_class
+        self.view.rmq.apply_style(:root_view) if self.rmq.stylesheet.respond_to?(:root_view)
+      end
+
+      #rmq.app.context
     end
 
     def onResume
@@ -24,7 +31,14 @@
     end
 
     def clear_references
-      @app.current_activity = nil if @app.current_activity == self
+    end
+
+    def self.stylesheet(style_sheet_class)
+      @rmq_style_sheet_class = style_sheet_class
+    end
+
+    def self.rmq_style_sheet_class
+      @rmq_style_sheet_class
     end
 
   end

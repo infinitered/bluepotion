@@ -21,7 +21,7 @@
         end
       end
       out.flatten!
-      out = out.uniq if opts[:uniq]
+      out.uniq! if opts[:uniq]
 
       if opts[:return_array]
         out

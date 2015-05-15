@@ -18,7 +18,7 @@
       end
       action_bar.hide if hide_action_bar?
       setup_xml_widgets
-      @rmq = RMQ.new(@view, stylesheet, activity)
+      #@rmq = RMQ.new(@view, stylesheet, activity)
       on_load if respond_to?(:on_load)
       # TODO: how will we pass this back if we don't use XML?
       @view

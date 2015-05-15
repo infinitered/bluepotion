@@ -8,25 +8,26 @@ class RMQ
       built = false
 
       if view_or_constant.is_a?(Potion::View)
+        mp "View existed"
         new_view = view_or_constant
       else
         created = true
         #view_class.new(context)
-        new_view = view_or_constant.new(RMQApp.context)
         mp "created"
+        new_view = view_or_constant.new(RMQApp.context)
         #new_view = create_view(view_or_constant, opts)
       end
 
       new_view.setId(Potion::ViewIdGenerator.generate)
 
-      #rmq_data = new_view.rmq_data
+      rmq_data = new_view.rmq_data
 
-      #unless rmq_data.built
-        #rmq_data.built = true # build only once
-        #built = true
-      #end
+      unless rmq_data.built
+        rmq_data.built = true # build only once
+        built = true
+      end
 
-      #rmq_data.view_controller = self.weak_view_controller
+      rmq_data.activity = self.activity
 
       subviews_added << new_view
 

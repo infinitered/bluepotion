@@ -20,5 +20,4 @@ Motion::Project::App.setup do |app|
 
   app.main_activity = "PMHomeActivity"
   app.sub_activities += %w(PMSingleFragmentActivity)
-
 end

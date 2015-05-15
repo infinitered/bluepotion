@@ -81,31 +81,32 @@
       end
 
       wide = (opt == :wide)
-      out =  "\n id          | class                 | style_name              | frame                           |"
+      out =  "\n id          | class                 | style_name              | frame                                 |"
       out << "\n" unless wide
-      out <<   " sv id       | superview             | subviews count          | tags                            |"
-      line =   " - - - - - - | - - - - - - - - - - - | - - - - - - - - - - - - | - - - - - - - - - - - - - - - - |\n"
+      out <<   " sv id       | superview             | subviews count          | tags                                  |"
+      line =   " - - - - - - | - - - - - - - - - - - | - - - - - - - - - - - - | - - - - - - - - - - - - - - - - - - - |\n"
       out << "\n"
       out << line.chop if wide
       out << line
 
       selected.each do |view|
         out << " #{view.id.to_s.ljust(12)}|"
-        out << " #{view.class.name[0..21].ljust(22)}|"
+        name = view.class.name.split('.').last
+        name = name[(name.length - 21)..name.length] if name.length > 21
+        out << " #{name.ljust(22)}|"
         out << " #{""[0..23].ljust(24)}|" # TODO change to real stylname
         #out << " #{(view.style_name || '')[0..23].ljust(24)}|" # TODO change to real stylname
 
         s = ""
         #if view.origin
           #format = '#0.#'
-          #s = " {l: #{RMQ.format.numeric(view.origin.x, format)}"
-          #s << ", t: #{RMQ.format.numeric(view.origin.y, format)}"
-          #s << ", w: #{RMQ.format.numeric(view.size.width, format)}"
-          #s << ", h: #{RMQ.format.numeric(view.size.height, format)}}"
+          s = " {l: #{view.x}"
+          s << ", t: #{view.y}"
+          s << ", w: #{view.width}"
+          s << ", h: #{view.height}}"
         #end
-        out << s.ljust(33)
+        out << s.ljust(39)
         out << '|'
-
         #out << "\n" unless wide
         #out << " #{view.superview.id.to_s.ljust(12)}|"
         #out << " #{(view.superview ? view.superview.class.name : '')[0..21].ljust(22)}|"
@@ -120,7 +121,6 @@
 
       puts out
     end
-
     def tree_to_s(selected_views, depth = 0)
       out = ""
 
@@ -143,11 +143,11 @@
 
         #if view.origin
           #format = '#0.#'
-          #s = "  {l: #{RMQ.format.numeric(view.origin.x, format)}"
-          #s << ", t: #{RMQ.format.numeric(view.origin.y, format)}"
-          #s << ", w: #{RMQ.format.numeric(view.size.width, format)}"
-          #s << ", h: #{RMQ.format.numeric(view.size.height, format)}}"
-          #out << s
+          s = " {l: #{view.x}"
+          s << ", t: #{view.y}"
+          s << ", w: #{view.width}"
+          s << ", h: #{view.height}}"
+          out << s
         #end
 
         out << "\n"
@@ -181,7 +181,7 @@
             end
           end
 
-          @_selected = @_selected.uniq
+          @_selected.uniq!
         end
 
         @selected_dirty = false
