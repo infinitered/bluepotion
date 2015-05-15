@@ -53,6 +53,7 @@
     alias :subviews :children
 
     def find(*working_selectors)
+
       normalize_selectors(working_selectors)
 
       filter(uniq: true) do |view|

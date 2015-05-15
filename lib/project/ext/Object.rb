@@ -14,4 +14,8 @@ class Object
       RMQ.create_with_array_and_selectors([], working_selectors, self)
     end
   end
+
+  def mp(s)
+    puts(s)
+  end
 end

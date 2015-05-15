@@ -42,8 +42,8 @@
     end
 
     def originated_from_or_its_view
-      if @originated_from.is_a?(Activity)
-        @originated_from.view
+      if @originated_from.is_a?(Android::App::Activity)
+        @originated_from.root_view
       else
         @originated_from
       end
@@ -67,8 +67,10 @@
     end
 
     def wrap(*views)
+      views = [views] unless views.is_a?(Potion::Array) # TODO, WTF?
+
       views.flatten!
-      views.select!{ |v| v.is_a?(View) } # TODO Fake view here
+      views.select!{ |v| v.is_a?(Potion::View) } # TODO Fake view here
       RMQ.create_with_array_and_selectors(views, views, views.first, self)
     end
 

@@ -11,6 +11,7 @@ class RMQ
         new_view = view_or_constant
       else
         created = true
+        #view_class.new(context)
         new_view = view_or_constant.new(RMQApp.context)
         mp "created"
         #new_view = create_view(view_or_constant, opts)

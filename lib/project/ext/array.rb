@@ -14,4 +14,11 @@ class Java::Util::ArrayList
   def uniq!
     raise "NEEDS TO BE IMPLEMENTED"
   end
+
+  def flatten!
+    out = self.flatten
+    a.clear
+    self.add(out)
+    self
+  end
 end
