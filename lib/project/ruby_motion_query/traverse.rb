@@ -1,6 +1,6 @@
   class RMQ
-    def root_element
-      self.activity.root_element
+    def root_view
+      self.activity.root_view
     end
 
     def activity
@@ -31,7 +31,7 @@
     end
 
     def all
-      wrap(root_element).find
+      wrap(root_view).find
     end
 
     def children(*working_selectors)

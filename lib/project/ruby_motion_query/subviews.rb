@@ -1,24 +1,24 @@
 class RMQ
-  def add_element(element_or_class, opts={})
+  def add_view(view_or_class, opts={})
     subviews_added = []
 
-    selected.each do |selected_element|
+    selected.each do |selected_view|
       created = false
       appended = false
       built = false
 
-      if element_or_constant.is_a?(Potion::View)
-        new_element = element_or_constant
+      if view_or_constant.is_a?(Potion::View)
+        new_view = view_or_constant
       else
         created = true
-        new_element = element_or_constant.new(RMQApp.context)
+        new_view = view_or_constant.new(RMQApp.context)
         mp "created"
-        #new_element = create_view(element_or_constant, opts)
+        #new_view = create_view(view_or_constant, opts)
       end
 
-      new_element.setId(Potion::ViewIdGenerator.generate)
+      new_view.setId(Potion::ViewIdGenerator.generate)
 
-      #rmq_data = new_element.rmq_data
+      #rmq_data = new_view.rmq_data
 
       #unless rmq_data.built
         #rmq_data.built = true # build only once
@@ -27,28 +27,28 @@ class RMQ
 
       #rmq_data.view_controller = self.weak_view_controller
 
-      subviews_added << new_element
+      subviews_added << new_view
 
       unless opts[:do_not_add]
         #if at_index = opts[:at_index]
-          #selected_element.insertSubview(new_element, atIndex: at_index)
+          #selected_view.insertSubview(new_view, atIndex: at_index)
         #elsif below_view = opts[:below_view]
-          #selected_element.insertSubview(new_element, belowSubview: below_view)
+          #selected_view.insertSubview(new_view, belowSubview: below_view)
         #else
-          selected_element.addView(new_element)
+          selected_view.addView(new_view)
         #end
 
         appended = true
       end
 
       if created
-        new_element.rmq_created
+        new_view.rmq_created
       end
-      new_element.rmq_build if built
-      new_element.rmq_appended if appended
+      new_view.rmq_build if built
+      new_view.rmq_appended if appended
 
       if self.stylesheet
-        apply_style_to_view(new_element, opts[:style]) if opts[:style]
+        apply_style_to_view(new_view, opts[:style]) if opts[:style]
       end
     end
 
@@ -64,27 +64,27 @@ class RMQ
     #end
     #RMQ.new(subview, stylesheet, context)
   end
-  alias :insert :add_element
+  alias :insert :add_view
 
-  def append(element_or_class, style=nil, opts={})
+  def append(view_or_class, style=nil, opts={})
     opts[:style] = style
     opts[:block] = block if block
-    add_element(element_or_class, opts)
+    add_view(view_or_class, opts)
   end
 
-  def append!(element_or_class, style=nil, opts={})
-    append(element_or_class, style, opts).get
+  def append!(view_or_class, style=nil, opts={})
+    append(view_or_class, style, opts).get
   end
 
-  def create(element_or_class, style=nil, opts={})
+  def create(view_or_class, style=nil, opts={})
   end
 
-  def create!(element_or_class, style=nil, opts={})
+  def create!(view_or_class, style=nil, opts={})
   end
 
-  def build(element_or_class, style=nil, opts={})
+  def build(view_or_class, style=nil, opts={})
   end
 
-  def build!(element_or_class, style=nil, opts={})
+  def build!(view_or_class, style=nil, opts={})
   end
 end

@@ -1,7 +1,6 @@
 module Potion
   View = Android::View::View
   ViewGroup = Android::View::ViewGroup
-  Element = Android::View::ViewGroup
 
   # widgets
   LinearLayout = Android::Widget::LinearLayout

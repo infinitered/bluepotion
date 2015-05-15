@@ -15,7 +15,7 @@ class Android::App::Activity
   end
   alias :find :rmq
 
-  def root_element
+  def root_view
     getWindow.getDecorView.findViewById(Android::R::Id::Content)
   end
 end
