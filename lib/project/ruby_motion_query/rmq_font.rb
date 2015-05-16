@@ -1,4 +1,4 @@
-# many hacks in this: we can't duplicate the iOS implementation because 
+# many hacks in this: we can't duplicate the iOS implementation because
 # define_singleton_method isn't implemented in Android :'(
 class RMQ
 
