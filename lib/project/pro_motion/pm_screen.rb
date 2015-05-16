@@ -5,7 +5,25 @@
     include PMScreenModule
 
     attr_accessor :view
-    attr_accessor :rmq
+
+    def rmq_data
+      @_rmq_data ||= RMQScreenData.new
+    end
+
+    def rmq(*working_selectors)
+      crmq = (rmq_data.cached_rmq ||= RMQ.create_with_selectors([], self))
+
+      if working_selectors.length == 0
+        crmq
+      else
+        RMQ.create_with_selectors(working_selectors, self, crmq)
+      end
+    end
+    #alias :find :rmq
+
+    def root_view
+      rmq.activity.findViewById(R.id.PageLayout)
+    end
 
     def onCreateView(inflater, parent, saved_instance_state)
       super

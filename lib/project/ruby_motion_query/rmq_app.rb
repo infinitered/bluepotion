@@ -22,7 +22,10 @@ class RMQApp < PMApplication
     def current_activity
       PMApplication.current_activity
     end
-    alias :current_screen :current_activity
+
+    def current_screen
+      # TODO
+    end
 
     def home_screen_class
       PMApplication.home_screen_class

@@ -224,3 +224,14 @@ class RMQ
   end
 
 end # RMQ
+
+__END__
+
+we_care_about_this = getWindow.getDecorView.findViewById(Android::R::Id::Content)`
+now we can traverse:
+`we_care_about_this.getChildCount` and `we_care_about_this.getChildAt(0)`
+
+
+ Activity host = (Activity) view.getContext()
+
+2. view.isFocused()

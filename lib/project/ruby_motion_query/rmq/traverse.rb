@@ -7,7 +7,9 @@ class RMQ
     # TODO use the real one
     RMQApp.current_activity
   end
-  alias :screen :activity
+
+  def screen
+  end
 
   def filter(opts = {}, &block)
     out = []
