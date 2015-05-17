@@ -35,17 +35,13 @@
     def onCreateView(inflater, parent, saved_instance_state)
       super
 
-      if self.class.rmq_style_sheet_class
-        self.rmq.stylesheet = self.class.rmq_style_sheet_class
-        #self.view.rmq.apply_style(:root_view) if self.rmq.stylesheet.respond_to?(:root_view)
-      end
-
       if self.class.xml_resource
         @view = inflater.inflate(r(:layout, self.class.xml_resource), parent, false)
       else
         @view = load_view
         @view.setId Potion::ViewIdGenerator.generate
       end
+
       action_bar.hide if hide_action_bar?
       setup_xml_widgets
 
@@ -60,6 +56,21 @@
     def onActivityCreated(saved_instance_state)
       super
       @view.rmq_data.is_screen_root_view = true
+
+      self.rmq.build(@view)
+      mp 1
+      mp @view.rmq
+      mp @view.rmq.stylesheet
+      mp @view.rmq.originated_from # this is not correct
+      mp @view.rmq.screen # this is not correct
+      mp $v.rmq.controller # this is not correct
+      $v = @view
+
+      if self.class.rmq_style_sheet_class
+        self.rmq.stylesheet = self.class.rmq_style_sheet_class
+        #@view.rmq.apply_style(:root_view) #if @view.rmq.stylesheet.respond_to?(:root_view)
+      end
+
       on_load
     end
 

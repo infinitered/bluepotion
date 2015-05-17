@@ -1,5 +1,5 @@
 class RMQ
-  def add_view(view_or_class, opts={})
+  def add_subview(view_or_class, opts={})
     subviews_added = []
 
     selected.each do |selected_view|
@@ -56,17 +56,12 @@ class RMQ
     opts[:raw_block].call viewq.get if opts[:raw_block]
     viewq
   end
-  alias :insert :add_view
+  alias :insert :add_subview
 
   def append_view(view_or_class, style=nil, opts={})
-    # TODO this seems to be an RM bug, style and opts are set to numbers if they
-    # aren't provided
-    #style = nil unless style.is_a?(Symbol)
-    #opts = {} unless opts.is_a?(Hash)
-
     opts[:style] = style
     #opts[:block] = block if block
-    out = self.add_view(view_or_class, opts)
+    out = self.add_subview(view_or_class, opts)
     out
   end
 
@@ -74,15 +69,28 @@ class RMQ
     self.append_view(view_or_class, style, opts).get
   end
 
-  def create(view_or_class, style=nil, opts={})
+  def create(view_or_constant, style = nil, opts = {}, &block)
+    # TODO, refactor so that add_subview uses create, not backwards like it is now
+    opts[:do_not_add] = true
+    opts[:style] = style
+    opts[:block] = block if block
+    add_subview view_or_constant, opts
   end
 
-  def create!(view_or_class, style=nil, opts={})
+  def create!(view_or_constant, style=nil, opts = {}, &block)
+    opts[:raw_block] = block if block
+    create(view_or_constant, style, opts).get
   end
 
-  def build(view_or_class, style=nil, opts={})
+  def build(view_or_constant, style = nil, opts = {}, &block)
+    opts[:do_not_add] = true
+    opts[:style] = style
+    opts[:block] = block if block
+    add_subview view_or_constant, opts
   end
 
-  def build!(view_or_class, style=nil, opts={})
+  def build!(view_or_constant, style = nil, opts = {}, &block)
+    opts[:raw_block] = block if block
+    build(view_or_constant, style, opts).get
   end
 end
