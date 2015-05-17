@@ -2,7 +2,9 @@ class RMQ
   def activity
     # TODO use the real one
     if @originated_from.is_a?(PMScreen)
-      @originated_from.getActivity
+      @originated_from.activity
+    elsif @originated_from.is_a?(Potion::Activity)
+      @originated_from
     else
       RMQApp.current_activity
     end
@@ -10,14 +12,19 @@ class RMQ
 
   def screen
     if @originated_from.is_a?(PMScreen)
+
       @originated_from
     else
       RMQApp.current_screen
     end
   end
 
+  def controller
+    self.screen || self.activity
+  end
+
   def root_view
-    self.activity.root_view
+    self.controller.root_view
   end
 
   def filter(opts = {}, &block)
@@ -32,7 +39,7 @@ class RMQ
       end
     end
     out.flatten!
-    out.uniq! if opts[:uniq]
+    out = out.uniq if opts[:uniq]
 
     if opts[:return_array]
       out
@@ -69,6 +76,7 @@ class RMQ
 
     filter(uniq: true) do |view|
       sbvws = all_subviews_for(view)
+
 
       if RMQ.is_blank?(working_selectors)
         sbvws
