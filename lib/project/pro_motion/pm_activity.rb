@@ -4,7 +4,7 @@
   class PMActivity < Android::App::Activity
 
     def onCreate(saved_instance_state)
-      puts "PMActivity onCreate"
+      mp "PMActivity onCreate"
       super
 
       if self.class.rmq_style_sheet_class

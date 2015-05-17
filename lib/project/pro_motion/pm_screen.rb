@@ -22,11 +22,16 @@
     #alias :find :rmq
 
     def root_view
-      rmq.activity.findViewById(R.id.PageLayout)
+      self.getView
     end
 
     def onCreateView(inflater, parent, saved_instance_state)
       super
+
+      load_view(inflater, parent, saved_instance_state)
+    end
+
+    def load_view(inflater, parent, saved_instance_state)
       if self.class.xml_resource
         @view = inflater.inflate(r(:layout, self.class.xml_resource), parent, false)
       else
@@ -35,10 +40,18 @@
       end
       action_bar.hide if hide_action_bar?
       setup_xml_widgets
-      #@rmq = RMQ.new(@view, stylesheet, activity)
-      on_load if respond_to?(:on_load)
+
       # TODO: how will we pass this back if we don't use XML?
       @view
+    end
+
+    def onActivityCreated(saved_instance_state)
+      super
+      on_load
+    end
+
+    def on_load
+      # abstract
     end
 
     private

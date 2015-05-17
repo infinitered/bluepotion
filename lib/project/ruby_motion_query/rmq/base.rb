@@ -5,13 +5,16 @@ class RMQ
 
   def originated_from=(value)
     if value
-      #if value.is_a?(Activity)
-        #@originated_from = RubyMotionQuery::RMQ.weak_ref(value)
-      #elsif value.is_a?(View)
+      if value.is_a?(Potion::Activity)
         @originated_from = value
-      #else
-        #debug.log_detailed('Invalid originated_from', objects: {value: value})
-      #end
+        @activity = value
+      elsif value.is_a?(Potion::View)
+        @originated_from = value
+      elsif value.is_a?(PMScreen)
+        @originated_from = value
+      else
+        debug.log_detailed('Invalid originated_from', objects: {value: value})
+      end
     else
       @originated_from = nil
     end
@@ -37,11 +40,12 @@ class RMQ
   end
 
   def root?
+    # TODO broken
     (selected.length == 1) && (selected.first == @originated_from)
   end
 
   def originated_from_or_its_view
-    if @originated_from.is_a?(Android::App::Activity)
+    if @originated_from.is_a?(Potion::Activity) || @originated_from.is_a?(PMScreen)
       @originated_from.root_view
     else
       @originated_from
@@ -75,8 +79,8 @@ class RMQ
 
   def log(opt = nil)
     if opt == :tree
-      puts tree_to_s(selected)
-      return
+      mp tree_to_s(selected)
+      sleep 0.1 # Hack, TODO, fix async problem
     end
 
     wide = (opt == :wide)
@@ -89,8 +93,8 @@ class RMQ
     out << line
 
     selected.each do |view|
-      out << " #{view.id.to_s.ljust(12)}|"
-      name = view.class.name.split('.').last
+      out << " #{view.object_id.to_s.ljust(12)}|"
+      name = view.short_class_name
       name = name[(name.length - 21)..name.length] if name.length > 21
       out << " #{name.ljust(22)}|"
       out << " #{""[0..23].ljust(24)}|" # TODO change to real stylname
@@ -106,38 +110,38 @@ class RMQ
       #end
       out << s.ljust(39)
       out << '|'
-      #out << "\n" unless wide
-      #out << " #{view.superview.id.to_s.ljust(12)}|"
-      #out << " #{(view.superview ? view.superview.class.name : '')[0..21].ljust(22)}|"
-      #out << " #{view.subview.length.to_s.ljust(23)} |"
-      #out << "  #{view.subview.length.to_s.rjust(8)} #{view.superview.class.name.ljust(20)} #{view.superview.id.to_s.rjust(10)}"
+      out << "\n" unless wide
+      out << " #{view.superview.object_id.to_s.ljust(12)}|"
+      out << " #{(view.superview ? view.superview.short_class_name : '')[0..21].ljust(22)}|"
+      out << " #{view.subviews.length.to_s.ljust(23)} |"
+      #out << "  #{view.subviews.length.to_s.rjust(8)} #{view.superview.short_class_name.ljust(20)} #{view.superview.object_id.to_s.rjust(10)}"
+      out << " #{"".ljust(38)}|"
       #out << " #{view.rmq_data.tag_names.join(',').ljust(32)}|"
       out << "\n"
       out << line unless wide
     end
 
-    out << "RMQ #{self.id}. #{self.count} selected. selectors: #{self.selectors}"
-
-    puts out
+    mp out
+    sleep 0.1 # Hack, TODO, fix async problem
   end
   def tree_to_s(selected_views, depth = 0)
     out = ""
 
     selected_views.each do |view|
-
       if depth == 0
         out << "\n"
       else
-        0.upto(depth - 1).each do |i|
+        0.upto(depth - 1) do |i|
           out << (i == (depth - 1) ? '    ├' : '    │')
         end
       end
 
       out << '───'
 
-      out << " #{view.class.name[0..21]}"
-      out << "  ( #{view.style_name[0..23]} )" if view.style_name
-      out << "  #{view.id}"
+      out << " |ROOT| -> " unless view.superview
+      out << " #{view.short_class_name[0..21]}"
+      out << "  ( #{view.rmq_data.style_name[0..23]} )" if view.rmq_data.style_name
+      out << "  #{view.object_id}"
       #out << "  [ #{view.rmq_data.tag_names.join(',')} ]" if view.rmq_data.tag_names.length > 0
 
       #if view.origin
@@ -158,7 +162,7 @@ class RMQ
 
   def inspect
     out = "RMQ. #{self.count} selected. selectors: #{self.selectors}. .log for more info"
-    #out = "RMQ #{self.id}. #{self.count} selected. selectors: #{self.selectors}. .log for more info"
+    #out = "RMQ #{self.object_id}. #{self.count} selected. selectors: #{self.selectors}. .log for more info"
     out << "\n[#{selected.first}]" if self.count == 1
     out
   end
@@ -194,7 +198,7 @@ class RMQ
   def extract_views_from_selectors(view_container, working_selectors)
     unless RMQ.is_blank?(working_selectors)
       working_selectors.delete_if do |selector|
-        if selector.is_a?(View)
+        if selector.is_a?(Potion::View)
           view_container << selector
           true
         end
@@ -204,14 +208,12 @@ class RMQ
 
   def all_subviews_for(view)
     out = []
-    if view.subviews
-      view.subviews.each do |subview|
-        out << subview
-        out << all_subviews_for(subview)
-      end
-      out.flatten!
-    end
 
+    view.subviews.each do |subview|
+      out << subview
+      out << all_subviews_for(subview)
+    end
+    out.flatten!
     out
   end
 
@@ -226,6 +228,11 @@ class RMQ
 end # RMQ
 
 __END__
+
+findViewById(android.R.id.content) returns the View that hosts the content you supplied in setContentView().
+  Beyond that, try getRootView() (called on any View) to retrieve "the topmost view in the current view hierarchy".
+
+
 
 we_care_about_this = getWindow.getDecorView.findViewById(Android::R::Id::Content)`
 now we can traverse:

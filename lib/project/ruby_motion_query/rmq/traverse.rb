@@ -1,14 +1,23 @@
 class RMQ
-  def root_view
-    self.activity.root_view
-  end
-
   def activity
     # TODO use the real one
-    RMQApp.current_activity
+    if @originated_from.is_a?(PMScreen)
+      @originated_from.getActivity
+    else
+      RMQApp.current_activity
+    end
   end
 
   def screen
+    if @originated_from.is_a?(PMScreen)
+      @originated_from
+    else
+      RMQApp.current_screen
+    end
+  end
+
+  def root_view
+    self.activity.root_view
   end
 
   def filter(opts = {}, &block)
@@ -40,12 +49,12 @@ class RMQ
     normalize_selectors(working_selectors)
 
     filter do |view|
-      subviews = view.subviews
+      sbvws = view.subviews
 
       if RMQ.is_blank?(working_selectors)
-        subviews
+        sbvws
       else
-        subviews.inject([]) do |out, subview|
+        sbvws.inject([]) do |out, subview|
           out << subview if match(subview, working_selectors)
           out
         end
@@ -59,12 +68,12 @@ class RMQ
     normalize_selectors(working_selectors)
 
     filter(uniq: true) do |view|
-      subviews = all_subviews_for(view)
+      sbvws = all_subviews_for(view)
 
       if RMQ.is_blank?(working_selectors)
-        subviews
+        sbvws
       else
-        subviews.inject([]) do |out, subview|
+        sbvws.inject([]) do |out, subview|
           out << subview if match(subview, working_selectors)
           out
         end

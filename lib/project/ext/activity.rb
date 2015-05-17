@@ -17,6 +17,7 @@ class Android::App::Activity
 
   def root_view
     getWindow.getDecorView.findViewById(Android::R::Id::Content)
+    #findViewById(Android::R::Id.PageLayout)
   end
 
 end

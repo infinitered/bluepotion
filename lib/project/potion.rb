@@ -1,10 +1,12 @@
 module Potion
+  Activity = Android::App::Activity
   View = Android::View::View
   ViewGroup = Android::View::ViewGroup
 
   # widgets
   LinearLayout = Android::Widget::LinearLayout
   RelativeLayout = Android::Widget::RelativeLayout
+  AbsoluteLayout = Android::Widget::AbsoluteLayout
   TextView = Android::Widget::TextView
   ImageView = Android::Widget::ImageView
   Button = Android::Widget::Button
