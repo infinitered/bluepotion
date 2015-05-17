@@ -48,12 +48,44 @@ class RMQ
   alias :apply_styles :apply_style
 
   def apply_style_to_view(view, style_name)
-    styler = styler_for(view)
-    self.stylesheet.send(style_name, styler)
-    styler.finalize
+    #begin
+      styler = self.styler_for(view)
+      self.stylesheet.send(style_name, styler)
+      styler.finalize
+
+      view.rmq_data.styles << style_name unless view.rmq_data.has_style?(style_name)
+      view.rmq_style_applied
+    #rescue NoMethodError => e
+      #if e.message =~ /.*#{style_name.to_s}.*/
+        #$stderr.puts "\n[RMQ ERROR]  style_name :#{style_name} doesn't exist for a #{view.class.name}. Add 'def #{style_name}(st)' to #{stylesheet.class.name} class\n\n"
+      #else
+        #raise e
+      #end
+    #end
   end
 
-  # these only work if widget is in a RelativeLayout
+  def style
+    selected.each do |view|
+      yield(styler_for(view))
+    end
+    self
+  end
+
+  def styles
+    out = selected.map do |view|
+      view.rmq_data.styles
+    end
+    out.flatten!.uniq
+  end
+
+
+
+end
+
+
+__END__
+
+#  # these only work if widget is in a RelativeLayout
   #
   #def align_to_left_of(other)
     #set_alignment_to(other, Android::Widget::RelativeLayout::LEFT_OF)
@@ -74,4 +106,3 @@ class RMQ
     #params.addRule(rule, other.get.id)
     #@view.setLayoutParams(params)
   #end
-end

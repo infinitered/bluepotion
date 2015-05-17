@@ -1,5 +1,5 @@
 class RMQViewData
-  attr_accessor :events, :built, :is_screen_root_view
+  attr_accessor :events, :built, :is_screen_root_view, :activity, :screen
 
   def screen_root_view?
     !@is_screen_root_view.nil?
@@ -58,13 +58,13 @@ class RMQViewData
   end
 
   def style_name
-    styles.first
+    self.styles.first
   end
 
   # Sets first style name, this is only here for backwards compatibility and as
   # a convenience method
   def style_name=(value)
-    styles[0] = value
+    self.styles[0] = value
   end
 
   #view.rmq_data.styles
@@ -75,7 +75,7 @@ class RMQViewData
   #view.rmq_data.has_style?(:style_name_here)
   def has_style?(name = nil)
     if name
-      styles.include?(name)
+      self.styles.include?(name)
     else
       RMQ.is_blank?(@_styles)
     end
@@ -85,14 +85,4 @@ class RMQViewData
   def validation_errors=(value); @_validation_errors = value; end
   def validations; @_validations ||= []; end
   def validations=(value); @_validations = value; end
-
-  def activity=(value)
-    @_activity = value
-  end
-
-  def activity
-    @_activity
-  end
 end
-
-

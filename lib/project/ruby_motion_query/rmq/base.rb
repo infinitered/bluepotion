@@ -101,8 +101,8 @@ class RMQ
       name = name[(name.length - 21)..name.length] if name.length > 21
       out << " #{name.ljust(22)}|"
 
-      out << " #{""[0..23].ljust(24)}|" # TODO change to real stylname
-      #out << " #{(view.style_name || '')[0..23].ljust(24)}|" # TODO change to real stylname
+      #out << " #{""[0..23].ljust(24)}|" # TODO change to real stylname
+      out << " #{(view.rmq_data.style_name.to_s || '')[0..23].ljust(24)}|" # TODO change to real stylname
       s = ""
       #if view.origin
         #format = '#0.#'
@@ -152,7 +152,7 @@ class RMQ
 
       out << "SCREEN ROOT/" if view.rmq_data.screen_root_view?
       out << "#{view.short_class_name[0..21]}"
-      out << "  ( #{view.rmq_data.style_name[0..23]} )" if view.rmq_data.style_name
+      out << "  ( #{view.rmq_data.style_name.to_s[0..23]} )" if view.rmq_data.style_name
       out << "  #{view.object_id}"
       #out << "  [ #{view.rmq_data.tag_names.join(',')} ]" if view.rmq_data.tag_names.length > 0
 

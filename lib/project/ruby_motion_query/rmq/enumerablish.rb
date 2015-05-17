@@ -18,63 +18,63 @@ class RMQ
   #   or
   #   rmq(UILabel)[2,3]
   def [](*args)
-    RMQ.create_with_array_and_selectors(Array(selected[*args]), @selectors, @context)
+    RMQ.create_with_array_and_selectors(Array(selected[*args]), @selectors, @originated_from)
   end
   alias :eq :[]
 
   # @return [RMQ]
   def each(&block)
     return self unless block
-    RMQ.create_with_array_and_selectors(selected.each(&block), @selectors, @context)
+    RMQ.create_with_array_and_selectors(selected.each(&block), @selectors, @originated_from)
   end
 
   # @return [RMQ]
   def map(&block)
     return self unless block
-    RMQ.create_with_array_and_selectors(selected.map(&block), @selectors, @context)
+    RMQ.create_with_array_and_selectors(selected.map(&block), @selectors, @originated_from)
   end
   alias :collect :map
 
   # @return [RMQ]
   def select(&block)
     return self unless block
-    RMQ.create_with_array_and_selectors(selected.select(&block), @selectors, @context)
+    RMQ.create_with_array_and_selectors(selected.select(&block), @selectors, @originated_from)
   end
 
   # @return [RMQ]
   def detect(&block) # Unlike enumerable, detect and find are not the same. See find in transverse
     return self unless block
-    RMQ.create_with_array_and_selectors(selected.select(&block), @selectors, @context)
+    RMQ.create_with_array_and_selectors(selected.select(&block), @selectors, @originated_from)
   end
 
   # @return [RMQ]
   def grep(&block)
     return self unless block
-    RMQ.create_with_array_and_selectors(selected.grep(&block), @selectors, @context)
+    RMQ.create_with_array_and_selectors(selected.grep(&block), @selectors, @originated_from)
   end
 
   # @return [RMQ]
   def reject(&block)
     return self unless block
-    RMQ.create_with_array_and_selectors(selected.reject(&block), @selectors, @context)
+    RMQ.create_with_array_and_selectors(selected.reject(&block), @selectors, @originated_from)
   end
 
   # @return [RMQ]
   def inject(o, &block)
     return self unless block
-    RMQ.create_with_array_and_selectors(selected.inject(o, &block), @selectors, @context)
+    RMQ.create_with_array_and_selectors(selected.inject(o, &block), @selectors, @originated_from)
   end
   alias :reduce :inject
 
   # @return [RMQ]
   def first
     # TODO, check if it fails with nil
-    RMQ.create_with_array_and_selectors([selected.first], @selectors, @context)
+    RMQ.create_with_array_and_selectors([selected.first], @selectors, @originated_from)
   end
   # @return [RMQ]
   def last
     # TODO, check if it fails with nil
-    RMQ.create_with_array_and_selectors([selected.last], @selectors, @context)
+    RMQ.create_with_array_and_selectors([selected.last], @selectors, @originated_from)
   end
 
   # @return [Array]

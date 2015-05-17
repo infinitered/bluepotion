@@ -67,6 +67,13 @@
       # abstract
     end
 
+    def append_view(view_or_class, style=nil, opts={})
+      self.rmq.append_view(view_or_class, style, opts)
+    end
+
+    def append_view!(view_or_class, style=nil, opts={})
+      self.rmq.append_view(view_or_class, style, opts).get
+    end
 
     class << self
 

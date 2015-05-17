@@ -7,7 +7,7 @@ class Object
 
   # REMOVE when RubyMotion adds this
   def caller
-    "NOT IMPLEMENTED"
+    "caller NOT IMPLEMENTED"
   end
 
   def inspect
@@ -29,6 +29,13 @@ class Object
     end
   end
 
+  def find(*args) # Do not alias this, strange bugs happen where classes don't have methods
+    rmq(*args)
+  end
+
+  def find!(*args) # Do not alias this, strange bugs happen where classes don't have methods
+    rmq(*args).get
+  end
 
   # BluePotion stuff
 
@@ -50,7 +57,5 @@ class Object
     rmq.device
   end
 
-  def find(*args) # Do not alias this, strange bugs happen where classes don't have methods
-    rmq(*args)
-  end
+
 end
