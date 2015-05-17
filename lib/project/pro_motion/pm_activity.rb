@@ -8,11 +8,11 @@
       super
 
       if self.class.rmq_style_sheet_class
-        self.rmq.stylesheet = self.class.rmq_style_sheet_class
-        self.view.rmq.apply_style(:root_view) if self.rmq.stylesheet.respond_to?(:root_view)
+        self.stylesheet = self.class.rmq_style_sheet_class
+        #self.view.rmq.apply_style(:root_view) if self.rmq.stylesheet.respond_to?(:root_view)
       end
 
-      #rmq.app.context
+      rmq.app.context
     end
 
     def onResume
@@ -33,28 +33,6 @@
     def clear_references
     end
 
-    def self.stylesheet(style_sheet_class)
-      @rmq_style_sheet_class = style_sheet_class
-    end
-
-    def self.rmq_style_sheet_class
-      @rmq_style_sheet_class
-    end
-
   end
-
-  #class PMActivity < Android::App::Activity
-    #def foo
-      #1
-    #end
-  #end
-
-
-  #class PMActivity < Android::App::Activity
-    #def bar
-      #2
-    #end
-  #end
-
 
 #end

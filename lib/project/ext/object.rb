@@ -1,11 +1,32 @@
 class Object
+
+
+  # REMOVE when RubyMotion adds this
+  def object_id
+    Java::Lang::System.identityHashCode(self)
+  end
+
+  def inspect
+    "| class: #{short_class_name}, object_id: #{object_id} |"
+  end
+
+  def short_class_name
+    self.class.name.split('.').last
+  end
+
+
+  # RMQ stuff
+
   def rmq(*working_selectors)
-    if (app = RMQ.app) && (window = app.window) && (cvc = app.current_activity)
+    if (app = RMQ.app) && ((cvc = app.current_screen) || (cvc = app.current_activity))
       cvc.rmq(working_selectors)
     else
       RMQ.create_with_array_and_selectors([], working_selectors, self)
     end
   end
+
+
+  # BluePotion stuff
 
   # REMOVE when mp starts working
   def mp(s)
@@ -16,16 +37,15 @@ class Object
     end
   end
 
-  # REMOVE when RubyMotion adds this
-  def object_id
-    Java::Lang::System.identityHashCode(self)
+  def app
+    rmq.app
   end
 
-  def inspect
-    "<#{short_class_name}:#{object_id}>"
+  def device
+    rmq.device
   end
 
-  def short_class_name
-    self.class.name.split('.').last
+  def find(*args) # Do not alias this, strange bugs happen where classes don't have methods
+    rmq(*args)
   end
 end

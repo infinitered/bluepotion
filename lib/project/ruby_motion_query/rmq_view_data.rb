@@ -1,5 +1,9 @@
 class RMQViewData
-  attr_accessor :events, :built
+  attr_accessor :events, :built, :is_screen_root_view
+
+  def screen_root_view?
+    !@is_screen_root_view.nil?
+  end
 
   # @return [Hash] Array of tag names assigned to to this view
   def tags

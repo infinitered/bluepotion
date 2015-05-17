@@ -81,25 +81,28 @@ class RMQ
     if opt == :tree
       mp tree_to_s(selected)
       sleep 0.1 # Hack, TODO, fix async problem
+      return
     end
 
     wide = (opt == :wide)
-    out =  "\n id          | class                 | style_name              | frame                                 |"
+    out =  "\n id          |scr| class                 | style_name              | frame                                 |"
     out << "\n" unless wide
-    out <<   " sv id       | superview             | subviews count          | tags                                  |"
-    line =   " - - - - - - | - - - - - - - - - - - | - - - - - - - - - - - - | - - - - - - - - - - - - - - - - - - - |\n"
+    out <<   " sv id       |een| superview             | subviews count          | tags                                  |"
+    line =   " ––––––––––––|–––|–––––––––––––––––––––––|–––––––––––––––––––––––––|–––––––––––––––––––––––––––––––––––––––|\n"
     out << "\n"
     out << line.chop if wide
     out << line
 
     selected.each do |view|
       out << " #{view.object_id.to_s.ljust(12)}|"
+      out << (view.rmq_data.screen_root_view? ? " √ |" : "   |")
+
       name = view.short_class_name
       name = name[(name.length - 21)..name.length] if name.length > 21
       out << " #{name.ljust(22)}|"
+
       out << " #{""[0..23].ljust(24)}|" # TODO change to real stylname
       #out << " #{(view.style_name || '')[0..23].ljust(24)}|" # TODO change to real stylname
-
       s = ""
       #if view.origin
         #format = '#0.#'
@@ -108,10 +111,11 @@ class RMQ
         s << ", w: #{view.width}"
         s << ", h: #{view.height}}"
       #end
-      out << s.ljust(39)
-      out << '|'
+      out << s.ljust(36)
+      out << "   |"
       out << "\n" unless wide
       out << " #{view.superview.object_id.to_s.ljust(12)}|"
+      out << "   |"
       out << " #{(view.superview ? view.superview.short_class_name : '')[0..21].ljust(22)}|"
       out << " #{view.subviews.length.to_s.ljust(23)} |"
       #out << "  #{view.subviews.length.to_s.rjust(8)} #{view.superview.short_class_name.ljust(20)} #{view.superview.object_id.to_s.rjust(10)}"
@@ -124,6 +128,11 @@ class RMQ
     mp out
     sleep 0.1 # Hack, TODO, fix async problem
   end
+
+  def log_tree
+    self.log :tree
+  end
+
   def tree_to_s(selected_views, depth = 0)
     out = ""
 
@@ -132,14 +141,17 @@ class RMQ
         out << "\n"
       else
         0.upto(depth - 1) do |i|
-          out << (i == (depth - 1) ? '    ├' : '    │')
+          #if view.rmq_data.screen_root_view?
+            #out << (i == (depth - 1) ? "    ├\n" : "    │\n")
+          #end
+          out << (i == (depth - 1) ? "    ├" : "    │")
         end
       end
 
       out << '───'
 
-      out << " |ROOT| -> " unless view.superview
-      out << " #{view.short_class_name[0..21]}"
+      out << "SCREEN ROOT/" if view.rmq_data.screen_root_view?
+      out << "#{view.short_class_name[0..21]}"
       out << "  ( #{view.rmq_data.style_name[0..23]} )" if view.rmq_data.style_name
       out << "  #{view.object_id}"
       #out << "  [ #{view.rmq_data.tag_names.join(',')} ]" if view.rmq_data.tag_names.length > 0

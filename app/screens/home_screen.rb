@@ -2,19 +2,21 @@ class HomeScreen < PMScreen
 
   #stylesheet HomeScreenStylesheet
 
+  # This will automatically set to a FrameLayout if you don't override this method
+  def load_view
+    Potion::LinearLayout.new(self.activity)
+  end
+
   def on_load
     mp "Starting"
-    #mp rmq
-    #root = rmq.append(Potion::LinearLayout, :root)
-    #root = rmq.append(Potion::TextView, :text_view)
 
+    text = rmq.append(Potion::TextView).get
+    text.text = "Hello BluePotion!"
+
+    # Debugging
     $o = self
-
-    create_some_test_views
-
-    #$o = root
-    #text = root.append!(Potion::TextView, :text_view)
-    #text.text = "Hello BluePotion!"
+    #create_some_test_views
+    rmq.log_tree
 
     #root.append(Potion::Button, :button)
     #.on(:tap) do |sender|
@@ -34,15 +36,17 @@ class HomeScreen < PMScreen
     rmq.activity.rmq.append(Potion::AbsoluteLayout).append(Potion::View)
 
     # In screen
-    #rmq.append(Potion::View)
-    #rmq.append(Potion::View)
-    #rmq.append(Potion::View)
-    #rmq.append(Potion::View)
-    #rmq.append(Potion::View)
-    #rmq.append(Potion::AbsoluteLayout).append(Potion::View)
-    #rmq.append(Potion::AbsoluteLayout).append(Potion::View).append(Potion::View)
+    rmq.append(Potion::View)
+    rmq.append(Potion::View)
+    rmq.append(Potion::View)
+    rmq.append(Potion::AbsoluteLayout).tap do |q|
+      q.append(Potion::View)
+      q.append(Potion::View)
+      q.append(Potion::View)
+      rmq.append(Potion::AbsoluteLayout).tap do |q2|
+        q2.append(Potion::View)
+      end
+    end
   end
-
-
 
 end

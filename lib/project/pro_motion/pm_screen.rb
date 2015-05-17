@@ -10,6 +10,14 @@
       @_rmq_data ||= RMQScreenData.new
     end
 
+    def stylesheet
+      self.rmq.stylesheet
+    end
+
+    def stylesheet=(value)
+      self.rmq.stylesheet = value
+    end
+
     def rmq(*working_selectors)
       crmq = (rmq_data.cached_rmq ||= RMQ.create_with_selectors([], self))
 
@@ -19,7 +27,6 @@
         RMQ.create_with_selectors(working_selectors, self, crmq)
       end
     end
-    #alias :find :rmq
 
     def root_view
       self.getView
@@ -28,14 +35,15 @@
     def onCreateView(inflater, parent, saved_instance_state)
       super
 
-      load_view(inflater, parent, saved_instance_state)
-    end
+      if self.class.rmq_style_sheet_class
+        self.stylesheet = self.class.rmq_style_sheet_class
+        #self.view.rmq.apply_style(:root_view) if self.rmq.stylesheet.respond_to?(:root_view)
+      end
 
-    def load_view(inflater, parent, saved_instance_state)
       if self.class.xml_resource
         @view = inflater.inflate(r(:layout, self.class.xml_resource), parent, false)
       else
-        @view = Android::Widget::FrameLayout.new(activity)
+        @view = load_view
         @view.setId Potion::ViewIdGenerator.generate
       end
       action_bar.hide if hide_action_bar?
@@ -45,14 +53,33 @@
       @view
     end
 
+    def load_view
+      Potion::FrameLayout.new(self.activity)
+    end
+
     def onActivityCreated(saved_instance_state)
       super
+      @view.rmq_data.is_screen_root_view = true
       on_load
     end
 
     def on_load
       # abstract
     end
+
+
+    class << self
+
+      def stylesheet(style_sheet_class)
+        @rmq_style_sheet_class = style_sheet_class
+      end
+
+      def rmq_style_sheet_class
+        @rmq_style_sheet_class
+      end
+
+    end
+
 
     private
 
@@ -66,11 +93,6 @@
     def hide_action_bar?
       # RM-???: comparing nil to false causes ART crash
       !self.class.show_action_bar.nil? && self.class.show_action_bar == false
-    end
-
-    def stylesheet
-      return nil unless self.class.stylesheet_class
-      @stylesheet ||= self.class.stylesheet_class.new
     end
 
   end

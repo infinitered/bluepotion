@@ -1,6 +1,6 @@
 class Android::View::View
   def inspect
-    "<#{short_class_name}:#{object_id}>"
+    "| class: #{short_class_name}, object_id: #{object_id} |"
   end
 
   def rmq_data
@@ -21,6 +21,10 @@ class Android::View::View
   end
 
   def rmq_style_applied
+    on_styled
+  end
+
+  def on_styled
   end
 
   def rmq(*working_selectors)
