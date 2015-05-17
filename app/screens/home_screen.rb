@@ -1,6 +1,6 @@
 class HomeScreen < PMScreen
 
-  #stylesheet HomeScreenStylesheet
+  stylesheet HomeScreenStylesheet
 
   # This will automatically set to a FrameLayout if you don't override this method
   def load_view

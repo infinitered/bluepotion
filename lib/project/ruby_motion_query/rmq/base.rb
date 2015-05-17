@@ -8,9 +8,9 @@ class RMQ
       if value.is_a?(Potion::Activity)
         @originated_from = value
         @activity = value
-      elsif value.is_a?(Potion::View)
-        @originated_from = value
       elsif value.is_a?(PMScreen)
+        @originated_from = value
+      elsif value.is_a?(Potion::View)
         @originated_from = value
       else
         debug.log_detailed('Invalid originated_from', objects: {value: value})
@@ -70,11 +70,11 @@ class RMQ
   end
 
   def wrap(*views)
-    views = [views] unless views.is_a?(Potion::Array) # TODO, WTF?
-
+    views = [views] unless views.is_a?(Potion::Array) # TODO, WTF, RM bug?
     views.flatten!
-    views.select!{ |v| v.is_a?(Potion::View) } # TODO Fake view here
-    RMQ.create_with_array_and_selectors(views, views, views.first, self)
+
+    views.select!{ |v| v.is_a?(Potion::View) }
+    RMQ.create_with_array_and_selectors(views, views, @originated_from, self)
   end
 
   def log(opt = nil)

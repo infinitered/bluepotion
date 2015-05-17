@@ -1,13 +1,17 @@
 class Object
 
-
   # REMOVE when RubyMotion adds this
   def object_id
     Java::Lang::System.identityHashCode(self)
   end
 
+  # REMOVE when RubyMotion adds this
+  def caller
+    "NOT IMPLEMENTED"
+  end
+
   def inspect
-    "| class: #{short_class_name}, object_id: #{object_id} |"
+    "<#{short_class_name}|#{object_id}>"
   end
 
   def short_class_name
@@ -30,6 +34,7 @@ class Object
 
   # REMOVE when mp starts working
   def mp(s)
+    s = s.to_s
     backspace = "\b\b " * (Android::App::Application.name.length + 13)
     lines = s.split("\n")
     lines.each do |line|

@@ -21,11 +21,4 @@ class Java::Util::ArrayList
     self
   end
 
-  # REMOVE when RubyMotion adds this
-  def flatten!
-    out = self.flatten
-    self.clear
-    self.addAll out
-    self
-  end
 end

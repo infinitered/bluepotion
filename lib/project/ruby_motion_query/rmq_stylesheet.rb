@@ -1,10 +1,11 @@
 class RMQStylesheet
 
-  def initialize
+  def initialize(controller)
     unless RMQStylesheet.application_was_setup
       RMQStylesheet.application_was_setup = true
       application_setup
     end
+    @controller = controller
     setup
   end
 
