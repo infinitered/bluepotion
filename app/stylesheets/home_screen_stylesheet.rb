@@ -3,7 +3,7 @@ class HomeScreenStylesheet < ApplicationStylesheet
   def root_view(st)
     st.layout_width = :match_parent
     st.layout_height = :match_parent
-    st.orientation = :vertical
+    #st.orientation = :vertical
     st.gravity = :center
   end
 

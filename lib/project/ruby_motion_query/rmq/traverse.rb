@@ -1,19 +1,33 @@
 class RMQ
   def activity
-    # TODO use the real one
+    # TODO we can get the activity in better ways, and in more
+    # situations
     if @originated_from.is_a?(PMScreen)
       @originated_from.activity
     elsif @originated_from.is_a?(Potion::Activity)
       @originated_from
+    elsif @originated_from.is_a?(Potion::View)
+      if @originated_from.rmq_data
+        @originated_from.rmq_data.activity
+      else
+        RMQApp.current_activity
+      end
     else
       RMQApp.current_activity
     end
   end
 
   def screen
+    # TODO we can get the screen in better ways, and in more
+    # situations
     if @originated_from.is_a?(PMScreen)
-
       @originated_from
+    elsif @originated_from.is_a?(Potion::View)
+      if @originated_from.rmq_data
+        @originated_from.rmq_data.screen
+      else
+        RMQApp.current_screen
+      end
     else
       RMQApp.current_screen
     end

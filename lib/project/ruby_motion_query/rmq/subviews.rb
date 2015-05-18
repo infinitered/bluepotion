@@ -12,9 +12,8 @@ class RMQ
       else
         created = true
         new_view = view_or_class.new(RMQApp.context)
+        new_view.setId(Potion::ViewIdGenerator.generate)
       end
-
-      new_view.setId(Potion::ViewIdGenerator.generate)
 
       rmq_data = new_view.rmq_data
 

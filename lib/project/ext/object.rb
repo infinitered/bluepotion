@@ -41,7 +41,11 @@ class Object
 
   # REMOVE when mp starts working
   def mp(s)
-    s = s.to_s
+    if s.nil?
+      s = "<nil>"
+    else
+      s = s.to_s
+    end
     backspace = "\b\b " * (Android::App::Application.name.length + 13)
     lines = s.split("\n")
     lines.each do |line|
