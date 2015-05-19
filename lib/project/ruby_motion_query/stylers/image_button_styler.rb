@@ -1,4 +1,0 @@
-class StylersImageButtonStyler < StylersViewStyler
-
-
-end

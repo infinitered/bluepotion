@@ -1,4 +1,4 @@
-class StylersViewStyler
+class RMQViewStyler
   attr_accessor :view
   attr_accessor :context
   attr_accessor :bg_color
@@ -159,6 +159,10 @@ class StylersViewStyler
     @density ||= context.getResources.getDisplayMetrics.density
   end
 
+  def create_drawable(corner_radius)
+    createDrawable(corner_radius)
+  end
+
   private
 
   def padding
@@ -192,13 +196,6 @@ class StylersViewStyler
     drawable = Android::Graphics::Drawable::ShapeDrawable.new(shape)
     drawable.paint.color = bg_color
     view.setBackgroundDrawable(drawable)
-  end
-end
-
-class ViewStyler
-
-  def create_drawable(corner_radius)
-    createDrawable(corner_radius)
   end
 
 end

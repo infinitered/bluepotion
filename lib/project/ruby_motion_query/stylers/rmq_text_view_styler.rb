@@ -1,14 +1,12 @@
-class StylersTextViewStyler < StylersViewStyler
+class RMQTextViewStyler < RMQViewStyler
 
   def text_size=(text_size)
     view.textSize = text_size
   end
-  alias_method :textSize=, :text_size=
 
   def font_family=(font_family)
     @font_family = font_family
   end
-  alias_method :fontFamily=, :font_family=
 
   def text_style=(text_style)
     @text_style =
@@ -23,12 +21,10 @@ class StylersTextViewStyler < StylersViewStyler
         Android::Graphics::Typeface::NORMAL
       end
   end
-  alias_method :textStyle=, :text_style=
 
   def text_color=(text_color)
     view.textColor = convert_color(text_color)
   end
-  alias_method :textColor=, :text_color=
 
   def text=(text)
     view.text = text

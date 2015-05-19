@@ -1,3 +1,0 @@
-class StylersButtonStyler < StylersTextViewStyler
-
-end

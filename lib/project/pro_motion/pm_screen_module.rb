@@ -28,10 +28,6 @@
         @show_action_bar = show_action_bar
       end
 
-      def stylesheet(stylesheet_class)
-        @stylesheet_class = stylesheet_class
-      end
-
       private
 
       def deduce_resource_id

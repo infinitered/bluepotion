@@ -1,4 +1,4 @@
-class StylerHelper
+class RMQStylerHelper
 
   def self.shared
     @instance ||= new

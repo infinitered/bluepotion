@@ -1,0 +1,3 @@
+class RMQButtonStyler < RMQTextViewStyler
+
+end

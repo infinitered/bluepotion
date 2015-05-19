@@ -1,9 +1,8 @@
-class StylersLinearLayoutStyler < StylersViewStyler
+class RMQLinearLayoutStyler < RMQViewStyler
 
   def weight_sum=(weight_sum)
     view.setWeightSum weight_sum
   end
-  alias_method :weightSum=, :weight_sum=
 
   def orientation=(orientation)
     view.setOrientation convert_orientation(orientation)
@@ -20,9 +19,14 @@ class StylersLinearLayoutStyler < StylersViewStyler
   private
 
   def convert_orientation(orientation)
-    return Android::Widget::LinearLayout::HORIZONTAL if orientation == :horizontal
-    return Android::Widget::LinearLayout::VERTICAL   if orientation == :vertical
-    orientation
+    case orientation
+    when :horizontal
+      Android::Widget::LinearLayout::HORIZONTAL
+    when :vertical
+      Android::Widget::LinearLayout::VERTICAL
+    else
+      orientation
+    end
   end
 
 end

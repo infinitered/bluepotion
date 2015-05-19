@@ -23,14 +23,14 @@ class RMQ
   def styler_for(view)
     context = RMQApp.context
     styler = case view
-      when Android::Widget::RelativeLayout  then StylersRelativeLayoutStyler.new(view, context)
-      when Android::Widget::LinearLayout    then StylersLinearLayoutStyler.new(view, context)
-      when Android::Widget::TextView        then StylersTextViewStyler.new(view, context)
-      when Android::Widget::ImageView       then StylersImageViewStyler.new(view, context)
-      when Android::Widget::ImageButton     then StylersImageButtonStyler.new(view, context)
-      when Android::Widget::Button          then StylersButtonStyler.new(view, context)
+      when Android::Widget::RelativeLayout  then RMQRelativeLayoutStyler.new(view, context)
+      when Android::Widget::LinearLayout    then RMQLinearLayoutStyler.new(view, context)
+      when Android::Widget::TextView        then RMQTextViewStyler.new(view, context)
+      when Android::Widget::ImageView       then RMQImageViewStyler.new(view, context)
+      when Android::Widget::ImageButton     then RMQImageButtonStyler.new(view, context)
+      when Android::Widget::Button          then RMQButtonStyler.new(view, context)
     else
-      StylersViewStyler.new(view, context)
+      RMQViewStyler.new(view, context)
     end
     styler
   end
