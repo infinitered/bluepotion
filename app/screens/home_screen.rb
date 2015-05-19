@@ -12,10 +12,9 @@ class HomeScreen < PMScreen
 
     append_view(Potion::TextView, :text_view).data("Hello BluePotion!")
 
-    append_view(Potion::Button, :button)
-    #.on(:tap) do |sender|
-      #Potion::Toast.makeText(find.activity, "Drink your potion.", Potion::Toast::LENGTH_SHORT).show()
-    #end
+    append_view(Potion::Button, :button).on(:tap) do |sender|
+      Potion::Toast.makeText(find.activity, "Drink your potion.", Potion::Toast::LENGTH_SHORT).show()
+    end
 
     # Debugging
     $o = self
