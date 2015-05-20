@@ -6,31 +6,6 @@
 
     attr_accessor :view
 
-    def rmq_data
-      @_rmq_data ||= RMQScreenData.new
-    end
-
-    def stylesheet
-      self.rmq.stylesheet
-    end
-
-    def stylesheet=(value)
-      self.rmq.stylesheet = value
-    end
-
-    def rmq(*working_selectors)
-      crmq = (rmq_data.cached_rmq ||= RMQ.create_with_selectors([], self))
-
-      if working_selectors.length == 0
-        crmq
-      else
-        RMQ.create_with_selectors(working_selectors, self, crmq)
-      end
-    end
-
-    def root_view
-      self.getView
-    end
 
     def onCreateView(inflater, parent, saved_instance_state)
       super
@@ -65,30 +40,6 @@
       end
 
       on_load
-    end
-
-    def on_load
-      # abstract
-    end
-
-    def append_view(view_or_class, style=nil, opts={})
-      self.rmq.append_view(view_or_class, style, opts)
-    end
-
-    def append_view!(view_or_class, style=nil, opts={})
-      self.rmq.append_view(view_or_class, style, opts).get
-    end
-
-    class << self
-
-      def stylesheet(style_sheet_class)
-        @rmq_style_sheet_class = style_sheet_class
-      end
-
-      def rmq_style_sheet_class
-        @rmq_style_sheet_class
-      end
-
     end
 
 

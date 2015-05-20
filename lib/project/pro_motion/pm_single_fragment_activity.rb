@@ -2,7 +2,7 @@
 # RM-733
 #module ProMotion
   class PMSingleFragmentActivity < PMActivity
-    attr_accessor :fragment_container
+    attr_accessor :fragment_container, :fragment
 
     EXTRA_FRAGMENT_CLASS = "fragment_class"
 

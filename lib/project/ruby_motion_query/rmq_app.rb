@@ -24,7 +24,17 @@ class RMQApp < PMApplication
     end
 
     def current_screen
+      if ca = PMApplication.current_activity
+        if ca.is_a?(PMSingleFragmentActivity)
+          ca.fragment
+        end
+      end
+    end
+
+    def guess_current_screen
       # TODO
+      #ca.getFragmentManager.findFragmentById(Android::R::Id.fragment_container)
+      #ca.getFragmentManager.frameTitle
     end
 
     def home_screen_class
