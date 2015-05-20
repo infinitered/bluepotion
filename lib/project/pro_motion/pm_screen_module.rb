@@ -132,22 +132,6 @@
       input_manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     end
 
-    #def find(id)
-      #find_in_view(view, id)
-    #end
-
-    # eventually, we'll want these three methods directly on the View, but for now...
-    #def find_in_view(view, id)
-      #view.findViewById(r(:id, id))
-    #end
-
-    def hide(view)
-      view.setVisibility(Android::View::View::INVISIBLE)
-    end
-
-    def show(view)
-      view.setVisibility(Android::View::View::VISIBLE)
-    end
 
     def activity
       getActivity()

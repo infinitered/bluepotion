@@ -85,12 +85,14 @@ class RMQ
   alias :subviews :children
 
   def find(*working_selectors)
-
     normalize_selectors(working_selectors)
+
+    #if working_selectors.length == 1 && self.selected.length == 1 && working_selectors.first.is_a?(Java::Lang::Integer)
+        #return selected_first.findViewById(r(:id, working_selectors.first))
+    #end
 
     filter(uniq: true) do |view|
       sbvws = all_subviews_for(view)
-
 
       if RMQ.is_blank?(working_selectors)
         sbvws

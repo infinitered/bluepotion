@@ -23,4 +23,26 @@ class RMQ
     self
   end
 
+  def focus
+    unless RMQ.is_blank?(selected)
+      selected.last.requestFocus
+    end
+    self
+  end
+
+  def hide
+    selected.each { |view| view.setVisibility(Potion::View::INVISIBLE) }
+    self
+  end
+
+  def show
+    selected.each { |view| view.setVisibility(Potion::View::VISIBLE) }
+    self
+  end
+
+  #def toggle
+    #selected.each { |view| view.hidden = !view.hidden? }
+    #self
+  #end
+
 end
