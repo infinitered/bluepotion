@@ -33,12 +33,6 @@ class RMQ
     @_parent_rmq = value
   end
 
-  # Do not use
-  def selected=(value)
-    @_selected = value
-    @selected_dirty = false
-  end
-
   def root?
     # TODO broken
     (selected.length == 1) && (selected.first == @originated_from)
@@ -94,7 +88,7 @@ class RMQ
     out << line
 
     selected.each do |view|
-      out << " #{view.object_id.to_s.ljust(12)}|"
+      out << " #{view.id.to_s.ljust(12)}|"
       out << (view.rmq_data.screen_root_view? ? " √ |" : "   |")
 
       name = view.short_class_name
@@ -114,7 +108,7 @@ class RMQ
       out << s.ljust(36)
       out << "   |"
       out << "\n" unless wide
-      out << " #{view.superview.object_id.to_s.ljust(12)}|"
+      out << " #{view.superview.id.to_s.ljust(12)}|"
       out << "   |"
       out << " #{(view.superview ? view.superview.short_class_name : '')[0..21].ljust(22)}|"
       out << " #{view.subviews.length.to_s.ljust(23)} |"
@@ -141,24 +135,21 @@ class RMQ
         out << "\n"
       else
         0.upto(depth - 1) do |i|
-          #if view.rmq_data.screen_root_view?
-            #out << (i == (depth - 1) ? "    ├\n" : "    │\n")
-          #end
           out << (i == (depth - 1) ? "    ├" : "    │")
         end
       end
 
       out << '───'
 
+      out << "#{view.id} "
       out << "SCREEN ROOT/" if view.rmq_data.screen_root_view?
       out << "#{view.short_class_name[0..21]}"
-      out << "  ( #{view.rmq_data.style_name.to_s[0..23]} )" if view.rmq_data.style_name
-      out << "  #{view.object_id}"
+      out << "  ( :#{view.rmq_data.style_name.to_s[0..23]} )" if view.rmq_data.style_name
       #out << "  [ #{view.rmq_data.tag_names.join(',')} ]" if view.rmq_data.tag_names.length > 0
 
       #if view.origin
         #format = '#0.#'
-        s = " {l: #{view.x}"
+        s = "   {l: #{view.x}"
         s << ", t: #{view.y}"
         s << ", w: #{view.width}"
         s << ", h: #{view.height}}"
@@ -173,10 +164,15 @@ class RMQ
   end
 
   def inspect
-    out = "RMQ. #{self.count} selected. selectors: #{self.selectors}. .log for more info"
-    #out = "RMQ #{self.object_id}. #{self.count} selected. selectors: #{self.selectors}. .log for more info"
-    out << "\n[#{selected.first}]" if self.count == 1
+    out = "RMQ #{self.object_id}. #{self.count} selected. selectors: #{self.selectors}. .log for more info"
+    out << "\n[#{selected.first.inspect}]" if self.count == 1
     out
+  end
+
+  # Do not use
+  def selected=(value)
+    @_selected = value
+    @selected_dirty = false
   end
 
   def selected
@@ -185,6 +181,9 @@ class RMQ
 
       if RMQ.is_blank?(self.selectors)
         @_selected << originated_from_or_its_view
+      #elsif self.selectors.length == 1 and self.selectors.first.is_a?(Java::Lang::Integer)
+        ### Special case where we find by id
+        #@_selected << self.root_view.findViewById(self.selectors.first)
       else
         working_selectors = self.selectors.dup
         extract_views_from_selectors(@_selected, working_selectors)
@@ -196,7 +195,6 @@ class RMQ
           end
         end
 
-        @_selected.uniq!
       end
 
       @selected_dirty = false

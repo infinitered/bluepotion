@@ -2,7 +2,7 @@ class RMQ
   class << self
 
     def is_class?(o)
-      o.class == Class
+      o.class == Java::Lang::Class
     end
 
     def is_blank?(o)

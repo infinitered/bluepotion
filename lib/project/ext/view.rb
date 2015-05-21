@@ -1,6 +1,6 @@
 class Android::View::View
   def inspect
-    "<#{short_class_name}|#{object_id}>"
+    "<#{id} #{short_class_name}>"
   end
 
   def rmq_data

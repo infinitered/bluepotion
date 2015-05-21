@@ -11,7 +11,11 @@ class Object
   end
 
   def inspect
-    "<#{short_class_name}|#{object_id}>"
+    if self.respond_to?(:id)
+      "<#{short_class_name}|#{id}>"
+    else
+      "<#{short_class_name}|#{object_id}>"
+    end
   end
 
   def short_class_name
