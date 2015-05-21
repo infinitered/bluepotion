@@ -51,7 +51,7 @@ class Android::View::View
 
   def superview
     sv = self.getParent()
-    sv = nil unless sv.is_a?(Potion::View)
+    sv = nil unless sv.is_a?(Potion::ViewGroup)
     sv
   end
 end

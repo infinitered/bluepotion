@@ -229,7 +229,11 @@ class RMQ
   def all_superviews_for(view, out = [])
     if (sv = view.superview)
       out << sv
-      all_superviews_for(sv, out)
+
+      # Stop at root_view of screen or activity
+      unless (sv.rmq_data.screen_root_view?) || (sv == self.activity.root_view) # TODO speed this up if needed
+        all_superviews_for(sv, out)
+      end
     end
     out
   end

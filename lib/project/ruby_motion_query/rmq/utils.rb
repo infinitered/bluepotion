@@ -29,5 +29,8 @@ class RMQ
       o
     end
 
+    def symbolize(s)
+      s.to_s.gsub(/\s+/,"_").gsub(/\W+/,"").downcase.to_sym
+    end
   end
 end

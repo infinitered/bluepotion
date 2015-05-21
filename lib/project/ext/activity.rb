@@ -1,9 +1,7 @@
 class Android::App::Activity
 
   def root_view
-    # TODO, this doesn't work
-    getWindow.getDecorView.findViewById(Android::R::Id::Content)
-    #findViewById(Android::R::Id.PageLayout)
+    @_root_view ||= getWindow.getDecorView.findViewById(Android::R::Id::Content)
   end
 
   def rmq_data

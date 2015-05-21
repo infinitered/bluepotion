@@ -19,7 +19,7 @@ class HomeScreen < PMScreen
     # Debugging
     $o = self
     create_some_test_views
-    rmq.log_tree
+    rmq.activity.rmq.log_tree
 
   end
 
