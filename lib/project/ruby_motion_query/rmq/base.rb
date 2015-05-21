@@ -113,8 +113,7 @@ class RMQ
       out << " #{(view.superview ? view.superview.short_class_name : '')[0..21].ljust(22)}|"
       out << " #{view.subviews.length.to_s.ljust(23)} |"
       #out << "  #{view.subviews.length.to_s.rjust(8)} #{view.superview.short_class_name.ljust(20)} #{view.superview.object_id.to_s.rjust(10)}"
-      out << " #{"".ljust(38)}|"
-      #out << " #{view.rmq_data.tag_names.join(',').ljust(32)}|"
+      out << " #{view.rmq_data.tag_names.join(',').ljust(38)}|"
       out << "\n"
       out << line unless wide
     end
@@ -145,7 +144,7 @@ class RMQ
       out << "SCREEN ROOT/" if view.rmq_data.screen_root_view?
       out << "#{view.short_class_name[0..21]}"
       out << "  ( :#{view.rmq_data.style_name.to_s[0..23]} )" if view.rmq_data.style_name
-      #out << "  [ #{view.rmq_data.tag_names.join(',')} ]" if view.rmq_data.tag_names.length > 0
+      out << "  [ #{view.rmq_data.tag_names.join(',')} ]" if view.rmq_data.tag_names.length > 0
 
       #if view.origin
         #format = '#0.#'

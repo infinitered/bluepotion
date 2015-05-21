@@ -30,14 +30,14 @@ class HomeScreen < PMScreen
     rmq.activity.rmq.append_view(Potion::View)
     rmq.activity.rmq.append_view(Potion::View)
     rmq.activity.rmq.append_view(Potion::View)
-    rmq.activity.rmq.append_view(Potion::View)
+    rmq.activity.rmq.append_view(Potion::View).tag(:foo, :bar)
     rmq.activity.rmq.append_view(Potion::View)
     rmq.activity.rmq.append_view(Potion::AbsoluteLayout).append_view(Potion::View)
 
     # In screen
     rmq.append_view(Potion::View)
-    rmq.append_view(Potion::View)
-    rmq.append_view(Potion::View)
+    rmq.append_view(Potion::View).tag(:foo)
+    rmq.append_view(Potion::View).tag(:foo)
     rmq.append_view(Potion::AbsoluteLayout).tap do |q|
       q.append_view(Potion::View)
       q.append_view(Potion::View)
