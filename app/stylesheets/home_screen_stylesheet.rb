@@ -11,8 +11,8 @@ class HomeScreenStylesheet < ApplicationStylesheet
     st.layout_width = :wrap_content
     st.layout_height = :wrap_content
     st.margin_bottom = 12
-    st.text_color = color.potion_blue
-    st.text_size = 40
+    st.font = font.large
+    st.color = color.potion_blue
   end
 
   def button(st)
