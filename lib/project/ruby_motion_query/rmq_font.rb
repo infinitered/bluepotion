@@ -3,7 +3,7 @@
 class RMQ
 
   def self.font(*params)
-    Font.shared
+    RMQFont.shared
   end
 
   def font(*params)
@@ -12,14 +12,14 @@ class RMQ
 
 end
 
-class Font
+class RMQFont
 
   def self.shared
     @instance ||= new
   end
 
   def add_named(key, font_name, size)
-    font_cache[key] = FontStruct.new(font_name, size)
+    font_cache[key] = RMQFontStruct.new(font_name, size)
   end
 
   def method_missing(font_key)
@@ -34,7 +34,7 @@ class Font
 
 end
 
-class FontStruct
+class RMQFontStruct
   attr_accessor :name
   attr_accessor :size
 

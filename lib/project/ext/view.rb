@@ -36,6 +36,18 @@ class Android::View::View
     #end
   end
 
+  def color
+    rmq.color
+  end
+
+  def font
+    rmq.font
+  end
+
+  def image
+    rmq.image
+  end
+
   def subviews
     out = []
 

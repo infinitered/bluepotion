@@ -26,6 +26,17 @@ class Android::App::Activity
     self.rmq.stylesheet = value
   end
 
+  def color
+    rmq.color
+  end
+
+  def font
+    rmq.font
+  end
+
+  def image
+    rmq.image
+  end
 
   class << self
 

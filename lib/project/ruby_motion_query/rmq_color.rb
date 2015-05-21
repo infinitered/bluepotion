@@ -1,12 +1,12 @@
-# many hacks in this: we can't duplicate the iOS implementation because 
+# many hacks in this: we can't duplicate the iOS implementation because
 # define_singleton_method isn't implemented in Android :'(
 class RMQ
 
   def self.color(*params)
     if params.empty?
-      Color.shared
+      RMQColor.shared
     else
-      ColorFactory.build(params)
+      RMQColorFactory.build(params)
     end
   end
 
@@ -16,7 +16,7 @@ class RMQ
 
 end
 
-class Color < Android::Graphics::Color
+class RMQColor < Android::Graphics::Color
 
   def self.shared
     @instance ||= new
@@ -48,16 +48,16 @@ class Color < Android::Graphics::Color
 
 end
 
-class ColorFactory
+class RMQColorFactory
 
   class << self
 
     def from_hex(hex_string)
       if hex_string.length == 7
         # this is #RRGGBB format - we need to add the alpha
-        color_str = "#FF#{hex_string[1..hex_string.length]}" 
+        color_str = "#FF#{hex_string[1..hex_string.length]}"
       end
-      Android::Graphics::Color.parseColor(hex_string) 
+      Android::Graphics::Color.parseColor(hex_string)
     end
 
   end
