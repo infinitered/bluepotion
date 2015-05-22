@@ -51,3 +51,5 @@ drawable-xxhdpi
 http://labs.rampinteractive.co.uk/android_dp_px_calculator/
 
 http://romannurik.github.io/AndroidAssetStudio/nine-patches.html
+
+http://grahamtodman.co.uk/blog/2013/02/how-to-design-android-apps-in-photoshop-what-the-frak-is-a-dp/
