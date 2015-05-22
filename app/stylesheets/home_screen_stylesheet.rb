@@ -18,8 +18,16 @@ class HomeScreenStylesheet < ApplicationStylesheet
 
   def drink_button(st)
     standard_button(st)
-    st.background_color = color.yellow
+    st.background_color = color.mustard
     st.color = color.black
-    st.text = "Click me"
+    st.text = "Drink"
   end
+
+  def open_example_table_button(st)
+    standard_button(st)
+    st.background_color = color.potion_blue
+    st.color = color.white
+    st.text = "Open table screen"
+  end
+
 end

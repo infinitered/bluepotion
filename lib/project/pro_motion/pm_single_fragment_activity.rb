@@ -28,8 +28,6 @@
     end
 
     def set_fragment(fragment)
-      mp "PMSingleFragmentActivity set_fragment"
-
       @fragment = fragment # useful for the REPL
       fragmentManager.beginTransaction
         .add(@fragment_container.getId, fragment, fragment.class.to_s)

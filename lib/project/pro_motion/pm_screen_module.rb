@@ -35,6 +35,10 @@
         @show_action_bar = show_action_bar
       end
 
+      def title(new_title)
+        #self.activity.title = new_title
+      end
+
       private
 
       def deduce_resource_id

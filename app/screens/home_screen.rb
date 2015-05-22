@@ -1,21 +1,29 @@
 class HomeScreen < PMScreen
 
+  uses_action_bar false
   stylesheet HomeScreenStylesheet
+  title "BluePotion"
 
   # This will automatically set to a FrameLayout if you don't override this method
   def load_view
+    mp "HomeScreen load_view"
+
     #Potion::LinearLayout.new(self.activity)
     Potion::FrameLayout.new(self.activity)
   end
 
   def on_load
-    mp "Starting"
+    mp "HomeScreen on_load"
 
     append_view(Potion::TextView,  :hello_label).data("Hello BluePotion!")
     append_view(Potion::ImageView, :logo)
 
     append_view(Potion::Button, :drink_button).on(:tap) do |sender|
       Potion::Toast.makeText(find.activity, "Drink your potion.", Potion::Toast::LENGTH_SHORT).show
+    end
+
+    append_view(Potion::Button, :open_example_table_button).on(:tap) do |sender|
+      open ExampleTableScreen
     end
 
     debug

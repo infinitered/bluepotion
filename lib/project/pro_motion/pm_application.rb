@@ -7,7 +7,7 @@
       attr_reader :home_screen_class
 
       def home_screen(hclass)
-        mp "PMApplication homescreen"
+        mp "PMApplication home_screen"
         @home_screen_class = hclass
       end
     end

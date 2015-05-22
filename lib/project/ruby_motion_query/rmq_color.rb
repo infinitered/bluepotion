@@ -27,17 +27,20 @@ class RMQColor < Android::Graphics::Color
     def dark_gray ; self::DKGRAY ; end
     def black ; self::BLACK ; end
 
-    def cyan ; self::CYAN ; end
-    def magenta ; self::MAGENTA ; end
-    def yellow ; self::YELLOW ; end
+    #def cyan ; self::CYAN ; end
+    #def magenta ; self::MAGENTA ; end
+    #def yellow ; self::YELLOW ; end
 
     # These are special as the methods already exist
     #def blue ; self::BLUE ; end
     #def green ; self::GREEN ; end
     #def red ; self::RED ; end
-    def blue_color ; self::BLUE ; end
-    def green_color ; self::GREEN ; end
-    def red_color ; self::RED ; end
+    #def blue_color ; self::BLUE ; end
+    #def green_color ; self::GREEN ; end
+    #def red_color ; self::RED ; end
+
+    # Maybe we should change this to: color(:white) rather than color.white, TOL
+
 
     def add_named(key, hex_or_color)
       c = if hex_or_color.is_a?(String)

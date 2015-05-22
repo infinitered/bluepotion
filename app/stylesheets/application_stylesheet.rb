@@ -9,7 +9,8 @@ class ApplicationStylesheet < RMQStylesheet
     font.add_named :small,          font_family, 18, :normal
     font.add_named :tiny,           font_family, 14, :normal
 
-    color.add_named :potion_blue, "#3759FE"
+    color.add_named :potion_blue,   "#3759FE"
+    color.add_named :mustard,       "#FFFF00"
   end
 
   def standard_text_view(st)
