@@ -10,6 +10,7 @@ module Potion
   AbsoluteLayout = Android::Widget::AbsoluteLayout
 
   # widgets
+  Label = Android::Widget::TextView
   TextView = Android::Widget::TextView
   ImageView = Android::Widget::ImageView
   Button = Android::Widget::Button

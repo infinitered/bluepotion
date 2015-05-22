@@ -12,12 +12,12 @@ class RMQViewStyler
   end
 
   def background_color=(color)
-    view.backgroundColor = @bg_color = convert_color(color)
+    @view.backgroundColor = @bg_color = convert_color(color)
   end
   alias_method :backgroundColor=, :background_color=
 
   def background_resource=(bg)
-    view.backgroundResource = bg
+    @view.backgroundResource = bg
   end
 
   def layout_width=(layout_width)
@@ -125,16 +125,16 @@ class RMQViewStyler
   # applying layout params)
   def finalize
     create_rounded_bg if corner_radius
-    view.setPadding(padding[:left], padding[:top], padding[:right], padding[:bottom])
+    @view.setPadding(padding[:left], padding[:top], padding[:right], padding[:bottom])
     layout_params.setMargins(margin[:left],
       margin[:top],
       margin[:right],
       margin[:bottom]) if layout_params.respond_to?(:setMargins)
-    view.setLayoutParams(layout_params)
+    @view.setLayoutParams(layout_params)
   end
 
   def layout_params
-    @layout_params ||= view.getLayoutParams()
+    @layout_params ||= @view.getLayoutParams()
   end
 
   def convert_color(color)
@@ -175,7 +175,7 @@ class RMQViewStyler
 
   def convert_dimension_value(value)
     case value
-    when :match_parent
+    when :match_parent, :full
       Android::View::ViewGroup::LayoutParams::MATCH_PARENT
     when :wrap_content
       Android::View::ViewGroup::LayoutParams::WRAP_CONTENT
@@ -195,7 +195,7 @@ class RMQViewStyler
 
     drawable = Android::Graphics::Drawable::ShapeDrawable.new(shape)
     drawable.paint.color = bg_color
-    view.setBackgroundDrawable(drawable)
+    @view.setBackgroundDrawable(drawable)
   end
 
 end

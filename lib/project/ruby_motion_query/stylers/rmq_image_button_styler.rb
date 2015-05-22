@@ -1,4 +1,3 @@
 class RMQImageButtonStyler < RMQViewStyler
 
-
 end

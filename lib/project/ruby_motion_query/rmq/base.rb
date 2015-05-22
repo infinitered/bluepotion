@@ -12,6 +12,8 @@ class RMQ
         @originated_from = value
       elsif value.is_a?(Potion::View)
         @originated_from = value
+      elsif value.is_a?(RMQStylesheet)
+        @originated_from = value.controller
       else
         #debug.log_detailed('Invalid originated_from', objects: {value: value})
         mp "Invalid originated_from: #{value.inspect}"

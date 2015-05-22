@@ -1,4 +1,5 @@
 class RMQStylesheet
+  attr_accessor :controller
 
   def initialize(controller)
     unless RMQStylesheet.application_was_setup
@@ -19,12 +20,16 @@ class RMQStylesheet
     # Override if you need to do setup in your specific stylesheet
   end
 
-  def color
-    RMQ.color
+  def color(*params)
+    RMQ.color(*params)
   end
 
   def font
-    RMQ.font
+    rmq.font
+  end
+
+  def image
+    rmq.image
   end
 
   class << self
