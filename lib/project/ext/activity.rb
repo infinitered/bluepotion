@@ -26,8 +26,8 @@ class Android::App::Activity
     self.rmq.stylesheet = value
   end
 
-  def color
-    rmq.color
+  def color(*params)
+    RMQ.color(*params)
   end
 
   def font
@@ -36,6 +36,14 @@ class Android::App::Activity
 
   def image
     rmq.image
+  end
+
+  def append_view(view_or_class, style=nil, opts={})
+    self.rmq.append_view(view_or_class, style, opts)
+  end
+
+  def append_view!(view_or_class, style=nil, opts={})
+    self.rmq.append_view(view_or_class, style, opts).get
   end
 
   class << self

@@ -73,6 +73,18 @@
       # abstract
     end
 
+    def color(*params)
+      RMQ.color(*params)
+    end
+
+    def font
+      rmq.font
+    end
+
+    def image
+      rmq.image
+    end
+
     def append_view(view_or_class, style=nil, opts={})
       self.rmq.append_view(view_or_class, style, opts)
     end

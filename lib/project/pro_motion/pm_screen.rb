@@ -6,7 +6,6 @@
 
     attr_accessor :view
 
-
     def onCreateView(inflater, parent, saved_instance_state)
       super
 

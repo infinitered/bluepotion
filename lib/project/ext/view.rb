@@ -3,6 +3,10 @@ class Android::View::View
     "<#{id} #{short_class_name}>"
   end
 
+  def to_s
+    self.inspect
+  end
+
   def rmq_data
     @_rmq_data ||= RMQViewData.new
   end
@@ -36,8 +40,8 @@ class Android::View::View
     #end
   end
 
-  def color
-    rmq.color
+  def color(*params)
+    RMQ.color(*params)
   end
 
   def font
@@ -46,6 +50,14 @@ class Android::View::View
 
   def image
     rmq.image
+  end
+
+  def append_view(view_or_class, style=nil, opts={})
+    self.rmq.append_view(view_or_class, style, opts)
+  end
+
+  def append_view!(view_or_class, style=nil, opts={})
+    self.rmq.append_view(view_or_class, style, opts).get
   end
 
   def subviews

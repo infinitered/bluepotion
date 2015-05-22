@@ -1,26 +1,21 @@
 class HomeScreenStylesheet < ApplicationStylesheet
 
   def root_view(st)
-    st.layout_width = :match_parent
-    st.layout_height = :match_parent
-    #st.orientation = :vertical
-    st.gravity = :center
+    #st.layout_width = :match_parent
+    #st.layout_height = :match_parent
+    #st.gravity = :center
   end
 
   def text_view(st)
-    st.layout_width = :wrap_content
-    st.layout_height = :wrap_content
-    st.margin_bottom = 12
+    standard_text_view(st)
     st.font = font.large
     st.color = color.potion_blue
   end
 
   def button(st)
-    st.layout_width = :wrap_content
-    st.layout_height = :wrap_content
-    st.padding_left = st.padding_right = 12
-    st.background_color = color.potion_blue
-    st.text_color = Potion::Color::WHITE
+    standard_button(st)
+    st.background_color = color.yellow
+    st.color = color.black
     st.text = "Click me"
   end
 end

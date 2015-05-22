@@ -12,4 +12,16 @@ class ApplicationStylesheet < RMQStylesheet
     color.add_named :potion_blue, "#3759FE"
   end
 
+  def standard_text_view(st)
+    st.layout_width = :wrap_content
+    st.layout_height = :wrap_content
+    st.margin_bottom = 12
+  end
+
+  def standard_button(st)
+    st.layout_width = :wrap_content
+    st.layout_height = :wrap_content
+    st.padding_left = st.padding_right = 12
+  end
+
 end
