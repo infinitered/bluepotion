@@ -6,9 +6,7 @@
     end
 
     module ClassMethods
-      attr_reader :xml_resource
-      attr_reader :xml_widget_ids
-      attr_reader :show_action_bar
+      attr_reader :xml_resource, :xml_widget_ids, :show_action_bar, :bars_title
 
       @show_action_bar = true
 
@@ -36,7 +34,9 @@
       end
 
       def title(new_title)
+        @bars_title = new_title
         #self.activity.title = new_title
+        #getActivity().getActionBar().setTitle("abc")
       end
 
       private
@@ -112,26 +112,30 @@
 
     def open(screen_class, options={})
       mp "ScreenModule open"
-      options[:activity] ||= PMSingleFragmentActivity
+      activity_class = options[:activity] || PMSingleFragmentActivity
+
       # TODO: replace the fragment in the activity when possible
       # replace the fragment if we can; otherwise launch a new activity
       # we're taking a conservative approach for now - eventually we'll want to allow
       # replacing fragments for any kind of activity, but I'm not sure of the best way
       # to implement that yet
-      intent = Android::Content::Intent.new(activity, options[:activity])
+      intent = Android::Content::Intent.new(self.activity, activity_class)
       intent.putExtra PMSingleFragmentActivity::EXTRA_FRAGMENT_CLASS, screen_class.to_s
-      # TODO: limited support for extras for now - should reimplement with fragment arguments
+
+      ## TODO: limited support for extras for now - should reimplement with fragment arguments
       if options[:extras]
         options[:extras].keys.each do |key|
           intent.putExtra key.to_s, options[:extras][key].toString
         end
       end
-      startActivity intent
+
+      self.activity.startActivity intent
     end
 
     def start_activity(activity_class)
-      intent = Android::Content::Intent.new(activity, activity_class)
-      startActivity(intent)
+      intent = Android::Content::Intent.new(self.activity, activity_class)
+      #intent.putExtra("key", value); # Optional parameters
+      self.activity.startActivity(intent)
     end
 
     def soft_input_mode(mode)

@@ -67,7 +67,7 @@ class RMQ
   end
 
   def wrap(*views)
-    views = [views] unless views.is_a?(Potion::Array) # TODO, WTF, RM bug?
+    views = [views] unless views.is_a?(Potion::ArrayList) # TODO, WTF, RM bug?
     views.flatten!
 
     views.select!{ |v| v.is_a?(Potion::View) }

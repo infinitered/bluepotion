@@ -39,5 +39,9 @@ class RMQDevice
       @height ||= display.height
     end
 
+    def dpi
+      #TODO
+    end
+
   end
 end

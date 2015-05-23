@@ -7,7 +7,31 @@ class Object
 
   # REMOVE when RubyMotion adds this
   def caller
-    "caller NOT IMPLEMENTED"
+    out = "caller:"
+
+    stacktrace = Java::Lang::Thread.currentThread.getStackTrace
+    stacktrace.each_with_index do |trc, i|
+      klass_name = trc.className
+      method_name = trc.methodName
+
+      next if klass_name == "com.rubymotion.ReplTask"
+      next if method_name == "getStackTrace" || method_name == "getThreadStackTrace"
+
+      line_number = trc.getLineNumber
+      out << "\n  "
+      #out << " " * i
+      if line_number < 0
+        out << "    "
+      else
+        out << line_number.to_s.ljust(4)
+      end
+      out << " "
+      out << method_name.to_s.ljust(30)
+      out << " "
+      out << klass_name.to_s
+    end
+
+    out
   end
 
   def inspect
@@ -41,10 +65,14 @@ class Object
     rmq(*args).get
   end
 
+
   # BluePotion stuff
 
   # REMOVE when mp starts working
   def mp(s)
+    #debugging = RMQ.debugging?
+    debugging = false
+
     if s.nil?
       s = "<nil>"
     else
@@ -53,7 +81,14 @@ class Object
     backspace = "\b\b " * (Android::App::Application.name.length + 13)
     lines = s.split("\n")
     lines.each do |line|
-      puts "#{backspace}\e[1;#{34}m#{line}\e[0m"
+      if debugging
+        out = backspace
+        out << "\e[1;#{36}m#{self.object_id}\e[0m #{self.short_class_name}".ljust(50)
+        out << "  \e[1;#{34}m#{line}\e[0m"
+        puts out
+      else
+        puts "#{backspace} \e[1;#{34}m#{line}\e[0m"
+      end
     end
   end
 

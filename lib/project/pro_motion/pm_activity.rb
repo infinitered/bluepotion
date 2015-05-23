@@ -1,23 +1,24 @@
-# http://hipbyte.myjetbrains.com/youtrack/issue/RM-773 - can't put this in a module yet :(
 #module ProMotion
 
   class PMActivity < Android::App::Activity
 
     def onCreate(saved_instance_state)
-      mp "PMActivity onCreate"
       super
 
-      if self.class.rmq_style_sheet_class
-        self.stylesheet = self.class.rmq_style_sheet_class
-        #self.view.rmq.apply_style(:root_view) if self.rmq.stylesheet.respond_to?(:root_view)
-      end
+      mp "PMActivity onCreate"
+      #mp caller
 
-      rmq.app.context
+      on_create(saved_instance_state)
+      PMApplication.current_application.context
+    end
+
+    def on_create(saved_instance_state)
+      mp "PMActivity on_create"
     end
 
     def onResume
       super
-      PMApplication.current_activity = self
+      PMApplication.current_application.current_activity = self
     end
 
     def onPause

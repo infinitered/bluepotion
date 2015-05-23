@@ -1,10 +1,10 @@
 class HomeScreen < PMScreen
 
-  uses_action_bar false
+  uses_action_bar true
   stylesheet HomeScreenStylesheet
-  title "BluePotion"
+  title "BluePotion Home"
 
-  # This will automatically set to a FrameLayout if you don't override this method
+  # This will automatically set to a RelativeLayout if you don't override this method
   def load_view
     mp "HomeScreen load_view"
 

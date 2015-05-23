@@ -10,10 +10,10 @@ class RMQ
       if @originated_from.rmq_data
         @originated_from.rmq_data.activity
       else
-        RMQApp.current_activity
+        RMQ.app.current_activity
       end
     else
-      RMQApp.current_activity
+      RMQ.app.current_activity
     end
   end
 
@@ -26,10 +26,10 @@ class RMQ
       if @originated_from.rmq_data
         @originated_from.rmq_data.screen
       else
-        RMQApp.current_screen
+        RMQ.app.current_screen
       end
     else
-      RMQApp.current_screen
+      RMQ.app.current_screen
     end
   end
 

@@ -28,7 +28,10 @@
     end
 
     def onActivityCreated(saved_instance_state)
+      mp "PMScreen onActivityCreated"
+
       super
+
       @view.rmq_data.is_screen_root_view = true
 
       self.rmq.build(@view)
@@ -37,6 +40,9 @@
         self.rmq.stylesheet = self.class.rmq_style_sheet_class
         @view.rmq.apply_style(:root_view) #if @view.rmq.stylesheet.respond_to?(:root_view)
       end
+
+      self.action_bar.title = self.class.bars_title
+      self.activity.title = self.class.bars_title
 
       on_load
     end

@@ -1,6 +1,6 @@
 class ExampleTableScreen < PMScreen
 
-  uses_action_bar false
+  uses_action_bar true
   stylesheet ExampleTableScreenStylesheet
   title "Example Table Screen"
 
@@ -12,6 +12,8 @@ class ExampleTableScreen < PMScreen
 
   def on_load
     mp "ExampleTableScreen on_load"
+
+    append_view(Potion::TextView,  :hello_label)
 
     find.log_tree
   end

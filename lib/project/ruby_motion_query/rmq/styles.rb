@@ -21,7 +21,7 @@ class RMQ
   end
 
   def styler_for(view)
-    context = RMQApp.context
+    context = RMQ.app.context
     styler = case view
       when Android::Widget::RelativeLayout  then RMQRelativeLayoutStyler.new(view, context)
       when Android::Widget::LinearLayout    then RMQLinearLayoutStyler.new(view, context)

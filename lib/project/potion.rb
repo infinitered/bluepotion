@@ -20,7 +20,7 @@ module Potion
   Color = Android::Graphics::Color
   Typeface = Android::Graphics::Typeface
 
-  Array = Java::Util::ArrayList
+  ArrayList = Java::Util::ArrayList
 end
 
 #

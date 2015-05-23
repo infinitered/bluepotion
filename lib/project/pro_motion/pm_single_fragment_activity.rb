@@ -6,12 +6,12 @@
 
     EXTRA_FRAGMENT_CLASS = "fragment_class"
 
-    def onCreate(saved_instance_state)
-      mp "PMSingleFragmentActivity onCreate"
+    def on_create(saved_instance_state)
       super
 
-      @fragment_container = Android::Widget::FrameLayout.new(self)
+      mp "PMSingleFragmentActivity on_create"
 
+      @fragment_container = Potion::FrameLayout.new(self)
       @fragment_container.setId Potion::ViewIdGenerator.generate
       self.contentView = @fragment_container
 
@@ -19,19 +19,12 @@
         # TODO weird way to create this intance, look at this later
         set_fragment Kernel.const_get(fragment_class.to_s).new
       end
-
-      self.on_create saved_instance_state
-    end
-
-    def on_create
-      raise "on_create is a required abstract method"
     end
 
     def set_fragment(fragment)
+      mp "PMSingleFragmentActivity set_fragment"
       @fragment = fragment # useful for the REPL
-      fragmentManager.beginTransaction
-        .add(@fragment_container.getId, fragment, fragment.class.to_s)
-        .commit
+      fragmentManager.beginTransaction.add(@fragment_container.getId, fragment, fragment.class.to_s).commit
     end
 
   end

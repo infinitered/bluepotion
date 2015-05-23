@@ -1,66 +1,9 @@
 class RMQ
   def app
-    RMQApp
+    PMApplication.current_application
   end
 
   def self.app
-    RMQApp
+    PMApplication.current_application
   end
 end
-
-class RMQApp < PMApplication
-  class << self
-
-    def context
-      @context ||= PMContextManager.current_context
-    end
-
-    def window
-      @window ||= current_activity.getWindow
-    end
-
-    def current_activity
-      PMApplication.current_activity
-    end
-
-    def current_screen
-      if ca = PMApplication.current_activity
-        if ca.is_a?(PMSingleFragmentActivity)
-          ca.fragment
-        end
-      end
-    end
-
-    def guess_current_screen
-      # TODO
-      #ca.getFragmentManager.findFragmentById(Android::R::Id.fragment_container)
-      #ca.getFragmentManager.frameTitle
-    end
-
-    def home_screen_class
-      PMApplication.home_screen_class
-    end
-
-    # @return [Symbol] Environment the app is running it
-    def environment
-      @_environment ||= RUBYMOTION_ENV.to_sym
-    end
-
-    # @return [Boolean] true if the app is running in the :release environment
-    def release?
-      environment == :release
-    end
-    alias :production? :release?
-
-    # @return [Boolean] true if the app is running in the :test environment
-    def test?
-      environment == :test
-    end
-
-    # @return [Boolean] true if the app is running in the :development environment
-    def development?
-      environment == :development
-    end
-  end
-end
-
