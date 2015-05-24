@@ -12,15 +12,16 @@ Gem::Specification.new do |spec|
   spec.license       = "MIT"
   spec.post_install_message = "  <>\n  ||\n (  )  BluePotion\n  ``"
 
-  spec.version       = BluePotion::VERSION
-
   files = []
   files << 'README.md'
   files.concat(Dir.glob('lib/**/*.rb'))
+  files.concat(Dir.glob('templates/**/*.rb'))
   spec.files         = files
-  spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
+
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
+  spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
+  spec.version       = BluePotion::VERSION
 
   spec.add_development_dependency "rake"
 end
