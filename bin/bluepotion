@@ -195,6 +195,6 @@ when '--help', '-h'
 when '-v', '--version'
   puts BluePotion::VERSION
 else
-  puts 'potion - Invalid action'
+  puts 'bluepotion - Invalid action'
   puts PotionCommandLine::HELP_TEXT
 end
