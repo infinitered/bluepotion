@@ -1,4 +1,3 @@
-abort "potion.rb"
 module Potion
   Activity = Android::App::Activity
   View = Android::View::View

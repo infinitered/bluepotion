@@ -1,4 +1,3 @@
-abort "RMQStylesheet"
 class RMQStylesheet
   attr_accessor :controller
 
