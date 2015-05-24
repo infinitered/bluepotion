@@ -1,6 +1,9 @@
-<img src="http://ir_wp.s3.amazonaws.com/wp-content/uploads/sites/11/2015/05/bluepotion_icon_inverted_500w.png" style="width: 250px;">
+<p align="center"><img src="http://s3.amazonaws.com/ir_public/projects/redpotion/BluePotion_logo_500w.png" alt="logo" width="250px"></p>
+
 <br />
 
 # BluePotion
 
-Like RedPotion, but for Android - What comes before pre-alpha? Whatever that is, BluePotion is that
+Like RedPotion, but for Android.
+
+## BluePotion is pre-alpha right now!
