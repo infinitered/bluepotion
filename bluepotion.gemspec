@@ -1,16 +1,18 @@
 # -*- encoding: utf-8 -*-
-VERSION = "0.1"
+$:.push File.expand_path("../lib", __FILE__)
+require "project/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "bluepotion"
-  spec.version       = VERSION
-  spec.authors       = ["Darin Wilson", "Gant Laborde", "Todd Werth"]
-  spec.email         = ["hello@infinitered.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
-  spec.homepage      = ""
-  spec.license       = ""
+  spec.authors       = ["InfiniteRed", "ClearSight Studio"]
+  spec.email         = ["hello@infinitered.com", "hello@clearsightstudio.com"]
+  spec.description   = %q{BluePotion - Just like RedPotion, but for Android}
+  spec.summary       = %q{BluePotion - Just like RedPotion, but for Android. The best combination of RubyMotion tools and libraries for Android}
+  spec.homepage      = "https://github.com/infinitered/bluepotion"
+  spec.license       = "MIT"
   spec.post_install_message = "  <>\n  ||\n (  )  BluePotion\n  ``"
+
+  spec.version       = BluePotion::VERSION
 
   files = []
   files << 'README.md'

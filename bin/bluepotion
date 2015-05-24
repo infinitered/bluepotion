@@ -13,61 +13,26 @@ class PotionCommandLine
      Some things you can do with the bluepotion command:
 
      > bluepotion create my_new_app
-     > bluepotion create my_new_app --skip-cdq # Setup application without CDQ
 
-     > bluepotion create model foo
      > bluepotion create screen foo
-     > bluepotion create table_screen foo
-     > bluepotion create table_screen_cell bar_cell
-     > bluepotion create metal_table_screen foo
-     > bluepotion create collection_view_screen
-     > bluepotion create view bar
-     > bluepotion create shared some_class_used_app_wide
-     > bluepotion create lib some_class_used_by_multiple_apps
-
-     You can still create controllers, but you should create screens instead
-     > bluepotion create controller foos
-     > bluepotion create collection_view_controller foos
-     > bluepotion create table_view_controller bars
-
-     You can remove CDQ or afmotion if your project does not use it
-     > bluepotion remove cdq
-     > bluepotion remove afmotion
 
      Misc
      > bluepotion -h, --help
      > bluepotion -v, --version
-
-     Documentation
-     > rmq docs
-     > rmq docs query
-     > rmq docs "background image" }
+     }
 
   class << self
-    SKIP_FLAGS = [ "--skip-cdq", "--skip-afmotion" ]
-
     VALID_CREATE_TYPES = [
-      :screen, :table_screen,
-      :table_screen_cell,
-      :model, :controller,
-      :metal_table_screen,
-      :collection_view_screen,
-      :view,
-      :shared,
-      :lib,
-      :collection_view_controller,
-      :table_view_controller
+      :screen
     ]
-
 
     def create(template_or_app_name, *options)
       if template_or_app_name.nil?
-        puts "bluepotion - Invalid command, try adding an application name or template name."
+        puts "BluePotion - Invalid command, try adding an application name or template name."
         return
       end
 
       options.compact!
-      # Dry Run option - TODO - change this to --dry_run to streamline
       if options.first == 'dry_run'
         @dry_run = true
         options.slice!(0)
@@ -77,7 +42,7 @@ class PotionCommandLine
         unless options.first.include?('--')
           name = options.slice!(0)
           unless VALID_CREATE_TYPES.include?(template_or_app_name.to_sym)
-            puts "bluepotion - Invalid command, do something like this: bluepotion create controller my_controller\n"
+            puts "BluePotion - Invalid command, do something like this: bluepotion create screen foo\n"
             return
           end
         end
@@ -107,34 +72,9 @@ class PotionCommandLine
       Complete. Things you should do:
       > cd #{app_name}
       > bundle
-      > rake pod:install
-      > rake spec
-      > rake
+      > rake newclear
       (main)> exit
-
-      Then try these:
-      > rake device_name='iPhone 4s'
-      > rake device_name='iPhone 5s'
-      > rake device_name='iPhone 5s' target=7.1
-      > rake device_name='iPhone 6 Plus'
-      > rake device_name='iPad Retina'
-      > rake device
-
-      Or for XCode 5.1
-      > rake retina=3.5
-      > rake retina=4
-      > rake device_family=ipad}
-
-    end
-
-    def template_dir
-      "#{Dir.home}/Library/RubyMotion/template/bluepotion-template"
-    end
-
-    # TODO Disabling for now, this needs to get latest template
-    def ensure_template_dir
-      return if Dir.exists?(template_dir)
-      `git clone git@github.com:infinitered/bluepotion-template.git #{template_dir}`
+      }
     end
 
     def template_path(template_name)
@@ -149,27 +89,14 @@ class PotionCommandLine
           gem_root = spec.gem_dir
           "#{gem_root}/#{sub_path}"
         rescue Exception => e
-          puts "bluepotion - could not find template directory\n"
+          puts "BluePotion - could not find template directory\n"
           nil
         end
       end
     end
 
     def insert_from_template(template_name, name)
-      # TODO refactor this, it's less than wonderful
-      if %w{metal_table_screen view collection_view_screen table_screen_cell}.include? template_name
-        # Do nothing
-      elsif template_name =~ /.*screen/
-        @screen_base = template_name.split('_').collect(&:capitalize).join
-        template_name = 'screen'
-      elsif template_name == "model" && cdq_included?
-        puts `cdq create model #{name}`
-        return
-      else
-        # we dont have templates for these fallback to RMQ
-        puts `rmq create #{template_name} #{name}`
-        return
-      end
+      return unless %w{screenl}.include? template_name
 
       puts "\n     Creating #{template_name}: #{name}\n\n"
 
@@ -221,17 +148,15 @@ class PotionCommandLine
 
     def remove(type, show_output=true)
       case type
-      when 'cdq'
-        remove_lines('Gemfile', /gem ('|")cdq('|")/, show_output)
-        remove_lines('app/app_delegate.rb', /include CDQ|cdq.setup/, show_output)
-        remove_lines('Rakefile', /schema:build/, show_output)
-        File.delete('schemas/0001_initial.rb') if File.exists?('schemas/0001_initial.rb')
-        File.delete('resources/cdq.yml') if File.exists?('resources/cdq.yml')
-        Dir.delete('schemas') if Dir.exists?('schemas')
-      when 'afmotion'
-        remove_lines('Gemfile', /gem ('|")afmotion('|")/, show_output)
+      when 'foo'
+        #remove_lines('Gemfile', /gem ('|")cdq('|")/, show_output)
+        #remove_lines('app/app_delegate.rb', /include CDQ|cdq.setup/, show_output)
+        #remove_lines('Rakefile', /schema:build/, show_output)
+        #File.delete('schemas/0001_initial.rb') if File.exists?('schemas/0001_initial.rb')
+        #File.delete('resources/cdq.yml') if File.exists?('resources/cdq.yml')
+        #Dir.delete('schemas') if Dir.exists?('schemas')
       else
-        puts "bluepotion - Invalid command option '#{type}', bluepotion remove only works with cdq"
+        puts "BluePotion - Invalid command option '#{type}', bluepotion remove only works with foo"
       end
     end
 
@@ -247,17 +172,12 @@ class PotionCommandLine
       end
     end
 
-    def cdq_included?
-      return false unless File.exist?("Gemfile.lock")
-      data = IO.readlines("Gemfile.lock")
-      data.any?{|l| l.match(/\s.cdq\s\(/) }
-    end
   end
 end
 
 # Process input, execute actions
 unless ARGV.length > 0
-  puts "potion - Invalid command, do something like this: potion create my_new_app\n"
+  puts "bluepotion - Invalid command, do something like this: bluepotion create my_new_app\n"
   puts PotionCommandLine::HELP_TEXT
   exit
 end
@@ -268,14 +188,6 @@ query = ARGV[1]
 case action
 when 'create'
   PotionCommandLine.create(ARGV[1], ARGV[2], ARGV[3])
-when 'rmq_docs'
-  if query
-    query = URI::encode(query)
-    url = "http://rubymotionquery.com?s=#{query}&post_type=document"
-    `open #{url}`
-  else
-    `open http://rubymotionquery.com/documentation`
-  end
 when 'remove'
   PotionCommandLine.remove(ARGV[1])
 when '--help', '-h'
