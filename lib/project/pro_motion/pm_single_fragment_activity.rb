@@ -9,7 +9,7 @@
     def on_create(saved_instance_state)
       super
 
-      mp "PMSingleFragmentActivity on_create"
+      mp "PMSingleFragmentActivity on_create", debugging_only: true
 
       @fragment_container = Potion::FrameLayout.new(self)
       @fragment_container.setId Potion::ViewIdGenerator.generate
@@ -22,7 +22,7 @@
     end
 
     def set_fragment(fragment)
-      mp "PMSingleFragmentActivity set_fragment"
+      mp "PMSingleFragmentActivity set_fragment", debugging_only: true
       @fragment = fragment # useful for the REPL
       fragmentManager.beginTransaction.add(@fragment_container.getId, fragment, fragment.class.to_s).commit
     end

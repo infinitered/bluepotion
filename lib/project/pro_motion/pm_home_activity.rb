@@ -4,7 +4,7 @@
     def on_create(saved_instance_state)
       super
 
-      mp "PMHomeActivity on_create"
+      mp "PMHomeActivity on_create", debugging_only: true
 
       home_screen_class = PMApplication.current_application.home_screen_class
       set_fragment home_screen_class.new if home_screen_class

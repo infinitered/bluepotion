@@ -4,7 +4,7 @@
     attr_accessor :home_screen_class, :context, :current_activity
 
     def onCreate
-      mp "PMApplication onCreate"
+      mp "PMApplication onCreate", debugging_only: true
 
       # We can always get to the current application from PMApplication.current_application
       # but we set the child class's current_application too, in case someone uses that
@@ -62,7 +62,7 @@
       attr_accessor :current_application, :home_screen_class
 
       def home_screen(hclass)
-        mp "PMApplication home_screen"
+        mp "PMApplication home_screen", debugging_only: true
         @home_screen_class = hclass
       end
 

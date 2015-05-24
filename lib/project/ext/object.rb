@@ -69,9 +69,10 @@ class Object
   # BluePotion stuff
 
   # REMOVE when mp starts working
-  def mp(s)
-    #debugging = RMQ.debugging?
-    debugging = false
+  def mp(s, opts={})
+    if opts[:debugging_only]
+      return unless RMQ.debugging?
+    end
 
     if s.nil?
       s = "<nil>"
@@ -81,7 +82,7 @@ class Object
     backspace = "\b\b " * (Android::App::Application.name.length + 13)
     lines = s.split("\n")
     lines.each do |line|
-      if debugging
+      if RMQ.debugging?
         out = backspace
         out << "\e[1;#{36}m#{self.object_id}\e[0m #{self.short_class_name}".ljust(50)
         out << "  \e[1;#{34}m#{line}\e[0m"

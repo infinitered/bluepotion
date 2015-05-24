@@ -28,7 +28,7 @@
     end
 
     def onActivityCreated(saved_instance_state)
-      mp "PMScreen onActivityCreated"
+      mp "PMScreen onActivityCreated" if RMQ.debugging?
 
       super
 

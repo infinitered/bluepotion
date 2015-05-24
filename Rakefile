@@ -8,6 +8,8 @@ Bundler.require
 Motion::Project::App.setup do |app|
   # Use `rake config' to see complete project settings.
   app.api_version = "16"
+  app.target_api_version = "16"
+
   app.development { app.archs << "x86" } # for genymotion support
 
   app.name = 'BluePotion'

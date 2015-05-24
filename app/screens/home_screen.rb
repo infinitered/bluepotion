@@ -6,14 +6,14 @@ class HomeScreen < PMScreen
 
   # This will automatically set to a RelativeLayout if you don't override this method
   def load_view
-    mp "HomeScreen load_view"
+    mp "HomeScreen load_view", debugging_only: true
 
     #Potion::LinearLayout.new(self.activity)
     Potion::FrameLayout.new(self.activity)
   end
 
   def on_load
-    mp "HomeScreen on_load"
+    mp "HomeScreen on_load", debugging_only: true
 
     append_view(Potion::TextView,  :hello_label).data("Hello BluePotion!")
     append_view(Potion::ImageView, :logo)

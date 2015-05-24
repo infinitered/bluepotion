@@ -5,15 +5,14 @@
     def onCreate(saved_instance_state)
       super
 
-      mp "PMActivity onCreate"
-      #mp caller
+      mp "PMActivity onCreate", debugging_only: true
 
       on_create(saved_instance_state)
       PMApplication.current_application.context
     end
 
     def on_create(saved_instance_state)
-      mp "PMActivity on_create"
+      mp "PMActivity on_create", debugging_only: true
     end
 
     def onResume
