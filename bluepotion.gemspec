@@ -10,7 +10,6 @@ Gem::Specification.new do |spec|
   spec.summary       = %q{BluePotion - Just like RedPotion, but for Android. The best combination of RubyMotion tools and libraries for Android}
   spec.homepage      = "https://github.com/infinitered/bluepotion"
   spec.license       = "MIT"
-  spec.post_install_message = "  <>\n  ||\n (  )  BluePotion\n  ``"
 
   files = []
   files << 'README.md'
