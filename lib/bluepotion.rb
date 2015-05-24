@@ -8,15 +8,9 @@ require 'bluepotion'
 
 lib_dir_path = File.dirname(File.expand_path(__FILE__))
 Motion::Project::App.setup do |app|
-  files = [File.join(lib_dir_path, 'project/pro_motion/pm_application.rb')]
-  files << [File.join(lib_dir_path, 'project/pro_motion/pm_screen.rb')]
-  files << [File.join(lib_dir_path, 'project/pro_motion/pm_activity.rb')]
-  files << [File.join(lib_dir_path, 'project/ruby_motion_query/rmq_stylesheet.rb')]
-  files << Dir.glob(File.join(lib_dir_path, "project/**/*.rb"))
-  files = files.flatten.uniq
+  insert_point = app.files.find_index { |file| file =~ /^(?:\.\/)?app\// } || 0
 
-  puts files.join("\n")
-  puts "-" * 80
-
-  app.files.unshift files
+  Dir.glob(File.join(lib_dir_path, "project/**/*.rb")).reverse.each do |file|
+    app.files.insert(insert_point, file)
+  end
 end
