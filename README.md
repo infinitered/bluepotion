@@ -2,8 +2,9 @@
 
 <br />
 
-# BluePotion
+BluePotion
+-----------
 
-Like RedPotion, but for Android.
+Like [RedPotion](http://redpotion.org), but for RubyMotion Android.
 
 ## BluePotion is pre-alpha right now!
