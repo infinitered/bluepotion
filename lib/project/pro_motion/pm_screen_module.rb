@@ -89,12 +89,12 @@
       rmq.image
     end
 
-    def append_view(view_or_class, style=nil, opts={})
-      self.rmq.append_view(view_or_class, style, opts)
+    def append(view_or_class, style=nil, opts={}, dummy=nil)
+      self.rmq.append(view_or_class, style, opts)
     end
 
-    def append_view!(view_or_class, style=nil, opts={})
-      self.rmq.append_view(view_or_class, style, opts).get
+    def append!(view_or_class, style=nil, opts={})
+      self.rmq.append(view_or_class, style, opts).get
     end
 
     # TODO add create and build

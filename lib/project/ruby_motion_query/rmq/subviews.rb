@@ -57,15 +57,15 @@ class RMQ
   end
   alias :insert :add_subview
 
-  def append_view(view_or_class, style=nil, opts={})
+  def append(view_or_class, style=nil, opts={}, dummy=nil) # <- dummy is to get around RM bug)
     opts[:style] = style
     #opts[:block] = block if block
     out = self.add_subview(view_or_class, opts)
     out
   end
 
-  def append_view!(view_or_class, style=nil, opts={})
-    self.append_view(view_or_class, style, opts).get
+  def append!(view_or_class, style=nil, opts={})
+    self.append(view_or_class, style, opts).get
   end
 
   def create(view_or_constant, style = nil, opts = {}, &block)

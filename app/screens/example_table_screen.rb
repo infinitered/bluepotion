@@ -13,7 +13,7 @@ class ExampleTableScreen < PMScreen
   def on_load
     mp "ExampleTableScreen on_load"
 
-    append_view(Potion::TextView,  :hello_label)
+    append(Potion::TextView,  :hello_label)
 
     find.log_tree
   end

@@ -15,14 +15,14 @@ class HomeScreen < PMScreen
   def on_load
     mp "HomeScreen on_load", debugging_only: true
 
-    append_view(Potion::TextView,  :hello_label).data("Hello BluePotion!")
-    append_view(Potion::ImageView, :logo)
+    append(Potion::TextView,  :hello_label).data("Hello BluePotion!")
+    append(Potion::ImageView, :logo)
 
-    append_view(Potion::Button, :drink_button).on(:tap) do |sender|
+    append(Potion::Button, :drink_button).on(:tap) do |sender|
       Potion::Toast.makeText(find.activity, "Drink your potion.", Potion::Toast::LENGTH_SHORT).show
     end
 
-    append_view(Potion::Button, :open_example_table_button).on(:tap) do |sender|
+    append(Potion::Button, :open_example_table_button).on(:tap) do |sender|
       open ExampleTableScreen
     end
 
@@ -39,23 +39,23 @@ class HomeScreen < PMScreen
     # $o.create_some_test_views
 
     # In activity
-    rmq.activity.rmq.append_view(Potion::View)
-    rmq.activity.rmq.append_view(Potion::View)
-    rmq.activity.rmq.append_view(Potion::View)
-    rmq.activity.rmq.append_view(Potion::View).tag(:foo, :bar)
-    rmq.activity.rmq.append_view(Potion::View)
-    rmq.activity.rmq.append_view(Potion::AbsoluteLayout).append_view(Potion::View)
+    rmq.activity.rmq.append(Potion::View)
+    rmq.activity.rmq.append(Potion::View)
+    rmq.activity.rmq.append(Potion::View)
+    rmq.activity.rmq.append(Potion::View).tag(:foo, :bar)
+    rmq.activity.rmq.append(Potion::View)
+    rmq.activity.rmq.append(Potion::AbsoluteLayout).append(Potion::View)
 
     # In screen
-    rmq.append_view(Potion::View)
-    rmq.append_view(Potion::View).tag(:foo)
-    rmq.append_view(Potion::View).tag(:foo)
-    rmq.append_view(Potion::AbsoluteLayout).tap do |q|
-      q.append_view(Potion::View)
-      q.append_view(Potion::View)
-      q.append_view(Potion::View)
-      rmq.append_view(Potion::AbsoluteLayout).tap do |q2|
-        q2.append_view(Potion::View)
+    rmq.append(Potion::View)
+    rmq.append(Potion::View).tag(:foo)
+    rmq.append(Potion::View).tag(:foo)
+    rmq.append(Potion::AbsoluteLayout).tap do |q|
+      q.append(Potion::View)
+      q.append(Potion::View)
+      q.append(Potion::View)
+      rmq.append(Potion::AbsoluteLayout).tap do |q2|
+        q2.append(Potion::View)
       end
     end
   end
