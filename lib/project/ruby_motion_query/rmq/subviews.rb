@@ -57,6 +57,13 @@ class RMQ
   end
   alias :insert :add_subview
 
+  def append(view_or_class, style=nil, opts={})
+    mp "view_or_class: #{view_or_class.inspect}"
+    mp "style: #{style.inspect}"
+    mp "opts: #{opts.inspect}"
+    nil
+  end
+
   def append_view(view_or_class, style=nil, opts={})
     opts[:style] = style
     #opts[:block] = block if block
