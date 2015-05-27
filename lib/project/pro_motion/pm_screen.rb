@@ -53,7 +53,8 @@
     def setup_xml_widgets
       return unless (xml_widget_ids = self.class.xml_widget_ids)
       xml_widget_ids.each do |id|
-        instance_variable_set("@#{id.to_s}".to_sym, find(id))
+        resource_id = resources.getIdentifier(id.to_s, "id", activity.getApplicationInfo.packageName)
+        instance_variable_set("@#{id.to_s}".to_sym, find(resource_id))
       end
     end
 
