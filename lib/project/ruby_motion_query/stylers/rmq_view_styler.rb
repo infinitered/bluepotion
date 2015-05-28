@@ -49,7 +49,7 @@ class RMQViewStyler
         lp.topMargin = convert_dimension_value(t)
       end
       if fr = (hash[:fr] || hash[:from_right] || hash[:right_margin])
-        lp.rightMargin = convert_dimension_value(lp)
+        lp.rightMargin = convert_dimension_value(fr)
       end
       if fb = (hash[:fb] || hash[:from_bottom] || hash[:bottom_margin])
         lp.bottomMargin = convert_dimension_value(fb)
