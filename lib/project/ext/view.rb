@@ -7,6 +7,12 @@ class Android::View::View
     self.inspect
   end
 
+  def resource_entry_name
+    if self.id > 0
+      resources.getResourceEntryName(self.id)
+    end
+  end
+
   def rmq_data
     @_rmq_data ||= RMQViewData.new
   end

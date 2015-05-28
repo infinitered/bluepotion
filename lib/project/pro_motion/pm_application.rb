@@ -17,6 +17,22 @@
       self.on_create if respond_to?(:on_create)
     end
 
+    def application_info
+      context.applicationInfo
+    end
+
+    def identifier
+      application_info.packageName
+    end
+
+    def package_name
+      @package_name ||= application_info.packageName
+    end
+
+    def data_dir
+      application_info.dataDir
+    end
+
     def window
       if @current_activity
         @window ||= @current_activity.getWindow

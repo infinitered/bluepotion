@@ -9,15 +9,14 @@
     def onCreateView(inflater, parent, saved_instance_state)
       super
 
-      if self.class.xml_resource
-        @view = inflater.inflate(r(:layout, self.class.xml_resource), parent, false)
+      if @xml_resource = self.class.xml_resource
+        @view = inflater.inflate(r(:layout, @xml_resource), parent, false)
       else
         @view = load_view
         @view.setId Potion::ViewIdGenerator.generate
       end
 
       action_bar.hide if hide_action_bar?
-      tag_xml_widgets_with_their_id
 
       @view
     end
@@ -40,6 +39,8 @@
         @view.rmq.apply_style(:root_view) #if @view.rmq.stylesheet.respond_to?(:root_view)
       end
 
+      build_and_tag_xml_views
+
       self.action_bar.title = self.class.bars_title
       self.activity.title = self.class.bars_title
 
@@ -49,16 +50,14 @@
 
     private
 
-    def tag_xml_widgets_with_their_id
-      return unless (xml_widget_ids = self.class.xml_widget_ids)
+    def build_and_tag_xml_views
+      return unless @xml_resource
 
-      package_name = activity.getApplicationInfo.packageName
-      key = "id"
-      xml_widget_ids.each do |id|
-        id_s = id.to_s
-        resource_id = resources.getIdentifier(id_s, key, package_name)
-        view = @view.findViewById(resource_id)
-        view.rmq_data.tag(id_s.to_sym)
+      self.rmq.all.each do |view|
+        if ren = view.resource_entry_name
+          self.rmq.build(view).tag(ren.to_sym)
+          #view.rmq_data.tag(ren.to_sym)
+        end
       end
     end
 

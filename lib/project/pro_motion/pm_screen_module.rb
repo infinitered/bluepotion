@@ -6,7 +6,7 @@
     end
 
     module ClassMethods
-      attr_reader :xml_resource, :xml_widget_ids, :show_action_bar, :bars_title
+      attr_reader :xml_resource, :show_action_bar, :bars_title
 
       @show_action_bar = true
 
@@ -20,13 +20,6 @@
 
       def uses_xml(xml_resource=nil)
         @xml_resource = xml_resource ||= deduce_resource_id
-      end
-
-      def xml_widgets(*widget_ids)
-        @xml_widget_ids = widget_ids || []
-        @xml_widget_ids.each do |id|
-          attr_accessor id
-        end
       end
 
       def uses_action_bar(show_action_bar)
