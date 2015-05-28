@@ -79,7 +79,7 @@ class Object
     else
       s = s.to_s
     end
-    backspace = "\b\b " * (Android::App::Application.name.length + 13)
+    backspace = "\b\b " * (Android::App::Application.name.length + 20)
     lines = s.split("\n")
     lines.each do |line|
       if RMQ.debugging?

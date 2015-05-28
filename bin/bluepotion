@@ -96,7 +96,7 @@ class PotionCommandLine
     end
 
     def insert_from_template(template_name, name)
-      return unless %w{screenl}.include? template_name
+      return unless %w{screen}.include? template_name
 
       puts "\n     Creating #{template_name}: #{name}\n\n"
 

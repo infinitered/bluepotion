@@ -17,9 +17,8 @@
       end
 
       action_bar.hide if hide_action_bar?
-      setup_xml_widgets
+      tag_xml_widgets_with_their_id
 
-      # TODO: how will we pass this back if we don't use XML?
       @view
     end
 
@@ -50,11 +49,16 @@
 
     private
 
-    def setup_xml_widgets
+    def tag_xml_widgets_with_their_id
       return unless (xml_widget_ids = self.class.xml_widget_ids)
+
+      package_name = activity.getApplicationInfo.packageName
+      key = "id"
       xml_widget_ids.each do |id|
-        resource_id = resources.getIdentifier(id.to_s, "id", activity.getApplicationInfo.packageName)
-        instance_variable_set("@#{id.to_s}".to_sym, find(resource_id))
+        id_s = id.to_s
+        resource_id = resources.getIdentifier(id_s, key, package_name)
+        view = @view.findViewById(resource_id)
+        view.rmq_data.tag(id_s.to_sym)
       end
     end
 
