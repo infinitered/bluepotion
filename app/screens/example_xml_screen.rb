@@ -1,10 +1,10 @@
-class <%= @name_camel_case %>Screen < PMScreen
+class ExampleXmlScreen < PMScreen
 
   # If you are using XML for this screen:
-  #uses_xml :<%= @name %>
+  #uses_xml :example_xml
 
   uses_action_bar true
-  stylesheet <%= @name_camel_case %>ScreenStylesheet
+  stylesheet ExampleXmlScreenStylesheet
 
   # Title is unnecesary if you're using an XML file
   title "Your title here"
