@@ -5,26 +5,118 @@ class RMQViewStyler
   attr_accessor :corner_radius
 
   def initialize(view, context)
+    @needs_finalize = false
     @view = view
     @context = context
     @bg_color = nil
     @corner_radius = nil
   end
 
+  def convert_dimension_value(value)
+    case value
+    when :match_parent, :full
+      Android::View::ViewGroup::LayoutParams::MATCH_PARENT
+    when :wrap_content
+      Android::View::ViewGroup::LayoutParams::WRAP_CONTENT
+    else
+      dp2px(value)
+    end
+  end
+
+  def layout_params
+    @layout_params ||= @view.getLayoutParams
+  end
+
+  def layout=(value)
+    lp = layout_params
+
+    if value == :full
+      lp.width = convert_dimension_value(:full)
+      lp.height = convert_dimension_value(:full)
+      @view.setLayoutParams(lp)
+    elsif value.is_a?(Hash)
+      hash = value
+      if w = (hash[:w] || hash[:width])
+        lp.width = convert_dimension_value(w)
+      end
+      if h = (hash[:h] || hash[:height])
+        lp.height = convert_dimension_value(h)
+      end
+      if l = (hash[:l] || hash[:left] || hash[:left_margin])
+        lp.leftMargin = convert_dimension_value(l)
+      end
+      if t = (hash[:t] || hash[:top] || hash[:top_margin])
+        lp.topMargin = convert_dimension_value(t)
+      end
+      if fr = (hash[:fr] || hash[:from_right] || hash[:right_margin])
+        lp.rightMargin = convert_dimension_value(lp)
+      end
+      if fb = (hash[:fb] || hash[:from_bottom] || hash[:bottom_margin])
+        lp.bottomMargin = convert_dimension_value(fb)
+      end
+
+      # TODO do center
+
+      # TODO gravity
+
+      # TODO do the relative bits
+
+      @view.setLayoutParams(lp)
+
+      if pad = hash[:padding]
+        self.padding = pad
+      end
+    end
+
+  end
+  alias :frame= :layout=
+
+  def padding=(pad)
+    if pad.is_a?(Potion::Integer)
+      pad = convert_dimension_value(pad)
+      @view.setPadding(pad, pad, pad, pad)
+    elsif pad.is_a?(Hash)
+      @view.setPadding(
+        convert_dimension_value(pad[:l] || pad[:left] || 0),
+        convert_dimension_value(pad[:t] || pad[:top] || 0),
+        convert_dimension_value(pad[:r] || pad[:right] || 0),
+        convert_dimension_value(pad[:b] || pad[:bottom] || 0))
+    else
+      mp pad.class.name
+    end
+  end
+
+  # use this if you need to do something after all style methods have been called (e.g.
+  # applying layout params)
+  def finalize
+    return unless @needs_finalize
+
+    create_rounded_bg if corner_radius
+    layout_params.setMargins(margin[:left],
+      margin[:top],
+      margin[:right],
+      margin[:bottom]) if layout_params.respond_to?(:setMargins)
+    @view.setLayoutParams(layout_params)
+
+    @view.setPadding(padding[:left], padding[:top], padding[:right], padding[:bottom])
+  end
+
+
   def background_color=(color)
     @view.backgroundColor = @bg_color = convert_color(color)
   end
-  alias_method :backgroundColor=, :background_color=
 
   def background_resource=(bg)
     @view.backgroundResource = bg
   end
 
   def layout_width=(layout_width)
+    @needs_finalize = true
     layout_params.width = convert_dimension_value(layout_width)
   end
 
   def layout_height=(layout_height)
+    @needs_finalize = true
     layout_params.height = convert_dimension_value(layout_height)
   end
 
@@ -33,108 +125,99 @@ class RMQViewStyler
   end
 
   def layout_center_in_parent=(center_in_parent)
+    @needs_finalize = true
     center = center_in_parent ? Android::Widget::RelativeLayout::TRUE :
       Android::Widget::RelativeLayout::FALSE
     layout_params.addRule(Android::Widget::RelativeLayout::CENTER_IN_PARENT, center)
   end
-  alias_method :layout_centerInParent=, :layout_center_in_parent=
 
   def layout_center_vertical=(center_vertical)
+    @needs_finalize = true
     center = center_vertical ? Android::Widget::RelativeLayout::TRUE :
       Android::Widget::RelativeLayout::FALSE
     layout_params.addRule(Android::Widget::RelativeLayout::CENTER_VERTICAL, center)
   end
-  alias_method :layout_centerVertical=, :layout_center_in_parent=
+
+  def layout_center_horizontal=(center_horizontal)
+    @needs_finalize = true
+    center = center_horizontal ? Android::Widget::RelativeLayout::TRUE :
+      Android::Widget::RelativeLayout::FALSE
+    layout_params.addRule(Android::Widget::RelativeLayout::CENTER_HORIZONTAL, center)
+  end
 
   def layout_align_parent_left=(left_in_parent)
+    @needs_finalize = true
     left = left_in_parent ? Android::Widget::RelativeLayout::TRUE :
       Android::Widget::RelativeLayout::FALSE
     layout_params.addRule(Android::Widget::RelativeLayout::ALIGN_PARENT_LEFT, left)
   end
-  alias_method :layout_alignParentLeft=, :layout_align_parent_left=
 
   def layout_align_parent_right=(right_in_parent)
+    @needs_finalize = true
     right = right_in_parent ? Android::Widget::RelativeLayout::TRUE :
       Android::Widget::RelativeLayout::FALSE
     layout_params.addRule(Android::Widget::RelativeLayout::ALIGN_PARENT_RIGHT, right)
   end
-  alias_method :layout_alignParentRight=, :layout_align_parent_right=
 
   def padding_left=(pad_left)
+    @needs_finalize = true
     padding[:left] = dp2px(pad_left)
   end
-  alias_method :paddingLeft=, :padding_left=
 
   def padding_top=(pad_top)
+    @needs_finalize = true
     padding[:top] = dp2px(pad_top)
   end
-  alias_method :paddingTop=, :padding_top=
 
   def padding_right=(pad_right)
+    @needs_finalize = true
     padding[:right] = dp2px(pad_right)
   end
-  alias_method :paddingRight=, :padding_right=
 
   def padding_bottom=(pad_bottom)
+    @needs_finalize = true
     padding[:bottom] = dp2px(pad_bottom)
-  end
-  alias_method :paddingBottom=, :padding_bottom=
-
-  def padding=(pad)
-    padding[:left] = padding[:top] = padding[:right] = padding[:bottom] = dp2px(pad)
   end
 
   def margin_left=(m_left)
+    @needs_finalize = true
     margin[:left] = dp2px(m_left)
   end
-  alias_method :marginLeft=, :margin_left=
 
   def margin_top=(m_top)
+    @needs_finalize = true
     margin[:top] = dp2px(m_top)
   end
-  alias_method :marginTop=, :margin_top=
 
   def margin_right=(m_right)
+    @needs_finalize = true
     margin[:right] = dp2px(m_right)
   end
-  alias_method :marginRight=, :margin_right=
 
   def margin_bottom=(m_bottom)
+    @needs_finalize = true
     margin[:bottom] = dp2px(m_bottom)
   end
-  alias_method :marginBottom=, :margin_bottom=
 
   def margin=(m)
+    @needs_finalize = true
     margin[:left] = margin[:top] = margin[:right] = margin[:bottom] = dp2px(m)
   end
 
-  # this can only be used on a widget that's within a LinearLayout
+  # This can only be used on a widget that's within a LinearLayout
   def layout_weight=(weight)
+    @needs_finalize = true
     layout_params.weight = weight
   end
 
   def layout_gravity=(gravity)
+    @needs_finalize = true
     layout_params.gravity = convert_gravity(gravity)
   end
 
   def corner_radius(corner_radius)
+    @needs_finalize = true
     @corner_radius = dp2px(corner_radius)
-  end
-
-  # use this if you need to do something after all style methods have been called (e.g.
-  # applying layout params)
-  def finalize
-    create_rounded_bg if corner_radius
-    @view.setPadding(padding[:left], padding[:top], padding[:right], padding[:bottom])
-    layout_params.setMargins(margin[:left],
-      margin[:top],
-      margin[:right],
-      margin[:bottom]) if layout_params.respond_to?(:setMargins)
-    @view.setLayoutParams(layout_params)
-  end
-
-  def layout_params
-    @layout_params ||= @view.getLayoutParams()
   end
 
   def convert_color(color)

@@ -2,6 +2,7 @@ module Potion
   Activity = Android::App::Activity
   View = Android::View::View
   ViewGroup = Android::View::ViewGroup
+  Integer = Java::Lang::Integer
 
   # layouts
   LinearLayout = Android::Widget::LinearLayout
@@ -14,6 +15,7 @@ module Potion
   TextView = Android::Widget::TextView
   ImageView = Android::Widget::ImageView
   Button = Android::Widget::Button
+  CalendarView = Android::Widget::CalendarView
   Toast = Android::Widget::Toast
 
   # graphics

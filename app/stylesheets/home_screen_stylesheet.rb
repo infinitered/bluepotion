@@ -1,19 +1,21 @@
 class HomeScreenStylesheet < ApplicationStylesheet
 
   def root_view(st)
-    st.layout_width = :full
-    st.layout_height = :full
-    st.gravity = :center
+    st.layout = :full
+    st.padding = 20
+    st.orientation = :vertical
+  end
+
+  def logo(st)
+    st.layout = {t: 20, w: 100, h: 100, centered: :horizontal}
+    #st.layout_center_horizontal = true
+    st.image = image.resource("bluepotion_logo")
   end
 
   def hello_label(st)
     standard_text_view(st)
     st.font = font.large
     st.color = color.potion_blue
-  end
-
-  def logo(st)
-    st.image = image.resource("bluepotion_logo")
   end
 
   def drink_button(st)
@@ -30,4 +32,45 @@ class HomeScreenStylesheet < ApplicationStylesheet
     st.text = "Open table screen"
   end
 
+  def calendar(st)
+    st.layout = {w: :full, h: 400}
+    st.background_color = color.black
+  end
+
 end
+
+__END__
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Button"
+        android:id="@+id/button"
+        android:layout_below="@+id/imageView"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentEnd="false"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:src="@mipmap/ic_launcher"
+        android:layout_alignParentTop="false"
+        android:layout_marginTop="20dp"
+        android:layout_alignParentEnd="false"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Button"
+        android:id="@+id/button2"
+        android:layout_below="@+id/button"
+        android:layout_alignLeft="@+id/button"
+        android:layout_alignStart="@+id/button"
+        android:layout_marginTop="10dp" />
+

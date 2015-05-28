@@ -56,7 +56,6 @@
       self.rmq.all.each do |view|
         if ren = view.resource_entry_name
           self.rmq.build(view).tag(ren.to_sym)
-          #view.rmq_data.tag(ren.to_sym)
         end
       end
     end

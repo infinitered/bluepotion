@@ -8,15 +8,16 @@ class HomeScreen < PMScreen
   def load_view
     mp "HomeScreen load_view", debugging_only: true
 
-    #Potion::LinearLayout.new(self.activity)
-    Potion::FrameLayout.new(self.activity)
+    Potion::LinearLayout.new(self.activity)
+    #Potion::FrameLayout.new(self.activity)
   end
 
   def on_load
     mp "HomeScreen on_load", debugging_only: true
 
-    append(Potion::TextView,  :hello_label).data("Hello BluePotion!")
     append(Potion::ImageView, :logo)
+
+    append(Potion::TextView,  :hello_label).data("Hello BluePotion!")
 
     append(Potion::Button, :drink_button).on(:tap) do |sender|
       Potion::Toast.makeText(find.activity, "Drink your potion.", Potion::Toast::LENGTH_SHORT).show
@@ -25,6 +26,8 @@ class HomeScreen < PMScreen
     append(Potion::Button, :open_example_table_button).on(:tap) do |sender|
       open ExampleTableScreen
     end
+
+    append(Potion::CalendarView, :calendar)
 
     debug
   end
