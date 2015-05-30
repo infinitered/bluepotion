@@ -1,12 +1,12 @@
 PATH
   remote: .
   specs:
-    bluepotion (0.0.8)
+    bluepotion (0.1.0)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    newclear (1.0)
+    newclear (1.1)
       reset-sim
     rake (10.4.2)
     reset-sim (1.0)

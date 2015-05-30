@@ -7,9 +7,9 @@ class HomeScreenStylesheet < ApplicationStylesheet
   end
 
   def logo(st)
-    st.layout = {t: 20, w: 100, h: 100, centered: :horizontal}
-    #st.layout_center_horizontal = true
+    st.layout = {t: 0, w: 100, h: 100, centered: :horizontal}
     st.image = image.resource("bluepotion_logo")
+    #st.layout_center_horizontal = true
   end
 
   def hello_label(st)
@@ -19,6 +19,7 @@ class HomeScreenStylesheet < ApplicationStylesheet
   end
 
   def drink_button(st)
+    #st.layout = {t: 10, l: 40, fr: 40, fb: 10}
     standard_button(st)
     st.background_color = color.mustard
     st.color = color.black

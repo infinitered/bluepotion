@@ -10,6 +10,7 @@ class HomeScreen < PMScreen
 
     Potion::LinearLayout.new(self.activity)
     #Potion::FrameLayout.new(self.activity)
+    #Potion::RelativeLayout.new(self.activity)
   end
 
   def on_load
