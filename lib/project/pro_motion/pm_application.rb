@@ -1,7 +1,7 @@
 # RM-773
 #module ProMotion
   class PMApplication < Android::App::Application
-    attr_accessor :home_screen_class, :context, :current_activity
+    attr_accessor :context, :current_activity
 
     def onCreate
       mp "PMApplication onCreate", debugging_only: true
@@ -15,6 +15,10 @@
 
       @home_screen_class = self.class.home_screen_class
       self.on_create if respond_to?(:on_create)
+    end
+
+    def home_screen_class
+      @home_screen_class
     end
 
     def application_info

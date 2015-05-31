@@ -1,7 +1,7 @@
 class <%= @name_camel_case %>Screen < PMScreen
 
   # If you are using XML for this screen:
-  #uses_xml :<%= @name %>
+  #uses_xml :<%= @name %>_screen
 
   uses_action_bar true
   stylesheet <%= @name_camel_case %>ScreenStylesheet
