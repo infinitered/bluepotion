@@ -15,6 +15,7 @@ class PotionCommandLine
      > bluepotion create my_new_app
 
      > bluepotion create screen foo
+     > bluepotion create xml_screen foo
 
      Misc
      > bluepotion -h, --help
@@ -23,7 +24,8 @@ class PotionCommandLine
 
   class << self
     VALID_CREATE_TYPES = [
-      :screen
+      :screen,
+      :xml_screen
     ]
 
     def create(template_or_app_name, *options)
@@ -96,7 +98,7 @@ class PotionCommandLine
     end
 
     def insert_from_template(template_name, name)
-      return unless %w{screen}.include? template_name
+      return unless %w{screen xml_screen}.include? template_name
 
       puts "\n     Creating #{template_name}: #{name}\n\n"
 
