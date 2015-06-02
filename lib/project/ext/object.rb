@@ -1,4 +1,7 @@
 class Object
+  def repl?
+    true
+  end
 
   # REMOVE when RubyMotion adds this
   def object_id
