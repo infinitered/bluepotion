@@ -46,6 +46,9 @@ class Object
     self.class.name.split('.').last
   end
 
+  def blank?
+    self.respond_to?(:empty?) ? self.empty? : !self
+  end
 
   # RMQ stuff
 
