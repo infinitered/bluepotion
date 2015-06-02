@@ -65,6 +65,8 @@
     def onResume; super; on_resume; end
     def on_resume; end
 
+    def on_create_menu(menu); end
+
     def onPause; super; on_pause; end
     def on_pause; end
 

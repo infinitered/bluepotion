@@ -165,7 +165,7 @@
         return
       end
 
-      option[:show] ||= :always
+      options[:show] ||= :always
 
       # Should be something like Android::MenuItem::SHOW_AS_ACTION_IF_ROOM
       show_as_action = 0 if options[:show] == :never

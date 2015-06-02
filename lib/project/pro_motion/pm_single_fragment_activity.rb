@@ -29,6 +29,7 @@
 
     def on_create_menu(menu)
       @menu = menu
+      self.fragment.on_create_menu(menu) if self.fragment
     end
 
   end

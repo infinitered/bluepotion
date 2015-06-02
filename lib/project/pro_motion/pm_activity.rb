@@ -36,7 +36,6 @@
     def onCreateOptionsMenu(menu)
       on_create_menu(menu)
     end
-
     def on_create_menu(_); end
 
   end
