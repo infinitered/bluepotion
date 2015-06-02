@@ -2,12 +2,16 @@ class RMQ
   # I'm purposly not including Enumerable,
   # please use to_a if you want one
 
-
   # @return [RMQ]
   def <<(value)
     selected << value if value.is_a?(UIView)
     self
   end
+
+  def empty?
+    selected.length == 0
+  end
+  alias :is_blank? :empty?
 
   # @return [RMQ]
   #

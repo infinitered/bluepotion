@@ -3,6 +3,8 @@ module Potion
   View = Android::View::View
   ViewGroup = Android::View::ViewGroup
   Integer = Java::Lang::Integer
+  ArrayList = Java::Util::ArrayList
+  Bundle = Android::Os::Bundle
 
   # layouts
   LinearLayout = Android::Widget::LinearLayout
@@ -21,8 +23,6 @@ module Potion
   # graphics
   Color = Android::Graphics::Color
   Typeface = Android::Graphics::Typeface
-
-  ArrayList = Java::Util::ArrayList
 end
 
 #
