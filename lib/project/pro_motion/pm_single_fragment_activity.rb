@@ -5,6 +5,7 @@
     attr_accessor :fragment_container, :fragment
 
     EXTRA_FRAGMENT_CLASS = "fragment_class"
+    EXTRA_FRAGMENT_ARGUMENTS = "fragment_arguments"
 
     def on_create(saved_instance_state)
       super
@@ -16,8 +17,18 @@
       self.contentView = @fragment_container
 
       if (fragment_class = intent.getStringExtra(EXTRA_FRAGMENT_CLASS))
-        # TODO weird way to create this intance, look at this later
-        set_fragment Kernel.const_get(fragment_class.to_s).new
+        if fragment_instance = Kernel.const_get(fragment_class.to_s).new
+          set_fragment fragment_instance
+
+          # Grab the fragment arguments and call them on the class
+          if fragment_arguments = intent.getBundleExtra(EXTRA_FRAGMENT_ARGUMENTS)
+            fragment_arguments = PMHashBundle.from_bundle(fragment_arguments).to_h
+
+            fragment_arguments.each do |key, value|
+              fragment_instance.send "#{key}=", value
+            end
+          end
+        end
       end
     end
 

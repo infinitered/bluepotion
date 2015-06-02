@@ -1,5 +1,4 @@
 class ExampleTableScreen < PMScreen
-
   uses_action_bar true
   stylesheet ExampleTableScreenStylesheet
   title "Example Table Screen"
@@ -18,4 +17,7 @@ class ExampleTableScreen < PMScreen
     find.log_tree
   end
 
+  def people=(value)
+    mp "People set: #{value}"
+  end
 end

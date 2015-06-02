@@ -105,7 +105,7 @@
 
     def open(screen_class, options={})
       mp "ScreenModule open", debugging_only: true
-      activity_class = options[:activity] || PMSingleFragmentActivity
+      activity_class = options.delete(:activity) || PMSingleFragmentActivity
 
       # TODO: replace the fragment in the activity when possible
       # replace the fragment if we can; otherwise launch a new activity
@@ -115,11 +115,17 @@
       intent = Android::Content::Intent.new(self.activity, activity_class)
       intent.putExtra PMSingleFragmentActivity::EXTRA_FRAGMENT_CLASS, screen_class.to_s
 
-      ## TODO: limited support for extras for now - should reimplement with fragment arguments
-      if options[:extras]
-        options[:extras].keys.each do |key|
-          intent.putExtra key.to_s, options[:extras][key].toString
+      if extras = options.delete(:extras)
+        extras.keys.each do |key, value|
+          # TODO, cahnge to bundle and do like below
+          intent.putExtra key.to_s, value.toString
         end
+      end
+
+      unless options.blank?
+        # The rest of the options are screen accessors, we use fragment arguments for this
+        hash_bundle = PMHashBundle.from_hash(options)
+        intent.putExtra PMSingleFragmentActivity::EXTRA_FRAGMENT_ARGUMENTS, hash_bundle.to_bundle
       end
 
       self.activity.startActivity intent
