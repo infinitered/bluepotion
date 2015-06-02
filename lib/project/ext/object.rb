@@ -1,8 +1,4 @@
 class Object
-  def repl?
-    true
-  end
-
   # REMOVE when RubyMotion adds this
   def object_id
     Java::Lang::System.identityHashCode(self)
@@ -68,6 +64,9 @@ class Object
     rmq(*args).get
   end
 
+  def open(screen_class, options={})
+    rmq.screen.open(screen_class, options) if rmq.screen
+  end
 
   # BluePotion stuff
 
