@@ -1,4 +1,5 @@
 class Object
+
   # REMOVE when RubyMotion adds this
   def object_id
     Java::Lang::System.identityHashCode(self)
