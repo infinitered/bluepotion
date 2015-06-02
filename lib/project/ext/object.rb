@@ -65,10 +65,6 @@ class Object
     rmq(*args).get
   end
 
-  def open(screen_class, options={})
-    rmq.screen.open(screen_class, options) if rmq.screen
-  end
-
   # BluePotion stuff
 
   # REMOVE when mp starts working
