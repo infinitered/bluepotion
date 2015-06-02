@@ -2,7 +2,7 @@
 # RM-733
 #module ProMotion
   class PMSingleFragmentActivity < PMActivity
-    attr_accessor :fragment_container, :fragment
+    attr_accessor :fragment_container, :fragment, :menu
 
     EXTRA_FRAGMENT_CLASS = "fragment_class"
     EXTRA_FRAGMENT_ARGUMENTS = "fragment_arguments"
@@ -36,6 +36,11 @@
       mp "PMSingleFragmentActivity set_fragment", debugging_only: true
       @fragment = fragment # useful for the REPL
       fragmentManager.beginTransaction.add(@fragment_container.getId, fragment, fragment.class.to_s).commit
+    end
+
+    def on_create_menu(menu)
+      @menu = menu
+      self.fragment.on_create_menu(menu) if self.fragment
     end
 
   end

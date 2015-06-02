@@ -6,6 +6,12 @@
 
     attr_accessor :view
 
+    def onAttach(activity); super; on_attach(activity); end
+    def on_attach(activity); end
+
+    def onCreate(bundle); super; on_create(bundle); end
+    def on_create(bundle); end
+
     def onCreateView(inflater, parent, saved_instance_state)
       super
 
@@ -18,8 +24,11 @@
 
       action_bar.hide if hide_action_bar?
 
+      on_create_view(inflater, parent, saved_instance_state)
+
       @view
     end
+    def on_create_view(inflater, parent, saved_instance_state); end
 
     def onStart
       super
@@ -54,7 +63,33 @@
       self.activity.title = self.class.bars_title
 
       on_load
+      on_activity_created
     end
+    def on_load; end
+    def on_activity_created; end
+
+    def onStart; super; on_start; end
+    def on_start; end
+
+    def onResume; super; on_resume; end
+    def on_resume; end
+
+    def on_create_menu(menu); end
+
+    def onPause; super; on_pause; end
+    def on_pause; end
+
+    def onStop; super; on_stop; end
+    def on_stop; end
+
+    def onDestroyView; super; on_destroy_view; end
+    def on_destroy_view; end
+
+    def onDestroy; super; on_destroy; end
+    def on_destroy; end
+
+    def onDetach; super; on_detach; end
+    def on_detach; end
 
     private
 
