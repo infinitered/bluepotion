@@ -131,6 +131,10 @@
       self.activity.startActivity intent
     end
 
+    def close(options={})
+      self.activity.finish
+    end
+
     def start_activity(activity_class)
       intent = Android::Content::Intent.new(self.activity, activity_class)
       #intent.putExtra("key", value); # Optional parameters
