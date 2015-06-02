@@ -168,7 +168,7 @@
     # Example: add_action_bar_button(title: "My text", show: :if_room)
     def add_action_bar_button(options={})
       unless menu
-        mp "#{self.inspect}#set_action_bar_button: No menu set up yet."
+        mp "#{self.inspect}#add_action_bar_button: No menu set up yet."
         return
       end
 
