@@ -158,8 +158,8 @@
       activity.menu
     end
 
-    # Example: set_action_bar_button :right, { title: "My text", show: :if_room }
-    def set_action_bar_button(side, options={})
+    # Example: add_action_bar_button(title: "My text", show: :if_room)
+    def add_action_bar_button(options={})
       unless menu
         mp "#{self.inspect}#set_action_bar_button: No menu set up yet."
         return
@@ -174,17 +174,11 @@
       show_as_action = 4 if options[:show] == :with_text
       show_as_action = 8 if options[:show] == :collapse
 
-      if side == :left
-        mp "#{self.inspect}#set_action_bar_button: Left bar buttons not implemented yet."
-      elsif side == :right
-        btn = self.activity.menu.add(options.fetch(:group, 0), options.fetch(:item_id, 0), options.fetch(:order, 0), options.fetch(:title, "Untitled"))
-        btn.setShowAsAction(show_as_action) if show_as_action
-        btn.setIcon(options[:icon]) if options[:icon]
-      end
+      btn = self.activity.menu.add(options.fetch(:group, 0), options.fetch(:item_id, 0), options.fetch(:order, 0), options.fetch(:title, "Untitled"))
+      btn.setShowAsAction(show_as_action) if show_as_action
+      btn.setIcon(options[:icon]) if options[:icon]
       btn
     end
-    alias_method :set_nav_bar_button, :set_action_bar_button
-
 
   end
 #end
