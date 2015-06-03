@@ -30,15 +30,6 @@
     end
     def on_create_view(inflater, parent, saved_instance_state); end
 
-    def onStart
-      super
-      on_start
-    end
-    def on_start
-      # Abstract
-    end
-    alias :on_appear :on_start
-
     def load_view
       Potion::FrameLayout.new(self.activity)
     end
@@ -70,6 +61,7 @@
 
     def onStart; super; on_start; end
     def on_start; end
+    alias :on_appear :on_start
 
     def onResume; super; on_resume; end
     def on_resume; end
