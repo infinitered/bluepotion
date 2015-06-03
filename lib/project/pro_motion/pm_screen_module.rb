@@ -18,13 +18,16 @@
         @rmq_style_sheet_class
       end
 
-      def uses_xml(xml_resource=nil)
+      def xml_layout(xml_resource=nil)
         @xml_resource = xml_resource ||= deduce_resource_id
       end
+      alias_method :uses_xml, :xml_layout
 
-      def uses_action_bar(show_action_bar)
+      def action_bar(show_action_bar)
         @show_action_bar = show_action_bar
       end
+      alias_method :nav_bar, :action_bar
+      alias_method :uses_action_bar, :action_bar
 
       def title(new_title)
         @bars_title = new_title
