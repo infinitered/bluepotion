@@ -3,9 +3,9 @@ class RMQ
     self.selected.each do |view|
       case event
       when :click, :tap, :touch
-        handle_click view
+        handle_click(view, &block)
       when :change
-        handle_change view
+        handle_change(view, &block)
       else
         raise "[RMQ ERROR] Unrecognized event: #{event}"
       end
@@ -15,7 +15,7 @@ class RMQ
 
   private
 
-  def handle_click view
+  def handle_click(view, &block)
     # Click event for ListItems
     if view.respond_to? :setOnItemClickListener
       view.onItemClickListener = RMQItemClick.new(&block)
@@ -25,8 +25,7 @@ class RMQ
     end
   end
 
-
-  def handle_change view
+  def handle_change(view, &block)
     # Seek bar change
     if view.respond_to? :setOnSeekBarChangeListener
       view.onSeekBarChangeListener = RMQSeekChange.new(args, &block)

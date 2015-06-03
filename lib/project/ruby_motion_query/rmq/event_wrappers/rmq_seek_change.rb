@@ -2,10 +2,9 @@ class RMQSeekChange
   attr_accessor :change_block
 
   def initialize(action=:change, &block)
-    # Empty hash from RMQ Events means we keep our default
-    action = :change if action == {}
-
     @action = action
+    # Empty hash from RMQ Events means we keep our default
+    @action = :change if @action == {}
     @change_block = block
   end
 
