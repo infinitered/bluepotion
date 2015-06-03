@@ -50,8 +50,7 @@
 
       build_and_tag_xml_views
 
-      self.action_bar.title = self.class.bars_title
-      self.activity.title = self.class.bars_title
+      self.title = self.class.bars_title
 
       on_load
       on_activity_created
@@ -82,6 +81,20 @@
 
     def onDetach; super; on_detach; end
     def on_detach; end
+
+    def title
+      @title
+    end
+    def title=(value)
+      @title = value
+
+      if a = self.activity
+        if a_bar = self.action_bar
+          a_bar.title = value
+        end
+        a.title = value
+      end
+    end
 
     private
 

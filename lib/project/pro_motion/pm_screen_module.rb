@@ -158,13 +158,10 @@
       input_manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     end
 
-
-    def activity
-      getActivity()
-    end
-
     def action_bar
-      activity.getActionBar()
+      if a = activity
+        a.getActionBar
+      end
     end
 
     def menu
