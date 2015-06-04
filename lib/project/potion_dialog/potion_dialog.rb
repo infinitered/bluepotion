@@ -1,6 +1,6 @@
 class PotionDialog
 
-	def initialize (options)
+	def initialize(options)
 		# err if missing required options
 		raise "Requires an xml_layout!!" unless options[:xml_layout]
 		raise "Cannot have width without height!!" if options[:width] && !options[:height]
@@ -23,7 +23,7 @@ class PotionDialog
 		# create dialog
 		dialog = Potion::Dialog.new(rmq.app.current_activity)
 
-		# manage title 
+		# manage title
 		if options[:title] 
 			dialog.title = options[:title]
 		else
