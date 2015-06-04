@@ -1,10 +1,12 @@
 module Potion
   Activity = Android::App::Activity
   View = Android::View::View
+  Window = Android::View::Window
   ViewGroup = Android::View::ViewGroup
   Integer = Java::Lang::Integer
   ArrayList = Java::Util::ArrayList
   Bundle = Android::Os::Bundle
+  Dialog = Android::App::Dialog
 
   # layouts
   LinearLayout = Android::Widget::LinearLayout
