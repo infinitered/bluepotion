@@ -21,7 +21,7 @@ class PotionDialog
 
 	def build_dialog(options)
 		# create dialog
-		dialog = Potion::Dialog.new(rmq.app.context)
+		dialog = Potion::Dialog.new(rmq.app.current_activity)
 
 		# manage title 
 		if options[:title] 
@@ -37,5 +37,6 @@ class PotionDialog
 		if options[:height] && options[:width]
 			dialog.window.setLayout(options[:width], options[:height])
 		end	
+		dialog
 	end
 end

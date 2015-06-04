@@ -18,7 +18,10 @@ class HomeScreen < PMScreen
 
     append(Potion::ImageView, :logo)
 
-    append(Potion::TextView,  :hello_label).data("Hello BluePotion!")
+    append(Potion::TextView,  :hello_label).data("Hello BluePotion!").on(:tap) do 
+      PotionDialog.new(xml_layout: R::Layout::Alert_dialog, width: 700, height: 1200)
+    end
+
 
     append(Potion::Button, :drink_button).on(:tap) do |sender|
       Potion::Toast.makeText(find.activity, "Drink your potion.", Potion::Toast::LENGTH_SHORT).show
