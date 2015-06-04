@@ -170,6 +170,7 @@
 
     # Example: add_action_bar_button(title: "My text", show: :if_room)
     def add_action_bar_button(options={})
+      @action_bar ||= { button_actions: {} }
       unless menu
         mp "#{self.inspect}#add_action_bar_button: No menu set up yet."
         return
@@ -184,10 +185,23 @@
       show_as_action = 4 if options[:show] == :with_text
       show_as_action = 8 if options[:show] == :collapse
 
-      btn = self.activity.menu.add(options.fetch(:group, 0), options.fetch(:item_id, 0), options.fetch(:order, 0), options.fetch(:title, "Untitled"))
+      btn = self.activity.menu.add(options.fetch(:group, 0), options.fetch(:item_id, @action_bar[:current_id] || 0), options.fetch(:order, 0), options.fetch(:title, "Untitled"))
       btn.setShowAsAction(show_as_action) if show_as_action
       btn.setIcon(options[:icon]) if options[:icon]
+      @action_bar[:button_actions][btn.getItemId] = options[:action] if options[:action]
+      @action_bar[:current_id] = btn.getItemId + 1
       btn
+    end
+
+    def on_options_item_selected(item)
+      return unless @action_bar
+      return unless method_name = @action_bar[:button_actions][item.getItemId]
+      if respond_to?(method_name)
+        send(method_name)
+      else
+        mp "#{self.inspect} No method #{method_name.inspect} implemented for this screen."
+        true
+      end
     end
 
   end
