@@ -21,9 +21,9 @@ class RMQLinearLayoutStyler < RMQViewStyler
   def convert_orientation(orientation)
     case orientation
     when :horizontal
-      Android::Widget::LinearLayout::HORIZONTAL
+      Potion::LinearLayout::HORIZONTAL
     when :vertical
-      Android::Widget::LinearLayout::VERTICAL
+      Potion::LinearLayout::VERTICAL
     else
       orientation
     end

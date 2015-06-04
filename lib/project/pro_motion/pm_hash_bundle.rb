@@ -30,6 +30,8 @@ class PMHashBundle
         value = case value_type
         when "com.rubymotion.String"
           bundle.getString(key)
+        when "com.rubymotion.Symbol"
+          bundle.getString(key).to_sym
         when "java.lang.Integer"
           bundle.getInt(key)
         when "java.lang.Double"
@@ -64,6 +66,8 @@ class PMHashBundle
         case value_type
         when "com.rubymotion.String"
           bundle.putString(key, value)
+        when "com.rubymotion.Symbol"
+          bundle.putString(key, value.to_s)
         when "java.lang.Integer"
           bundle.putInt(key, value)
         when "java.lang.Double"

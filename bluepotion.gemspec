@@ -4,8 +4,8 @@ require "project/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "bluepotion"
-  spec.authors       = ["InfiniteRed"]
-  spec.email         = ["hello@infinitered.com"]
+  spec.authors       = ["InfiniteRed", "ClearSight Studio"]
+  spec.email         = ["hello@infinitered.com", "hello@clearsightstudio.com"]
   spec.description   = %q{BluePotion - Just like RedPotion, but for Android}
   spec.summary       = %q{BluePotion - Just like RedPotion, but for Android. The best combination of RubyMotion tools and libraries for Android}
   spec.homepage      = "https://github.com/infinitered/bluepotion"

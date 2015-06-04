@@ -18,10 +18,10 @@
         @rmq_style_sheet_class
       end
 
-      def layout(xml_resource=nil)
+      def xml_layout(xml_resource=nil)
         @xml_resource = xml_resource ||= deduce_resource_id
       end
-      alias_method :uses_xml, :layout
+      alias_method :uses_xml, :xml_layout
 
       def action_bar(show_action_bar)
         @show_action_bar = show_action_bar
@@ -158,13 +158,10 @@
       input_manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     end
 
-
-    def activity
-      getActivity()
-    end
-
     def action_bar
-      activity.getActionBar()
+      if a = activity
+        a.getActionBar
+      end
     end
 
     def menu

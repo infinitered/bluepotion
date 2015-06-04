@@ -25,7 +25,7 @@ class HomeScreen < PMScreen
     end
 
     append(Potion::Button, :open_example_table_button).on(:tap) do |sender|
-      open ExampleTableScreen, people: ["Todd", "Darin", "Gant", "Jamon"]
+      open ExampleTableScreen, people: ["Todd", "Darin", "Gant", "Jamon"], test_int: 123, test_symbol: :my_symbol
     end
 
     append(Potion::CalendarView, :calendar)
