@@ -18,14 +18,15 @@ class HomeScreen < PMScreen
 
     append(Potion::ImageView, :logo)
 
-    append(Potion::TextView,  :hello_label).data("Hello BluePotion!").on(:tap) do 
-      PotionDialog.new(xml_layout: R::Layout::Alert_dialog, width: 700, height: 1200)
-    end
-
+    append(Potion::TextView,  :hello_label).data("Hello BluePotion!")
 
     append(Potion::Button, :drink_button).on(:tap) do |sender|
       Potion::Toast.makeText(find.activity, "Drink your potion.", Potion::Toast::LENGTH_SHORT).show
     end
+
+    append(Potion::Button, :dialog_button).on(:tap) do |sender|
+      PotionDialog.new(xml_layout: R::Layout::Alert_dialog, width: 700, height: 1200)
+    end 
 
     append(Potion::Button, :open_example_table_button).on(:tap) do |sender|
       open ExampleTableScreen, people: ["Todd", "Darin", "Gant", "Jamon"]
