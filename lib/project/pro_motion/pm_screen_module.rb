@@ -185,9 +185,9 @@
       show_as_action = 4 if options[:show] == :with_text
       show_as_action = 8 if options[:show] == :collapse
 
-      btn = self.activity.menu.add(options.fetch(:group, 0), options.fetch(:item_id, @action_bar[:current_id] || 0), options.fetch(:order, 0), options.fetch(:title, "Untitled"))
+      btn = self.activity.menu.add(options.fetch(:group, 0), options.fetch(:item_id, @action_bar[:current_id] || 0), options.fetch(:order, 0), options.fetch(:title, ""))
       btn.setShowAsAction(show_as_action) if show_as_action
-      btn.setIcon(options[:icon]) if options[:icon]
+      btn.setIcon(image.resource(options[:icon].to_s)) if options[:icon]
       @action_bar[:button_actions][btn.getItemId] = options[:action] if options[:action]
       @action_bar[:current_id] = btn.getItemId + 1
       btn
