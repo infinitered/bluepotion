@@ -43,6 +43,10 @@
       super unless on_options_item_selected(item) == false
     end
 
+    def open(screen, options={})
+      find.screen.open screen, options
+    end
+
   end
 
 #end
