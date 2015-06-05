@@ -6,6 +6,8 @@ module Potion
   Integer = Java::Lang::Integer
   ArrayList = Java::Util::ArrayList
   Bundle = Android::Os::Bundle
+  Environment = Android::Os::Environment
+  Uri = Android::Net::Uri
 
   # layouts
   LinearLayout = Android::Widget::LinearLayout
@@ -24,6 +26,10 @@ module Potion
   # graphics
   Color = Android::Graphics::Color
   Typeface = Android::Graphics::Typeface
+
+  # Media334
+  File = Java::Io::File
+  MediaStore = Android::Provider::MediaStore
 end
 
 #

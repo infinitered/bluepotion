@@ -39,6 +39,11 @@
     end
     def on_create_menu(_); end
 
+    def onOptionsItemSelected(item)
+      # Don't call super if method returns false
+      super unless on_options_item_selected(item) == false
+    end
+
   end
 
 #end
