@@ -43,5 +43,9 @@
       self.fragment.on_create_menu(menu) if self.fragment
     end
 
+    def on_options_item_selected(item)
+      self.fragment.on_options_item_selected(item) if self.fragment
+    end
+
   end
 #end
