@@ -137,7 +137,7 @@
 
     def close(options={})
       if options[:to_screen]
-        mp "You must provide a custom activity if you want to use `close to_screen:`. Open your screen with a custom activity and then `close to_screen: <screen>, activity: <activity>`." unless options[:to_activity]
+        mp "You must provide a custom activity if you want to use `close to_screen:`. Open your screen with a custom activity and then `close to_screen: <screen>, activity: <activity>`." unless options[:activity]
         open options[:to_screen], activity: options[:activity], close: true
       else
         self.activity.finish
