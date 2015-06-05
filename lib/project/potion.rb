@@ -26,7 +26,7 @@ module Potion
   Color = Android::Graphics::Color
   Typeface = Android::Graphics::Typeface
 
-  # Media334
+  # Media
   File = Java::Io::File
   MediaStore = Android::Provider::MediaStore
 end
