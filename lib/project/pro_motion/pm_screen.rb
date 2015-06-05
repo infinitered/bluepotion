@@ -58,9 +58,13 @@
     def on_load; end
     def on_activity_created; end
 
-    def onStart; super; on_start; end
+    def onStart
+      super
+      on_start
+      on_appear
+    end
     def on_start; end
-    alias :on_appear :on_start
+    def on_appear; end
 
     def onResume; super; on_resume; end
     def on_resume; end
