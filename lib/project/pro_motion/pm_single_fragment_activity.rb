@@ -12,6 +12,16 @@
 
       mp "PMSingleFragmentActivity on_create", debugging_only: true
 
+      setup_fragment
+    end
+
+    def on_resume
+      mp "PMSingleFragmentActivity on_resume", debugging_only: true
+
+      setup_fragment unless @fragment_container
+    end
+
+    def setup_fragment
       @fragment_container = Potion::FrameLayout.new(self)
       @fragment_container.setId Potion::ViewIdGenerator.generate
       self.contentView = @fragment_container

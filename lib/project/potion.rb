@@ -1,5 +1,6 @@
 module Potion
   Activity = Android::App::Activity
+  Intent = Android::Content::Intent
   View = Android::View::View
   ViewGroup = Android::View::ViewGroup
   Integer = Java::Lang::Integer
