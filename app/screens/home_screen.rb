@@ -25,7 +25,7 @@ class HomeScreen < PMScreen
     end
 
     append(Potion::Button, :dialog_button).on(:tap) do |sender|
-      PotionDialog.new(xml_layout: R::Layout::Alert_dialog, width: 700, height: 1200)
+      PotionDialog.new(xml_layout: R::Layout::Blue_potion_dialog, w: 700, h: 1200)
     end 
 
     append(Potion::Button, :open_example_table_button).on(:tap) do |sender|
