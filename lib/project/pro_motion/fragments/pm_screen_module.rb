@@ -95,7 +95,6 @@
 
     # TODO add create and build
 
-
     # temporary stand-in for Java's R class
     def r(resource_type, resource_name)
       resources.getIdentifier(resource_name.to_s, resource_type.to_s,

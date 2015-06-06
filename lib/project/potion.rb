@@ -8,14 +8,17 @@ module Potion
   Bundle = Android::Os::Bundle
   Environment = Android::Os::Environment
   Uri = Android::Net::Uri
+  ArrayAdapter = Android::Widget::ArrayAdapter
+  BaseAdapter = Android::Widget::BaseAdapter
 
-  # layouts
+  # Layouts
+  LayoutInflater = Android::View::LayoutInflater
   LinearLayout = Android::Widget::LinearLayout
   FrameLayout = Android::Widget::FrameLayout
   RelativeLayout = Android::Widget::RelativeLayout
   AbsoluteLayout = Android::Widget::AbsoluteLayout
 
-  # widgets
+  # Widgets
   Label = Android::Widget::TextView
   TextView = Android::Widget::TextView
   ImageView = Android::Widget::ImageView
@@ -23,7 +26,7 @@ module Potion
   CalendarView = Android::Widget::CalendarView
   Toast = Android::Widget::Toast
 
-  # graphics
+  # Graphics
   Color = Android::Graphics::Color
   Typeface = Android::Graphics::Typeface
 
