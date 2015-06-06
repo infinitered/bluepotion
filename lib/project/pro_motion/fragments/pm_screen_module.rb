@@ -146,8 +146,7 @@
     end
 
     def close(options={})
-      # Hang onto an activity and fragment manager reference, since we lose the activity
-      mgr = activity.getFragmentManager
+      # Hang onto an activity reference, since we lose the activity
       act = self.activity
 
       if options[:activity] && options[:to_screen]
@@ -155,25 +154,16 @@
         open options[:to_screen], activity: options[:activity], close: true
       elsif options[:to_screen]
         # Closing to particular fragment
-        while top_fragment(mgr) && top_fragment(mgr) != options[:to_screen]
-          mgr.popBackStackImmediate
+        while act.fragment && !act.fragment.is_a?(options[:to_screen])
+          mp act.fragment
+          act.close_fragment
+          act.finish unless act.fragment
         end
       else
-        # Closing current screen
-        if top_fragment(mgr)
-          mgr.popBackStackImmediate
-          act.finish unless top_fragment(mgr)
-        else
-          act.finish
-        end
+        # Closing current screen or activity if no screens left
+        act.close_fragment if act.fragment
+        act.finish unless act.fragment
       end
-    end
-
-    def top_fragment(mgr = nil)
-      mgr ||= activity.getFragmentManager
-      count = mgr.getBackStackEntryCount
-      return nil unless count > 0
-      mgr.getBackStackEntryAt(count - 1)
     end
 
     def start_activity(activity_class)

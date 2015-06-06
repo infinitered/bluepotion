@@ -28,6 +28,10 @@
       frag
     end
 
+    def close_fragment
+      getFragmentManager.popBackStackImmediate
+    end
+
     def fragment
       self.fragments.last
     end
