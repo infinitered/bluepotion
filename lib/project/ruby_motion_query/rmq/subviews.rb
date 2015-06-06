@@ -9,6 +9,12 @@ class RMQ
 
       if view_or_class.is_a?(Potion::View)
         new_view = view_or_class
+      elsif view_or_class.is_a?(Symbol) # Inflate from xml
+        created = true
+        layout = RMQResource.layout(view_or_class)
+
+        inflater = Potion::LayoutInflater.from(self.activity)
+        new_view = inflater.inflate(layout, nil)
       else
         created = true
         new_view = view_or_class.new(RMQ.app.context)
