@@ -22,6 +22,9 @@ module Potion
   CalendarView = Android::Widget::CalendarView
   Toast = Android::Widget::Toast
 
+  ArrayAdapter = Android::Widget::ArrayAdapter
+  BaseAdapter = Android::Widget::BaseAdapter
+
   # graphics
   Color = Android::Graphics::Color
   Typeface = Android::Graphics::Typeface
