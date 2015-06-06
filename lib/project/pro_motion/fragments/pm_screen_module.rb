@@ -123,8 +123,9 @@
 
     def open_modal_activity(screen_class, options)
       activity_class = options.delete(:activity) || PMSingleFragmentActivity
-      intent = Android::Content::Intent.new(self.activity, activity_class)
+      intent = Potion::Intent.new(self.activity, activity_class)
       intent.putExtra PMSingleFragmentActivity::EXTRA_FRAGMENT_CLASS, screen_class.to_s
+      intent.setFlags(Potion::Intent::FLAG_ACTIVITY_CLEAR_TOP) if options.delete(:close)
 
       if extras = options.delete(:extras)
         extras.keys.each do |key, value|
@@ -143,11 +144,16 @@
     end
 
     def close(options={})
-      self.activity.finish
+      if options[:to_screen]
+        mp "You must provide a custom activity if you want to use `close to_screen:`. Open your screen with a custom activity and then `close to_screen: <screen>, activity: <activity>`." unless options[:activity]
+        open options[:to_screen], activity: options[:activity], close: true
+      else
+        self.activity.finish
+      end
     end
 
     def start_activity(activity_class)
-      intent = Android::Content::Intent.new(self.activity, activity_class)
+      intent = Potion::Intent.new(self.activity, activity_class)
       #intent.putExtra("key", value); # Optional parameters
       self.activity.startActivity(intent)
     end

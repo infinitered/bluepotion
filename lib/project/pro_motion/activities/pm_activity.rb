@@ -17,6 +17,7 @@
 
     def onResume
       super
+      on_resume
       PMApplication.current_application.current_activity = self
     end
 
