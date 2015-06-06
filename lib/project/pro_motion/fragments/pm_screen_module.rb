@@ -117,11 +117,11 @@
         end
         self.activity.open_fragment screen, options
       else
-        open_modal_activity(screen_class, options)
+        open_modal(screen_class, options)
       end
     end
 
-    def open_modal_activity(screen_class, options)
+    def open_modal(screen_class, options)
       activity_class = options.delete(:activity) || PMSingleFragmentActivity
       intent = Potion::Intent.new(self.activity, activity_class)
       intent.putExtra PMSingleFragmentActivity::EXTRA_FRAGMENT_CLASS, screen_class.to_s
