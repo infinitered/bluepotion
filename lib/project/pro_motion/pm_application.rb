@@ -44,10 +44,8 @@
     end
 
     def current_screen
-      if @current_activity && (ca = @current_activity)
-        if ca.is_a?(PMSingleFragmentActivity)
-          ca.fragment
-        end
+      if @current_activity && @current_activity.respond_to?(:fragment)
+        @current_activity.fragment
       end
     end
 

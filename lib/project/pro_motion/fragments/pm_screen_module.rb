@@ -108,13 +108,21 @@
 
     def open(screen_class, options={})
       mp "ScreenModule open", debugging_only: true
-      activity_class = options.delete(:activity) || PMSingleFragmentActivity
 
-      # TODO: replace the fragment in the activity when possible
-      # replace the fragment if we can; otherwise launch a new activity
-      # we're taking a conservative approach for now - eventually we'll want to allow
-      # replacing fragments for any kind of activity, but I'm not sure of the best way
-      # to implement that yet
+      if self.activity.respond_to?(:open_fragment)
+        if screen_class.respond_to?(:new)
+          screen = screen_class.new
+        else
+          screen = screen_class
+        end
+        self.activity.open_fragment screen, options
+      else
+        open_modal_activity(screen_class, options)
+      end
+    end
+
+    def open_modal_activity(screen_class, options)
+      activity_class = options.delete(:activity) || PMSingleFragmentActivity
       intent = Android::Content::Intent.new(self.activity, activity_class)
       intent.putExtra PMSingleFragmentActivity::EXTRA_FRAGMENT_CLASS, screen_class.to_s
 
