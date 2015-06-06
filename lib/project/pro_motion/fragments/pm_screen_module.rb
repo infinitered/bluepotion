@@ -155,7 +155,6 @@
       elsif options[:to_screen]
         # Closing to particular fragment
         while act.fragment && !act.fragment.is_a?(options[:to_screen])
-          mp act.fragment
           act.close_fragment
           act.finish unless act.fragment
         end
