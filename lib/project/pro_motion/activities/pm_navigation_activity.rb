@@ -4,9 +4,6 @@
   class PMNavigationActivity < PMActivity
     attr_accessor :fragment_container, :root_fragment, :menu
 
-    EXTRA_FRAGMENT_CLASS = "fragment_class"
-    EXTRA_FRAGMENT_ARGUMENTS = "fragment_arguments"
-
     def on_create(saved_instance_state)
       super
       # mp "PMNavigationActivity on_create", debugging_only: true
@@ -28,7 +25,6 @@
       mgr.add(@fragment_container.getId, frag, frag.class.to_s)
       mgr.addToBackStack(nil)
       mgr.commit
-      self.fragments << frag
       frag
     end
 
@@ -38,6 +34,14 @@
 
     def fragments
       @fragments ||= []
+    end
+
+    def on_fragment_attached(frag)
+      self.fragments << frag
+    end
+
+    def on_fragment_detached(frag)
+      self.fragments.pop
     end
 
     private

@@ -6,7 +6,11 @@
 
     attr_accessor :view
 
-    def onAttach(activity); super; on_attach(activity); end
+    def onAttach(activity)
+      super
+      activity.on_fragment_attached(self) if activity.respond_to?(:on_fragment_attached)
+      on_attach(activity)
+    end
     def on_attach(activity); end
 
     def onCreate(bundle); super; on_create(bundle); end
@@ -79,7 +83,11 @@
     def onDestroy; super; on_destroy; end
     def on_destroy; end
 
-    def onDetach; super; on_detach; end
+    def onDetach
+      super
+      on_detach
+      self.activity.on_fragment_detached(self) if self.activity.respond_to?(:on_fragment_detached)
+    end
     def on_detach; end
 
     def title

@@ -121,9 +121,12 @@
     end
 
     def open_modal(screen_class, options)
-      activity_class = options.delete(:activity) || PMSingleFragmentActivity
+      activity_class = options.delete(:activity) || PMNavigationActivity
+      activity_class = PMNavigationActivity if activity_class == :nav
+      activity_class = PMSingleFragmentActivity if activity_class == :single
+
       intent = Potion::Intent.new(self.activity, activity_class)
-      intent.putExtra PMSingleFragmentActivity::EXTRA_FRAGMENT_CLASS, screen_class.to_s
+      intent.putExtra PMActivity::EXTRA_FRAGMENT_CLASS, screen_class.to_s
       intent.setFlags(Potion::Intent::FLAG_ACTIVITY_CLEAR_TOP) if options.delete(:close)
 
       if extras = options.delete(:extras)
@@ -136,19 +139,41 @@
       unless options.blank?
         # The rest of the options are screen accessors, we use fragment arguments for this
         hash_bundle = PMHashBundle.from_hash(options)
-        intent.putExtra PMSingleFragmentActivity::EXTRA_FRAGMENT_ARGUMENTS, hash_bundle.to_bundle
+        intent.putExtra PMActivity::EXTRA_FRAGMENT_ARGUMENTS, hash_bundle.to_bundle
       end
 
       self.activity.startActivity intent
     end
 
     def close(options={})
-      if options[:to_screen]
-        mp "You must provide a custom activity if you want to use `close to_screen:`. Open your screen with a custom activity and then `close to_screen: <screen>, activity: <activity>`." unless options[:activity]
+      # Hang onto an activity and fragment manager reference, since we lose the activity
+      mgr = activity.getFragmentManager
+      act = self.activity
+
+      if options[:activity] && options[:to_screen]
+        # Closing to particular activity
         open options[:to_screen], activity: options[:activity], close: true
+      elsif options[:to_screen]
+        # Closing to particular fragment
+        while top_fragment(mgr) && top_fragment(mgr) != options[:to_screen]
+          mgr.popBackStackImmediate
+        end
       else
-        self.activity.finish
+        # Closing current screen
+        if top_fragment(mgr)
+          mgr.popBackStackImmediate
+          act.finish unless top_fragment(mgr)
+        else
+          act.finish
+        end
       end
+    end
+
+    def top_fragment(mgr = nil)
+      mgr ||= activity.getFragmentManager
+      count = mgr.getBackStackEntryCount
+      return nil unless count > 0
+      mgr.getBackStackEntryAt(count - 1)
     end
 
     def start_activity(activity_class)

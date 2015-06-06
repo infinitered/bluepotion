@@ -4,9 +4,6 @@
   class PMSingleFragmentActivity < PMActivity
     attr_accessor :fragment_container, :fragment, :menu
 
-    EXTRA_FRAGMENT_CLASS = "fragment_class"
-    EXTRA_FRAGMENT_ARGUMENTS = "fragment_arguments"
-
     def on_create(saved_instance_state)
       super
 
