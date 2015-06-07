@@ -1,6 +1,17 @@
 class PMBaseAdapter < Android::Widget::BaseAdapter
-  def data
-    @data ||= []
+  attr_accessor :data
+
+  def initialize
+    super
+    mp 'PMBaseAdapter initialize'
+    @data = []
+  end
+
+  def screen
+    @screen ||= rmq.screen
+  end
+  def screen=(value)
+    @screen
   end
 
   def areAllItemsEnabled(); are_all_items_enabled?; end
@@ -28,8 +39,8 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
     1
   end
 
-  def getItemViewType(position); item_view_type(position); end
-  def item_view_type(position)
+  def getItemViewType(position); item_view_type_id(position); end
+  def item_view_type_id(position)
     0
   end
 
@@ -50,12 +61,13 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
 
   def getView(position, convert_view, parent); view(position, convert_view, parent); end
   def view(position, convert_view, parent)
-    if convert_view.nil?
-      # Create new view
-      rmq.create(Potion::TextView).data(item(position)).get
-    else
-      # Reuse existing view
-      rmq(convert_view).data(item(position)).get
+    out = if convert_view.nil?  # Create new view
+      rmq.create!(Potion::TextView)
+    else # Reuse existing view
+      convert_view
     end
+
+    out.text = item(position)
+    out
   end
 end

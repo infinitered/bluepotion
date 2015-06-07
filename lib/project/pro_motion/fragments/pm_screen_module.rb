@@ -93,7 +93,21 @@
       self.rmq.append(view_or_class, style, opts).get
     end
 
-    # TODO add create and build
+    def create(view_or_class, style=nil, opts={})
+      self.rmq.create(view_or_class, style, opts)
+    end
+
+    def create!(view_or_class, style=nil, opts={})
+      self.rmq.create(view_or_class, style, opts).get
+    end
+
+    def build(view_or_class, style=nil, opts={})
+      self.rmq.build(view_or_class, style, opts)
+    end
+
+    def build!(view_or_class, style=nil, opts={})
+      self.rmq.build(view_or_class, style, opts).get
+    end
 
     # temporary stand-in for Java's R class
     def r(resource_type, resource_name)
