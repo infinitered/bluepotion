@@ -22,7 +22,7 @@
     def open_fragment(frag, options={})
       mp frag
       mgr = fragmentManager.beginTransaction
-      mgr.add(@fragment_container.getId, frag, frag.class.to_s)
+      mgr.add(@fragment_container.getId, frag, "screen-#{fragmentManager.getBackStackEntryCount + 1}")
       mgr.addToBackStack(nil)
       mgr.commit
       frag
@@ -33,31 +33,31 @@
     end
 
     def fragment
-      self.fragments.last
-    end
-
-    def fragments
-      @fragments ||= []
+      # self.fragments.last
+      getFragmentManager.findFragmentByTag("screen-#{fragmentManager.getBackStackEntryCount}")
     end
 
     def on_fragment_attached(frag)
-      self.fragments << frag
+      # No-op for now.
     end
 
     def on_fragment_detached(frag)
-      self.fragments.pop
+      # No-op for now.
     end
 
     private
 
     def activity_init
       setup_root_fragment_container
-      setup_root_fragment root_fragment_instance
-      open_fragment root_fragment_instance if root_fragment_instance
+      @root_fragment ||= intent_fragment_class && Kernel.const_get(intent_fragment_class.to_s).new
+      return unless @root_fragment
+      setup_root_fragment @root_fragment
+      open_fragment @root_fragment
+      @root_fragment = nil # Don't hang onto this reference.
     end
 
     def setup_root_fragment(frag)
-      return unless frag && intent_fragment_arguments
+      return unless intent_fragment_arguments
       PMHashBundle.from_bundle(intent_fragment_arguments).to_h.each do |key, value|
         frag.send "#{key}=", value
       end
@@ -65,10 +65,6 @@
 
     def intent_fragment_arguments
       intent.getBundleExtra(EXTRA_FRAGMENT_ARGUMENTS)
-    end
-
-    def root_fragment_instance
-      @root_fragment ||= intent_fragment_class && Kernel.const_get(intent_fragment_class.to_s).new
     end
 
     def intent_fragment_class
