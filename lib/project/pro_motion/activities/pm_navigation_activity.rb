@@ -42,7 +42,9 @@
     end
 
     def on_fragment_detached(frag)
-      # No-op for now.
+      if new_frag = self.fragment
+        new_frag.set_title if new_frag.respond_to?(:set_title)
+      end
     end
 
     private

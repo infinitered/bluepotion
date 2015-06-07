@@ -54,8 +54,7 @@
 
       build_and_tag_xml_views
 
-      self.title = self.class.bars_title
-
+      set_title
       on_load
       on_activity_created
     end
@@ -64,7 +63,7 @@
 
     def onStart; super; on_start; end
     def on_start; end
-    alias :on_appear :on_start
+    def on_appear; end
 
     def onResume; super; on_resume; end
     def on_resume; end
@@ -89,6 +88,10 @@
       self.activity.on_fragment_detached(self) if self.activity.respond_to?(:on_fragment_detached)
     end
     def on_detach; end
+
+    def set_title
+      self.title = self.class.bars_title
+    end
 
     def title
       @title
