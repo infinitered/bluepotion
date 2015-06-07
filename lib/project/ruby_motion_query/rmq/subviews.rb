@@ -6,6 +6,7 @@ class RMQ
       created = false
       appended = false
       built = false
+      tag_xml_layout = false
 
       if view_or_class.is_a?(Potion::View)
         new_view = view_or_class
@@ -15,6 +16,7 @@ class RMQ
 
         inflater = Potion::LayoutInflater.from(self.activity)
         new_view = inflater.inflate(layout, nil)
+        tag_xml_layout = true
       else
         created = true
         new_view = view_or_class.new(RMQ.app.context)
@@ -54,6 +56,8 @@ class RMQ
       if self.stylesheet
         apply_style_to_view(new_view, opts[:style]) if opts[:style]
       end
+
+      tag_all_from_resource_entry_name(new_view) if tag_xml_layout
     end
 
     viewq = RMQ.create_with_array_and_selectors(subviews_added, selectors, @originated_from, self)
@@ -62,6 +66,14 @@ class RMQ
     viewq
   end
   alias :insert :add_subview
+
+  def tag_all_from_resource_entry_name(view)
+    view.rmq.find.each do |view|
+      if ren = view.resource_entry_name
+        view.rmq_data.tag(ren.to_sym)
+      end
+    end
+  end
 
   def append(view_or_class, style=nil, opts={}, dummy=nil) # <- dummy is to get around RM bug)
     opts[:style] = style
