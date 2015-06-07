@@ -63,7 +63,7 @@
 
     def onStart; super; on_start; end
     def on_start; end
-    def on_appear; end
+    alias :on_appear :on_start
 
     def onResume; super; on_resume; end
     def on_resume; end
