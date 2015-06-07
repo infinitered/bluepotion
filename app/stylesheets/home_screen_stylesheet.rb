@@ -4,6 +4,7 @@ class HomeScreenStylesheet < ApplicationStylesheet
     st.layout = :full
     st.padding = 20
     st.orientation = :vertical
+    st.background_color = color.white
   end
 
   def logo(st)

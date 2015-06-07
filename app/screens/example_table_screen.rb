@@ -20,4 +20,12 @@ class ExampleTableScreen < PMScreen
   def people=(value)
     mp "People set: #{value}"
   end
+
+  def test_int=(value)
+    mp "test_int set: #{value}"
+  end
+
+  def test_symbol=(value)
+    mp "test_symbol set: #{value}"
+  end
 end

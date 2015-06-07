@@ -4,6 +4,7 @@ class RMQImageViewStyler < RMQViewStyler
     @view.imageResource = resource_id
   end
   alias_method :image=, :image_resource=
+  alias_method :src=, :image_resource=
 
   def adjust_view_bounds=(adjust_view_bounds)
     @view.adjustViewBounds = adjust_view_bounds

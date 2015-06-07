@@ -6,7 +6,11 @@
 
     attr_accessor :view
 
-    def onAttach(activity); super; on_attach(activity); end
+    def onAttach(activity)
+      super
+      activity.on_fragment_attached(self) if activity.respond_to?(:on_fragment_attached)
+      on_attach(activity)
+    end
     def on_attach(activity); end
 
     def onCreate(bundle); super; on_create(bundle); end
@@ -50,9 +54,7 @@
 
       build_and_tag_xml_views
 
-      self.action_bar.title = self.class.bars_title
-      self.activity.title = self.class.bars_title
-
+      set_title
       on_load
       on_activity_created
     end
@@ -80,8 +82,30 @@
     def onDestroy; super; on_destroy; end
     def on_destroy; end
 
-    def onDetach; super; on_detach; end
+    def onDetach
+      super
+      on_detach
+      self.activity.on_fragment_detached(self) if self.activity.respond_to?(:on_fragment_detached)
+    end
     def on_detach; end
+
+    def set_title
+      self.title = self.class.bars_title
+    end
+
+    def title
+      @title
+    end
+    def title=(value)
+      @title = value
+
+      if a = self.activity
+        if a_bar = self.action_bar
+          a_bar.title = value
+        end
+        a.title = value
+      end
+    end
 
     private
 

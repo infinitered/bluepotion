@@ -2,6 +2,9 @@
 
   class PMActivity < Android::App::Activity
 
+    EXTRA_FRAGMENT_CLASS = "fragment_class"
+    EXTRA_FRAGMENT_ARGUMENTS = "fragment_arguments"
+
     def onCreate(saved_instance_state)
       super
 
@@ -17,8 +20,10 @@
 
     def onResume
       super
+      on_resume
       PMApplication.current_application.current_activity = self
     end
+    def on_resume; end
 
     def onPause
       clear_references
@@ -37,6 +42,19 @@
       on_create_menu(menu)
     end
     def on_create_menu(_); end
+
+    def onOptionsItemSelected(item)
+      # Don't call super if method returns false
+      super unless on_options_item_selected(item) == false
+    end
+
+    def open(screen, options={})
+      find.screen.open screen, options
+    end
+
+    def close(options={})
+      find.screen.close options
+    end
 
   end
 

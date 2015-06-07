@@ -1,8 +1,7 @@
 class HomeScreen < PMScreen
-
-  uses_action_bar true
-  stylesheet HomeScreenStylesheet
   title "BluePotion Home"
+  stylesheet HomeScreenStylesheet
+  action_bar true
 
   # This will automatically set to a RelativeLayout if you don't override this method
   def load_view
@@ -29,7 +28,7 @@ class HomeScreen < PMScreen
     end 
 
     append(Potion::Button, :open_example_table_button).on(:tap) do |sender|
-      open ExampleTableScreen, people: ["Todd", "Darin", "Gant", "Jamon"]
+      open ExampleTableScreen, people: ["Todd", "Darin", "Gant", "Jamon"], test_int: 123, test_symbol: :my_symbol
     end
 
     append(Potion::CalendarView, :calendar)
