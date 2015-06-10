@@ -2,6 +2,7 @@ module Potion
   Activity = Android::App::Activity
   Intent = Android::Content::Intent
   View = Android::View::View
+  Window = Android::View::Window
   ViewGroup = Android::View::ViewGroup
   Integer = Java::Lang::Integer
   ArrayList = Java::Util::ArrayList
@@ -10,6 +11,7 @@ module Potion
   Uri = Android::Net::Uri
   ArrayAdapter = Android::Widget::ArrayAdapter
   BaseAdapter = Android::Widget::BaseAdapter
+  Dialog = Android::App::Dialog
 
   # Layouts
   LayoutInflater = Android::View::LayoutInflater
