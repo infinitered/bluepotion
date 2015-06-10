@@ -33,6 +33,7 @@ module Potion
   # Media
   File = Java::Io::File
   MediaStore = Android::Provider::MediaStore
+  Contacts = Android::Provider::ContactsContact::Contacts
 end
 
 #
