@@ -21,5 +21,5 @@ Motion::Project::App.setup do |app|
 
   app.application_class = "BluePotionApplication"
   app.main_activity = "PMHomeActivity"
-  app.sub_activities += %w(PMSingleFragmentActivity)
+  app.sub_activities += %w(PMSingleFragmentActivity PMNavigationActivity)
 end

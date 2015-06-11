@@ -4,6 +4,7 @@ class ExampleTableScreenStylesheet < ApplicationStylesheet
     st.layout_width = :full
     st.layout_height = :full
     st.gravity = :center
+    st.background_color = color.white
   end
 
   def hello_label(st)

@@ -4,6 +4,7 @@ class HomeScreenStylesheet < ApplicationStylesheet
     st.layout = :full
     st.padding = 20
     st.orientation = :vertical
+    st.background_color = color.white
   end
 
   def logo(st)
@@ -24,6 +25,14 @@ class HomeScreenStylesheet < ApplicationStylesheet
     st.background_color = color.mustard
     st.color = color.black
     st.text = "Drink"
+  end
+
+  def dialog_button(st)
+    #st.layout = {t: 10, l: 40, fr: 40, fb: 10}
+    standard_button(st)
+    st.background_color = color.nice_blue
+    st.color = color.black
+    st.text = "Open Dialog"
   end
 
   def open_example_table_button(st)

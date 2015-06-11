@@ -1,8 +1,7 @@
 class HomeScreen < PMScreen
-
-  uses_action_bar true
-  stylesheet HomeScreenStylesheet
   title "BluePotion Home"
+  stylesheet HomeScreenStylesheet
+  action_bar true
 
   # This will automatically set to a RelativeLayout if you don't override this method
   def load_view
@@ -23,6 +22,10 @@ class HomeScreen < PMScreen
     append(Potion::Button, :drink_button).on(:tap) do |sender|
       Potion::Toast.makeText(find.activity, "Drink your potion.", Potion::Toast::LENGTH_SHORT).show
     end
+
+    append(Potion::Button, :dialog_button).on(:tap) do |sender|
+      PotionDialog.new(xml_layout: R::Layout::Blue_potion_dialog, w: 700, h: 1200)
+    end 
 
     append(Potion::Button, :open_example_table_button).on(:tap) do |sender|
       open ExampleTableScreen, people: ["Todd", "Darin", "Gant", "Jamon"], test_int: 123, test_symbol: :my_symbol

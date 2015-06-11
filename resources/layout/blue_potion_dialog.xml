@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+     <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/bluepotion_logo_top"
+        android:src="@drawable/bluepotion_logo"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="40dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="I&apos;M A CUSTOMIZABLE DIALOG!"
+        android:id="@+id/textView45"
+        android:textStyle="bold"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:background="@android:color/holo_blue_light"/>
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/bluepotion_logo_bottom"
+        android:src="@drawable/bluepotion_logo"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40dp"/>
+
+</RelativeLayout>

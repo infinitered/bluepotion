@@ -11,6 +11,7 @@ class ApplicationStylesheet < RMQStylesheet
 
     color.add_named :potion_blue,   "#3759FE"
     color.add_named :mustard,       "#FFFF00"
+    color.add_named :nice_blue,     "#87C9FF"
   end
 
   def standard_text_view(st)

@@ -93,8 +93,21 @@
       self.rmq.append(view_or_class, style, opts).get
     end
 
-    # TODO add create and build
+    def create(view_or_class, style=nil, opts={})
+      self.rmq.create(view_or_class, style, opts)
+    end
 
+    def create!(view_or_class, style=nil, opts={})
+      self.rmq.create(view_or_class, style, opts).get
+    end
+
+    def build(view_or_class, style=nil, opts={})
+      self.rmq.build(view_or_class, style, opts)
+    end
+
+    def build!(view_or_class, style=nil, opts={})
+      self.rmq.build(view_or_class, style, opts).get
+    end
 
     # temporary stand-in for Java's R class
     def r(resource_type, resource_name)
@@ -108,15 +121,27 @@
 
     def open(screen_class, options={})
       mp "ScreenModule open", debugging_only: true
-      activity_class = options.delete(:activity) || PMSingleFragmentActivity
 
-      # TODO: replace the fragment in the activity when possible
-      # replace the fragment if we can; otherwise launch a new activity
-      # we're taking a conservative approach for now - eventually we'll want to allow
-      # replacing fragments for any kind of activity, but I'm not sure of the best way
-      # to implement that yet
-      intent = Android::Content::Intent.new(self.activity, activity_class)
-      intent.putExtra PMSingleFragmentActivity::EXTRA_FRAGMENT_CLASS, screen_class.to_s
+      if !options[:activity] && self.activity.respond_to?(:open_fragment)
+        if screen_class.respond_to?(:new)
+          screen = screen_class.new
+        else
+          screen = screen_class
+        end
+        self.activity.open_fragment screen, options
+      else
+        open_modal(screen_class, options)
+      end
+    end
+
+    def open_modal(screen_class, options)
+      activity_class = options.delete(:activity) || PMNavigationActivity
+      activity_class = PMNavigationActivity if activity_class == :nav
+      activity_class = PMSingleFragmentActivity if activity_class == :single
+
+      intent = Potion::Intent.new(self.activity, activity_class)
+      intent.putExtra PMActivity::EXTRA_FRAGMENT_CLASS, screen_class.to_s
+      intent.setFlags(Potion::Intent::FLAG_ACTIVITY_CLEAR_TOP) if options.delete(:close)
 
       if extras = options.delete(:extras)
         extras.keys.each do |key, value|
@@ -128,18 +153,34 @@
       unless options.blank?
         # The rest of the options are screen accessors, we use fragment arguments for this
         hash_bundle = PMHashBundle.from_hash(options)
-        intent.putExtra PMSingleFragmentActivity::EXTRA_FRAGMENT_ARGUMENTS, hash_bundle.to_bundle
+        intent.putExtra PMActivity::EXTRA_FRAGMENT_ARGUMENTS, hash_bundle.to_bundle
       end
 
       self.activity.startActivity intent
     end
 
     def close(options={})
-      self.activity.finish
+      # Hang onto an activity reference, since we lose the activity
+      act = self.activity
+
+      if options[:activity] && options[:to_screen]
+        # Closing to particular activity
+        open options[:to_screen], activity: options[:activity], close: true
+      elsif options[:to_screen]
+        # Closing to particular fragment
+        while act.fragment && !act.fragment.is_a?(options[:to_screen])
+          act.close_fragment
+          act.finish unless act.fragment
+        end
+      else
+        # Closing current screen or activity if no screens left
+        act.close_fragment if act.fragment
+        act.finish unless act.fragment
+      end
     end
 
     def start_activity(activity_class)
-      intent = Android::Content::Intent.new(self.activity, activity_class)
+      intent = Potion::Intent.new(self.activity, activity_class)
       #intent.putExtra("key", value); # Optional parameters
       self.activity.startActivity(intent)
     end
