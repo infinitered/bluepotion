@@ -57,6 +57,18 @@ class RMQ
   end
   alias :insert :add_subview
 
+
+  # Removes the selected views from their parent's (superview) subview array
+  #
+  # @example
+  #   rmq(a_view, another_view).remove
+  #
+  # @return [RMQ]
+  def remove
+    selected.each { |view| view.parent.removeView(view) }
+    self
+  end
+
   def append(view_or_class, style=nil, opts={}, dummy=nil) # <- dummy is to get around RM bug)
     opts[:style] = style
     #opts[:block] = block if block
