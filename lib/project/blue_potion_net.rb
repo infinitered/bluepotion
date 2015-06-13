@@ -85,5 +85,11 @@ class BluePotionNet
       ses = opts.delete(:session) || self.session
       ses.put(url, params, opts, &block)
     end
+
+    def delete(url, params, opts={}, &block)
+      raise "[BluePotion error] You must provide a block when using app.net.delete" unless block
+      ses = opts.delete(:session) || self.session
+      ses.delete(url, params, opts, &block)
+    end
   end
 end

@@ -6,6 +6,7 @@ module VW
     VOLLEY_GET = 0
     VOLLEY_POST = 1
     VOLLEY_PUT = 2
+    VOLLEY_DELETE = 3
 
     def self.get_request(url, listener)
       Request.new(VOLLEY_GET, url, listener, listener).tap do |req|
@@ -19,6 +20,10 @@ module VW
 
     def self.put_request(url, params, listener)
       request_with_params(VOLLEY_PUT, url, params, listener)
+    end
+
+    def self.delete_request(url, params, listener)
+      request_with_params(VOLLEY_DELETE, url, params, listener)
     end
 
     def self.retry_policy

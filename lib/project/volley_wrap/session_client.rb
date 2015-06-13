@@ -49,6 +49,13 @@ module VW
       queue VW::Request.put_request(request_url, params, listener)
     end
 
+    def delete(url, params, opts={}, &block)
+      request_url = base_url + url
+      ser = opts[:serializer] || @serializer
+      listener = VW::ResponseListener.new(nil, &block)
+      queue VW::Request.delete_request(request_url, params, listener)
+    end
+
     private
 
     def queue(request)
