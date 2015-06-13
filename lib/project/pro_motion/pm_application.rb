@@ -43,6 +43,7 @@
       end
     end
 
+    # Typically you don't use this, use `find.screen` instead, TODO, probably should remove this
     def current_screen
       if @current_activity && @current_activity.respond_to?(:fragment)
         @current_activity.fragment
@@ -74,6 +75,14 @@
     # @return [Boolean] true if the app is running in the :development environment
     def development?
       environment == :development
+    end
+
+    def resource
+      RMQResource
+    end
+
+    def net
+      BluePotionNet
     end
 
     class << self

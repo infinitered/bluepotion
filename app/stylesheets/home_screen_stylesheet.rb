@@ -24,7 +24,7 @@ class HomeScreenStylesheet < ApplicationStylesheet
     standard_button(st)
     st.background_color = color.mustard
     st.color = color.black
-    st.text = "Drink"
+    st.text = "Weather in SF"
   end
 
   def dialog_button(st)

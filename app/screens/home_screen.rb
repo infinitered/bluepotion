@@ -20,12 +20,12 @@ class HomeScreen < PMScreen
     append(Potion::TextView,  :hello_label).data("Hello BluePotion!")
 
     append(Potion::Button, :drink_button).on(:tap) do |sender|
-      Potion::Toast.makeText(find.activity, "Drink your potion.", Potion::Toast::LENGTH_SHORT).show
+      show_weather_in_sf
     end
 
     append(Potion::Button, :dialog_button).on(:tap) do |sender|
-      PotionDialog.new(xml_layout: R::Layout::Blue_potion_dialog, w: 700, h: 1200)
-    end 
+      PotionDialog.new(xml_layout: app.resource.layout(:blue_potion_dialog), w: 500, h: 500)
+    end
 
     append(Potion::Button, :open_example_table_button).on(:tap) do |sender|
       open ExampleTableScreen, people: ["Todd", "Darin", "Gant", "Jamon"], test_int: 123, test_symbol: :my_symbol
@@ -34,6 +34,16 @@ class HomeScreen < PMScreen
     append(Potion::CalendarView, :calendar)
 
     debug
+  end
+
+  def show_weather_in_sf
+    url = "http://openweathermap.org/data/2.1/find/name?q=san%20francisco"
+    app.net.get_json(url) do |request|
+      temp_kelvin = request.object["list"].first["main"]["temp"]
+      f = (((temp_kelvin - 273.15) * 1.8000) + 32).to_i
+      out = "The weather is #{f} degrees"
+      Potion::Toast.makeText(find.activity, out, Potion::Toast::LENGTH_SHORT).show
+    end
   end
 
   def debug

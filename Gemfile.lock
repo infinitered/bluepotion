@@ -1,3 +1,9 @@
+GIT
+  remote: git://github.com/HipByte/motion-gradle.git
+  revision: 0519b8f9c6f341a26ea0c23383e8b6d25308774f
+  specs:
+    motion-gradle (1.3.0)
+
 PATH
   remote: .
   specs:
@@ -6,6 +12,8 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
+    moran (0.0.2)
+      motion-gradle
     newclear (1.1)
       reset-sim
     rake (10.4.2)
@@ -16,5 +24,7 @@ PLATFORMS
 
 DEPENDENCIES
   bluepotion!
+  moran
+  motion-gradle!
   newclear
   rake
