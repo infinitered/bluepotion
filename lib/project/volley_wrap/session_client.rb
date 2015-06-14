@@ -7,6 +7,7 @@ module VW
 
     class << self
       attr_accessor :shared
+      attr_accessor :debug
 
       def build_shared(context, url, &block)
         self.shared = SessionClient.new(context, url)

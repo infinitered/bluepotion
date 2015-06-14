@@ -11,6 +11,7 @@ module VW
     def self.get_request(url, listener)
       Request.new(VOLLEY_GET, url, listener, listener).tap do |req|
         req.setRetryPolicy(retry_policy)
+        req.listener = listener
       end
     end
 
@@ -26,6 +27,10 @@ module VW
       request_with_params(VOLLEY_DELETE, url, params, listener)
     end
 
+    def listener=(value)
+      @listener = value
+    end
+
     def self.retry_policy
       Com::Android::Volley::DefaultRetryPolicy.new(10000, 3, 1)
     end
@@ -36,10 +41,13 @@ module VW
     end
 
     def parseNetworkResponse(network_response)
+      @listener.network_response = network_response
+
       # TODO: add an option for a debug mode, which would display all this stuff nicely
-      #p network_response.statusCode
-      #p network_response.headers
-      #p network_response.data
+      #mp network_response.statusCode
+      #mp network_response.headers
+      #mp network_response.data
+      #mp network_response.notModified
       super
     end
 

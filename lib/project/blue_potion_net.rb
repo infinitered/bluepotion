@@ -1,10 +1,20 @@
 # Nice wrapper around VolleyWrapper, to use in BluePotion.
 #
+# result that is returned has these attributes:
+#   response
+#   object
+#   body
+#   status_code
+#   headers
+#   not_modified?
+#   success?
+#   failure?
+#
 # @example
 #   # Create a session and do a single HTML get. It's better
 #   # to use the shared session below.
-#   app.net.get("http://google.com")do |result|
-#     mp result.object # <- HTML
+#   app.net.get("http://google.com")do |response|
+#     mp response.object # <- HTML
 #   end
 #
 #   # To initialize the shared session, which is best to use
@@ -18,19 +28,19 @@
 #   end
 #
 #   # For shared, use relative paths
-#   app.net.get("foo.html") do |results|
-#     mp results.object
+#   app.net.get("foo.html") do |response|
+#     mp response.object # <- returns type you set in shared.serializer
 #   end
 #
 #   # Post
-#   app.net.post("foo/bar", your_params_hash) do |results|
-#     mp results.object
+#   app.net.post("foo/bar", your_params_hash) do |response|
+#     mp response.object # <- returns type you set in shared.serializer
 #   end
 #
 #   # If you have built a shared session, but want to use another
 #   # session, do this:
-#   app.net.get("foo.html", session: app.net.single_use_session) do |results|
-#     mp results.object # This will be a string
+#   app.net.get("foo.html", session: app.net.single_use_session) do |response|
+#     mp response.object # <- returns type you set in shared.serializer
 #   end
 #
 #   # Get json:
