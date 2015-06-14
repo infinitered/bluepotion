@@ -22,7 +22,8 @@
       if @xml_resource = self.class.xml_resource
         @view = inflater.inflate(r(:layout, @xml_resource), parent, false)
       else
-        @view = load_view
+        v = load_view
+        @view ||= v
         @view.setId Potion::ViewIdGenerator.generate
       end
 
