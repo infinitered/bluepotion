@@ -9,6 +9,7 @@ module VW
     VOLLEY_DELETE = 3
 
     def self.get_request(url, listener)
+      set_request_for_listener VOLLEY_GET, url, nil, listener
       Request.new(VOLLEY_GET, url, listener, listener).tap do |req|
         req.setRetryPolicy(retry_policy)
         req.listener = listener
@@ -45,6 +46,13 @@ module VW
       super
     end
 
+    def self.set_request_for_listener(method, url, params, listener)
+      # There probably is a much better way then passing all these around like this
+      listener.request_url = url
+      listener.request_params = params
+      listener.request_method = method
+    end
+
     private
 
     # this is to maintain compatibility with AFMotion - somewhere (possibly in AFNetworking?) the
@@ -70,13 +78,7 @@ module VW
     end
 
     def self.request_with_params(method, url, params, listener)
-      # There probably is a much better way then passing all these around like this
-      mp 1
-      mp url
-      listener.request_url = url
-      listener.request_params = params
-      listener.request_method = method
-      $l = listener
+      set_request_for_listener method, url, params, listener
 
       Request.new(method, url, listener, listener).tap do |req|
         req.setParams(prepare_params(params))
