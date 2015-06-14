@@ -1,8 +1,6 @@
 module VW
   class HTTPResult
-    attr_accessor :object
-    attr_accessor :error
-    attr_accessor :response
+    attr_accessor :object, :error, :response, :request_url, :request_params, :request_method
 
     def initialize(response, response_object, error)
       @response = response
@@ -36,17 +34,44 @@ module VW
       !!error
     end
 
+    def inspect
+      "<VW::HTTPResult:#{self.object_id} #{@request_url}>"
+    end
+
     def to_s
+      header_string = if (h = headers)
+        h.map{|k,v| "  #{k} = #{v}"}.join("\n")
+      else
+        "none"
+      end
+
+      #mp @request_params.class.name
+      params_string = if @request_params
+        params.class.name
+        #h.map{|k,v| "  #{k} = #{v}"}.join("\n")
+      else
+        "none"
+      end
+
       %(
 
-RESULT -------------------------
+Request -------------------------
+
+URL: #{@request_url}
+Method: #{@request_method}
+Params:
+#{params_string}
+
+Response -------------------------
 
 Status code: #{status_code}
 Not modified?: #{not_modified?}
 Success: #{success?}
 
+Error: #{error.toString if error}
+
 Headers:
-#{headers.map{|k,v| "  #{k} = #{v}"}.join("\n")}
+#{header_string}
 
 Body:
 #{body}

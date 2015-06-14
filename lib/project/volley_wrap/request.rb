@@ -42,12 +42,6 @@ module VW
 
     def parseNetworkResponse(network_response)
       @listener.network_response = network_response
-
-      # TODO: add an option for a debug mode, which would display all this stuff nicely
-      #mp network_response.statusCode
-      #mp network_response.headers
-      #mp network_response.data
-      #mp network_response.notModified
       super
     end
 
@@ -76,6 +70,14 @@ module VW
     end
 
     def self.request_with_params(method, url, params, listener)
+      # There probably is a much better way then passing all these around like this
+      mp 1
+      mp url
+      listener.request_url = url
+      listener.request_params = params
+      listener.request_method = method
+      $l = listener
+
       Request.new(method, url, listener, listener).tap do |req|
         req.setParams(prepare_params(params))
         req.setRetryPolicy(retry_policy)

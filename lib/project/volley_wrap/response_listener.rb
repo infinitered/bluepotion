@@ -1,6 +1,6 @@
 module VW
   class ResponseListener
-    attr_accessor :serializer, :callback, :network_response
+    attr_accessor :serializer, :callback, :network_response, :request_url, :request_params, :request_method
 
     def initialize(serializer, &block)
       @serializer = serializer
@@ -13,8 +13,7 @@ module VW
     end
 
     def onErrorResponse(error)
-      dump_network_error(error)
-      create_result(@network_response, nil, error.toString)
+      create_result(error.networkResponse, nil, error.toString)
     end
 
     private
@@ -25,8 +24,12 @@ module VW
 
     def create_result(response, response_object, error)
       request = HTTPResult.new(response, response_object, error)
+      request.request_url = @request_url
+      request.request_params = @request_params
+      request.request_method = @request_method
+
       if VW::SessionClient.debug
-        mp request
+        mp request.to_s
       end
       callback.call request
     end
