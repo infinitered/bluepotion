@@ -1,10 +1,11 @@
 class PMBaseAdapter < Android::Widget::BaseAdapter
+  include PMAdapterModule
+
   attr_accessor :data
 
-  def initialize
+  def initialize(opts={})
     super
-    mp 'PMBaseAdapter initialize'
-    @data = []
+    @data = opts.fetch(:data, [])
   end
 
   def screen
@@ -61,13 +62,13 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
 
   def getView(position, convert_view, parent); view(position, convert_view, parent); end
   def view(position, convert_view, parent)
-    out = if convert_view.nil?  # Create new view
-      rmq.create!(Potion::TextView)
-    else # Reuse existing view
-      convert_view
-    end
-
-    out.text = item(position)
+    out = convert_view || rmq.create!(Potion::TextView)
+    data = item(position)
+    update_view(out, data)
     out
+  end
+
+  def update_view(view, data)
+    out.text = data
   end
 end
