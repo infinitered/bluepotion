@@ -4,7 +4,7 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
   attr_accessor :data
 
   def initialize(opts={})
-    super
+    super()
     @data = opts.fetch(:data, [])
   end
 

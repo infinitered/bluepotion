@@ -1,12 +1,15 @@
-class PMCursorAdapter < Android::Widget::BaseAdapter
+class PMCursorAdapter < PMBaseAdapter
   include PMAdapterModule
 
   attr_accessor :cursor
 
   def initialize(opts={})
-    super
+    super()
     @cursor = opts.fetch(:cursor)
   end
+
+
+
 end
 
 __END__
