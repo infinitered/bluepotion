@@ -79,6 +79,8 @@ class Object
 
     if s.nil?
       s = "<nil>"
+    elsif s.is_a?(Array)
+      s = s.map{|e| e.inspect }.join("\n")
     else
       s = s.to_s
     end
