@@ -92,7 +92,7 @@ end
 class RMQColorFactory
 
   class << self
-    def build(params)
+    def build(params, dummy=nil) # Dummy works around RM bug
       return RMQColor if params.empty?
       return from_rgba(*params) if params.count > 1
 
