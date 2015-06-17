@@ -1,6 +1,4 @@
 class PMBaseAdapter < Android::Widget::BaseAdapter
-  include PMAdapterModule
-
   attr_accessor :data
 
   def initialize(opts={})

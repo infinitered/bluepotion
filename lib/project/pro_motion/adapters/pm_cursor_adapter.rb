@@ -1,14 +1,25 @@
 class PMCursorAdapter < PMBaseAdapter
-  include PMAdapterModule
-
   attr_accessor :cursor
+  attr_accessor :title_column
 
   def initialize(opts={})
     super()
     @cursor = opts.fetch(:cursor)
+    @title_column = opts.fetch(:title_column, 1)
   end
 
+  def count
+    cursor.count
+  end
 
+  def item(position)
+    cursor.moveToPosition(position)
+    cursor
+  end
+
+  def update_view(out, data)
+    out.text = data.getString(title_column)
+  end
 
 end
 
@@ -17,11 +28,7 @@ __END__
 def table_data
   {
     cursor: my_cursor,
-    bind_views: {
-      my_view_1: 0,
-      my_view_2: 1,
-      my_view_3: 2,
-    },
+    title_column: 0,
   }
 end
 

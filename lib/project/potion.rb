@@ -27,6 +27,7 @@ module Potion
   Button = Android::Widget::Button
   CalendarView = Android::Widget::CalendarView
   Toast = Android::Widget::Toast
+  ListView = Android::Widget::ListView
 
   # Graphics
   Color = Android::Graphics::Color

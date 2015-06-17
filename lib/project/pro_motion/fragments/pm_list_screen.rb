@@ -12,7 +12,15 @@
     end
 
     def load_view
-      Potion::LinearLayout.new(self.activity)
+      # Potion::LinearLayout.new(self.activity)
+      self.view = create!(Potion::ListView, :list)
+      # find(self.view).style do |st|
+        # st.layout_width = :match_parent
+        # st.layout_height = :match_parent
+        # st.layout_weight = 1
+        # st.view.drawSelectorOnTop = false
+      # end
+      # self.view
     end
 
     def screen_setup
@@ -22,25 +30,25 @@
     end
 
     def add_table_view
-      append(Potion::ListView, "android:list").style do |st|
-        st.layout_width = :match_parent
-        st.layout_height = :match_parent
-        st.layout_weight = 1
-        st.view.drawSelectorOnTop = false
-      end
+      # create(Potion::ListView, :list).style do |st|
+      #   st.layout_width = :match_parent
+      #   st.layout_height = :match_parent
+      #   st.layout_weight = 1
+      #   st.view.drawSelectorOnTop = false
+      # end
     end
 
     def add_empty_view
-      append(Potion::TextView, "android:empty").style do |st|
-        st.layout_width = :match_parent
-        st.layout_height = :match_parent
-        st.background = "#FFFFFF"
-        st.text = "No data"
-      end
+      # append(Potion::TextView, :empty).style do |st|
+      #   st.layout_width = :match_parent
+      #   st.layout_height = :match_parent
+      #   st.background = "#FFFFFF"
+      #   st.text = "No data"
+      # end
     end
 
     def add_adapter
-
+      self.view.setAdapter(adapter)
     end
 
     def adapter
@@ -48,8 +56,9 @@
         td = table_data
         if td.is_a?(Array)
           PMBaseAdapter.new(data: td)
-        else
-          PMCursorAdapter.new(cursor: td)
+        elsif td.is_a?(Hash)
+          mp "Please supply a cursor in #{self.inspect}#table_data." unless td[:cursor]
+          PMCursorAdapter.new(td)
         end
       end
     end
@@ -85,9 +94,9 @@
     end
     def on_create_view(inflater, parent, saved_instance_state); end
 
-    def load_view
-      Potion::FrameLayout.new(self.activity)
-    end
+    # def load_view
+    #   Potion::FrameLayout.new(self.activity)
+    # end
 
     def onActivityCreated(saved_instance_state)
       mp "PMScreen onActivityCreated" if RMQ.debugging?
@@ -98,6 +107,8 @@
 
       self.rmq.build(@view)
 
+      screen_setup
+
       if self.class.rmq_style_sheet_class
         self.rmq.stylesheet = self.class.rmq_style_sheet_class
         @view.rmq.apply_style(:root_view) #if @view.rmq.stylesheet.respond_to?(:root_view)
@@ -106,7 +117,6 @@
       build_and_tag_xml_views
 
       set_title
-      screen_setup
       on_load
       on_activity_created
     end

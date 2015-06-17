@@ -1,4 +1,0 @@
-module PMAdapterModule
-
-
-end
