@@ -4,5 +4,6 @@ gemspec
 gem 'newclear'
 gem "motion-gradle", github: 'HipByte/motion-gradle' # Dynamically Load JARs
 gem "moran"         # Fast JSON Parser
+gem "motion-async"  # AsyncTask wrapper
 
 # Add your dependencies here:

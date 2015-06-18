@@ -31,6 +31,22 @@ class HomeScreen < PMScreen
       open ExampleTableScreen, people: ["Todd", "Darin", "Gant", "Jamon"], test_int: 123, test_symbol: :my_symbol
     end
 
+    append(Potion::Button, :countdown_button).on(:tap) do |sender|
+      original_text = sender.text
+      sender.enabled = false
+      app.async do |task|
+        5.times do |i|
+          task.progress(5 - i)
+          sleep 1
+        end
+      end.on(:progress) do |count|
+        sender.text = "     #{count}      "
+      end.on(:completion) do
+        sender.text = original_text
+        sender.enabled = true
+      end
+    end
+
     append(Potion::CalendarView, :calendar)
 
     debug

@@ -85,6 +85,10 @@
       BluePotionNet
     end
 
+    def async(options={}, &block)
+      MotionAsync.async(options, &block)
+    end
+
     class << self
       attr_accessor :current_application, :home_screen_class
 

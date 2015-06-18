@@ -14,6 +14,7 @@ GEM
   specs:
     moran (0.0.2)
       motion-gradle
+    motion-async (0.5)
     newclear (1.1)
       reset-sim
     rake (10.4.2)
@@ -25,6 +26,7 @@ PLATFORMS
 DEPENDENCIES
   bluepotion!
   moran
+  motion-async
   motion-gradle!
   newclear
   rake
