@@ -14,7 +14,7 @@ module VW
 
     def onErrorResponse(error)
       if network_response = error.networkResponse
-        data = networkResponse.data
+        data = network_response.data
       end
       create_result(network_response, data, error.toString)
     end

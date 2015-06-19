@@ -12,6 +12,7 @@ module Potion
   ArrayAdapter = Android::Widget::ArrayAdapter
   BaseAdapter = Android::Widget::BaseAdapter
   Dialog = Android::App::Dialog
+  EditorInfo = Android::View::Inputmethod::EditorInfo
 
   # Layouts
   LayoutInflater = Android::View::LayoutInflater
@@ -23,6 +24,7 @@ module Potion
   # Widgets
   Label = Android::Widget::TextView
   TextView = Android::Widget::TextView
+  EditText = Android::Widget::EditText
   ImageView = Android::Widget::ImageView
   Button = Android::Widget::Button
   CalendarView = Android::Widget::CalendarView
