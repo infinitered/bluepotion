@@ -1,10 +1,9 @@
 class PMBaseAdapter < Android::Widget::BaseAdapter
   attr_accessor :data
 
-  def initialize
-    super
-    mp 'PMBaseAdapter initialize'
-    @data = []
+  def initialize(opts={})
+    super()
+    @data = opts.fetch(:data, [])
   end
 
   def screen
@@ -61,13 +60,16 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
 
   def getView(position, convert_view, parent); view(position, convert_view, parent); end
   def view(position, convert_view, parent)
-    out = if convert_view.nil?  # Create new view
-      rmq.create!(Potion::TextView)
-    else # Reuse existing view
-      convert_view
+    data = item(position)
+    out = convert_view || rmq.create!(data[:cell_class] || Potion::TextView)
+    update_view(out, data[:title])
+    if data[:action]
+      find(out).on(:tap) { find.screen.send(data[:action], data[:arguments], position) }
     end
-
-    out.text = item(position)
     out
+  end
+
+  def update_view(view, data)
+    out.text = data
   end
 end
