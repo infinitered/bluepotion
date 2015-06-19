@@ -8,7 +8,7 @@ class RMQ
       if value.is_a?(Potion::Activity)
         @originated_from = value
         @activity = value
-      elsif value.is_a?(PMScreen)
+      elsif value.is_a?(PMScreen) || value.is_a?(PMListScreen)
         @originated_from = value
       elsif value.is_a?(Potion::View)
         @originated_from = value
