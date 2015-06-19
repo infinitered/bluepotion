@@ -1,11 +1,11 @@
 class PMCursorAdapter < PMBaseAdapter
   attr_accessor :cursor
-  attr_accessor :title_column
+  attr_accessor :cell_options
 
   def initialize(opts={})
     super()
     @cursor = opts.fetch(:cursor)
-    @title_column = opts.fetch(:title_column, 1)
+    @cell_options = opts.fetch(:cell, 1)
   end
 
   def count
@@ -17,8 +17,18 @@ class PMCursorAdapter < PMBaseAdapter
     cursor
   end
 
+  def view(position, convert_view, parent)
+    data = item(position)
+    out = convert_view || rmq.create!(cell_options[:cell_class] || Potion::TextView)
+    update_view(out, data)
+    if cell_options[:action]
+      find(out).on(:tap) { find.screen.send(cell_options[:action], data, position) }
+    end
+    out
+  end
+
   def update_view(out, data)
-    out.text = data.getString(title_column)
+    out.text = data.getString(cell_options[:title_column])
   end
 
 end

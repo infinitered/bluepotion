@@ -60,9 +60,9 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
 
   def getView(position, convert_view, parent); view(position, convert_view, parent); end
   def view(position, convert_view, parent)
-    out = convert_view || rmq.create!(Potion::TextView)
     data = item(position)
-    update_view(out, data)
+    out = convert_view || rmq.create!(data[:cell_class] || Potion::TextView)
+    update_view(out, data[:title])
     out
   end
 
