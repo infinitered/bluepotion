@@ -63,6 +63,9 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
     data = item(position)
     out = convert_view || rmq.create!(data[:cell_class] || Potion::TextView)
     update_view(out, data[:title])
+    if data[:action]
+      find(out).on(:tap) { find.screen.send(data[:action], data[:arguments], position) }
+    end
     out
   end
 
