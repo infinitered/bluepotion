@@ -20,6 +20,21 @@ module VW
       @object.to_s if @object
     end
 
+    def method_description
+      case @request_method
+      when 0
+        "GET"
+      when 1
+        "POST"
+      when 2
+        "PUT"
+      when 3
+        "DELETE"
+      else
+        "Unknown"
+      end
+    end
+
     def headers
       if @response
         @_headers ||= @response.headers.inject({}){|h, entry_set| h[entry_set[0]] = entry_set[1] ; h }
@@ -47,8 +62,8 @@ module VW
 
       #mp @request_params.class.name
       params_string = if @request_params
-        params.class.name
-        #h.map{|k,v| "  #{k} = #{v}"}.join("\n")
+        #@request_params.class.name
+        @request_params.map{|k,v| "  #{k} = #{v}"}.join("\n")
       else
         "none"
       end
@@ -58,7 +73,7 @@ module VW
 Request -------------------------
 
 URL: #{@request_url}
-Method: #{@request_method}
+Method: #{method_description}
 Params:
 #{params_string}
 

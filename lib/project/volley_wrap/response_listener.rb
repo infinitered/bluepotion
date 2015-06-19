@@ -13,7 +13,10 @@ module VW
     end
 
     def onErrorResponse(error)
-      create_result(error.networkResponse, nil, error.toString)
+      if network_response = error.networkResponse
+        data = networkResponse.data
+      end
+      create_result(network_response, data, error.toString)
     end
 
     private

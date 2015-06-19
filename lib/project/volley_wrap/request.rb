@@ -17,15 +17,21 @@ module VW
     end
 
     def self.post_request(url, params, listener)
-      request_with_params(VOLLEY_POST, url, params, listener)
+      request_with_params(VOLLEY_POST, url, params, listener).tap do |req|
+        req.listener = listener
+      end
     end
 
     def self.put_request(url, params, listener)
-      request_with_params(VOLLEY_PUT, url, params, listener)
+      request_with_params(VOLLEY_PUT, url, params, listener).tap do |req|
+        req.listener = listener
+      end
     end
 
     def self.delete_request(url, params, listener)
-      request_with_params(VOLLEY_DELETE, url, params, listener)
+      request_with_params(VOLLEY_DELETE, url, params, listener).tap do |req|
+        req.listener = listener
+      end
     end
 
     def listener=(value)
@@ -42,7 +48,7 @@ module VW
     end
 
     def parseNetworkResponse(network_response)
-      @listener.network_response = network_response
+      @listener.network_response = network_response if @listener
       super
     end
 
@@ -68,10 +74,10 @@ module VW
       params.keys.each do |key|
         if params[key].is_a?(Hash)
           params[key].keys.each do |inner_key|
-            new_params["#{key}[#{inner_key}]"] = params[key][inner_key]
+            new_params["#{key}[#{inner_key}]"] = params[key][inner_key].to_s
           end
         else
-          new_params[key] = params[key]
+          new_params[key.to_s] = params[key].to_s
         end
       end
       new_params
@@ -81,8 +87,9 @@ module VW
       set_request_for_listener method, url, params, listener
 
       Request.new(method, url, listener, listener).tap do |req|
-        req.setParams(prepare_params(params))
         req.setRetryPolicy(retry_policy)
+        params = prepare_params(params)
+        req.setParams(params)
       end
     end
 
