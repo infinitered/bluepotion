@@ -74,7 +74,6 @@ class BluePotionNet
     def get(url, params={}, opts={}, &block)
       raise "[BluePotion error] You must provide a block when using app.net.get" unless block
       ses = opts.delete(:session) || self.session
-      opts[:serializer] = :string unless opts[:serializer]
       ses.get(url, params, opts, &block)
     end
 
