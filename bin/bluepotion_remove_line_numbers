@@ -1,0 +1,34 @@
+#!/usr/bin/env ruby
+require 'fileutils'
+
+base_path = Dir.pwd
+file = ARGV[0]
+path_and_file = "#{base_path}/#{file}"
+puts "Removing line numbers from #{path_and_file}"
+
+file = File.open(path_and_file)
+contents = file.read
+file.close
+
+lines = contents.split("\n")
+
+out = []
+lines.each_with_index do |line, i|
+  ll = line.length
+  
+  if ll > 12
+    original_line = line[13..(ll - 1)]
+    out << original_line
+  else
+    out << line
+  end
+  out << "\n"
+end
+
+out = out.join
+
+FileUtils.cp path_and_file, "#{path_and_file}_before_removing_lines"
+
+File.write(path_and_file, out)
+
+puts "Done"

@@ -1,0 +1,46 @@
+#!/usr/bin/env ruby
+require 'fileutils'
+
+def skip_line?(line)
+  return true if 
+    line.strip == "" ||
+    line.strip =~ /^class\s/ ||
+    line.strip =~ /^module\s/ ||
+    line.strip =~ /^def\s/ ||
+    line.strip =~ /^if\s/ ||
+    line.strip =~ /^unless\s/ ||
+    line.strip =~ /^while\s/ ||
+    line.strip =~ /^#/ ||
+    line =~ /\sdo(\s|$)/ ||
+    line.strip == "end"
+end
+
+base_path = Dir.pwd
+file = ARGV[0]
+path_and_file = "#{base_path}/#{file}"
+puts "Adding line numbers to #{path_and_file}"
+
+file = File.open(path_and_file)
+contents = file.read
+file.close
+
+lines = contents.split("\n")
+
+out = []
+lines.each_with_index do |line, i|
+  if skip_line?(line)
+    out << " " * 13 
+  else
+    out << "mp \"#{(i + 1).to_s.rjust(4)} ‡\"; "
+  end
+  out << line
+  out << "\n"
+end
+
+out = out.join
+
+FileUtils.cp path_and_file, "#{path_and_file}_before_adding_lines"
+
+File.write(path_and_file, out)
+
+puts "Done"

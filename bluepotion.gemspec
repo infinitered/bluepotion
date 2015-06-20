@@ -19,6 +19,8 @@ Gem::Specification.new do |spec|
 
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.executables   << 'bluepotion'
+  spec.executables   << 'bluepotion_add_line_numbers'
+  spec.executables   << 'bluepotion_remove_line_numbers'
   spec.require_paths = ["lib"]
   spec.version       = BluePotion::VERSION
 
