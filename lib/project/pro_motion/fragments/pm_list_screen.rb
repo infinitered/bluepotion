@@ -63,6 +63,10 @@
       end
     end
 
+    def update_table_data
+      adapter.notifyDataSetChanged
+    end
+
     ### Boilerplate from PMScreen ###
 
     def onAttach(activity)

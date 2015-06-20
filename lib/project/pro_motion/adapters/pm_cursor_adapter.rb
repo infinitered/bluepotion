@@ -22,13 +22,21 @@ class PMCursorAdapter < PMBaseAdapter
     out = convert_view || rmq.create!(cell_options[:cell_class] || Potion::TextView)
     update_view(out, data)
     if cell_options[:action]
-      find(out).on(:tap) { find.screen.send(cell_options[:action], data, position) }
+      find(out).on(:tap) do
+        find.screen.send(cell_options[:action], item(position), position)
+      end
     end
     out
   end
 
   def update_view(out, data)
-    out.text = data.getString(cell_options[:title_column])
+    if cell_options[:update].is_a?(Proc)
+      cell_options[:update].call(out, data)
+    elsif cell_options[:update].is_a?(Symbol) || cell_options[:update].is_a?(String)
+      find.screen.send(cell_options[:update], out, data)
+    else
+      out.text = data.getString(cell_options[:title_column].to_i)
+    end
   end
 
 end

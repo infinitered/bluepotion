@@ -70,6 +70,12 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
   end
 
   def update_view(view, data)
-    out.text = data
+    if cell_options[:update].is_a?(Proc)
+      cell_options[:update].call(out, data)
+    elsif cell_options[:update].is_a?(Symbol) || cell_options[:update].is_a?(String)
+      find.screen.send(cell_options[:update], out, data)
+    else
+      out.text = data
+    end
   end
 end
