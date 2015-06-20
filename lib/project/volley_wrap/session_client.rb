@@ -29,11 +29,11 @@ module VW
       @serializer = serializer
     end
 
-    def get(url, opts={}, dummy=nil, &block) # Dummy is to get around RM bug
+    def get(url, params, opts={}, &block)
       request_url = base_url + url
       ser = opts[:serializer] || @serializer
       listener = VW::ResponseListener.new(ser, &block)
-      queue VW::Request.get_request(request_url, listener)
+      queue VW::Request.get_request(request_url, params, listener)
     end
 
     def post(url, params, opts={}, &block)

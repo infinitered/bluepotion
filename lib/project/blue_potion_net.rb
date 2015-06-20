@@ -71,17 +71,18 @@ class BluePotionNet
       session_client.build_shared(PMApplication.current_application.context, url, &block)
     end
 
-    def get(url, opts={}, &block)
+    def get(url, params={}, opts={}, &block)
       raise "[BluePotion error] You must provide a block when using app.net.get" unless block
       ses = opts.delete(:session) || self.session
       opts[:serializer] = :string unless opts[:serializer]
-      ses.get(url, opts, &block)
+      ses.get(url, params, opts, &block)
     end
 
-    def get_json(url, opts={}, &block)
+    def get_json(url, params={}, opts={}, &block)
       raise "[BluePotion error] You must provide a block when using app.net.get_json" unless block
+      ses = opts.delete(:session) || self.session
       opts[:serializer] = :json
-      get(url, opts, &block)
+      ses.get(url, params, opts, &block)
     end
 
     def post(url, params, opts={}, &block)

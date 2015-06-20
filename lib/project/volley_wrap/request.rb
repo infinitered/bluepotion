@@ -8,10 +8,9 @@ module VW
     VOLLEY_PUT = 2
     VOLLEY_DELETE = 3
 
-    def self.get_request(url, listener)
-      set_request_for_listener VOLLEY_GET, url, nil, listener
-      Request.new(VOLLEY_GET, url, listener, listener).tap do |req|
-        req.setRetryPolicy(retry_policy)
+    def self.get_request(url, params, listener)
+      url = add_params_to_url(url, params)
+      request_with_params(VOLLEY_GET, url, params, listener).tap do |req|
         req.listener = listener
       end
     end
@@ -52,6 +51,18 @@ module VW
       super
     end
 
+    def self.add_params_to_url(url, params)
+      if params.blank?
+        url
+      else
+        params_array = params.map do |k, v|
+          v = Java::Net::URLEncoder.encode(v, "utf-8")
+          "#{k}=#{v}"
+        end
+        "#{url}?#{params_array.join("&")}"
+      end
+    end
+
     def self.set_request_for_listener(method, url, params, listener)
       # There probably is a much better way then passing all these around like this
       listener.request_url = url
@@ -83,13 +94,16 @@ module VW
       new_params
     end
 
+
     def self.request_with_params(method, url, params, listener)
       set_request_for_listener method, url, params, listener
 
       Request.new(method, url, listener, listener).tap do |req|
         req.setRetryPolicy(retry_policy)
-        params = prepare_params(params)
-        req.setParams(params)
+        unless method == VOLLEY_GET
+          params = prepare_params(params)
+          req.setParams(params)
+        end
       end
     end
 

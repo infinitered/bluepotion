@@ -53,8 +53,8 @@ class HomeScreen < PMScreen
   end
 
   def show_weather_in_sf
-    url = "http://openweathermap.org/data/2.1/find/name?q=san%20francisco"
-    app.net.get_json(url) do |response|
+    url = "http://openweathermap.org/data/2.1/find/name"
+    app.net.get_json(url, q: "san francisco") do |response|
       $r = response
       if response.success?
         temp_kelvin = response.object["list"].first["main"]["temp"]

@@ -60,9 +60,7 @@ module VW
         "none"
       end
 
-      #mp @request_params.class.name
       params_string = if @request_params
-        #@request_params.class.name
         @request_params.map{|k,v| "  #{k} = #{v}"}.join("\n")
       else
         "none"
