@@ -4,7 +4,7 @@ class RMQ
         selected.each do |view|
           case view
           when Potion::EditText      then view.text = new_data.to_s.toString
-          when Potion::TextView      then view.text = new_data
+          when Potion::TextView      then view.text = new_data.to_s.toString
           # TODO, finish
           end
         end
