@@ -89,6 +89,16 @@
       MotionAsync.async(options, &block)
     end
 
+    def toast(message, params={})
+      message_length = case params[:length]
+      when :long
+        Android::Widget::Toast::LENGTH_LONG
+      else
+        Android::Widget::Toast::LENGTH_SHORT
+      end
+      Android::Widget::Toast.makeText(rmq.activity, message, message_length).show
+    end
+
     class << self
       attr_accessor :current_application, :home_screen_class
 

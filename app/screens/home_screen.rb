@@ -60,7 +60,7 @@ class HomeScreen < PMScreen
         temp_kelvin = response.object["list"].first["main"]["temp"]
         f = (((temp_kelvin - 273.15) * 1.8000) + 32).to_i
         out = "The weather is #{f} degrees"
-        Potion::Toast.makeText(find.activity, out, Potion::Toast::LENGTH_SHORT).show
+        app.toast(out)
       end
     end
   end

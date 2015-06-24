@@ -10,8 +10,13 @@ def skip_line?(line)
     line.strip =~ /^if\s/ ||
     line.strip =~ /^unless\s/ ||
     line.strip =~ /^while\s/ ||
+    line.strip =~ /^else\s/ ||
+    line.strip =~ /^when\s/ ||
+    line.strip =~ /^case\s/ ||
+    line.strip =~ /^end\..+/ ||
     line.strip =~ /^#/ ||
     line =~ /\sdo(\s|$)/ ||
+    line.strip == "__END__" ||
     line.strip == "end"
 end
 
