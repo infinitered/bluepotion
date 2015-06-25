@@ -45,13 +45,14 @@
 
     def onOptionsItemSelected(item)
       home_const = 16908332 # R.id.home
-      return on_back_selected(item) if item.getItemId == home_const
+      return onBackPressed if item.getItemId == home_const
       # Don't call super if method returns false
       return true if on_options_item_selected(item) == false
       super
     end
 
     def onBackPressed
+      # return if self.fragment && self.fragment.on_back_pressed == false
       super
       if self.fragment
         self.fragment.set_up_action_bar
@@ -59,10 +60,6 @@
       else
         self.finish
       end
-    end
-
-    def on_back_selected(item)
-      onBackPressed # built-in Android action
     end
 
     def open(screen, options={})
