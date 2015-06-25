@@ -75,22 +75,22 @@ class HomeScreen < PMScreen
     # $o.create_some_test_views
 
     # In activity
-    rmq.activity.rmq.append(Potion::View)
-    rmq.activity.rmq.append(Potion::View)
-    rmq.activity.rmq.append(Potion::View)
-    rmq.activity.rmq.append(Potion::View).tag(:foo, :bar)
-    rmq.activity.rmq.append(Potion::View)
-    rmq.activity.rmq.append(Potion::AbsoluteLayout).append(Potion::View)
+    find.activity.rmq.append(Potion::View)
+    find.activity.rmq.append(Potion::View)
+    find.activity.rmq.append(Potion::View)
+    find.activity.rmq.append(Potion::View).tag(:foo, :bar)
+    find.activity.rmq.append(Potion::View)
+    find.activity.rmq.append(Potion::AbsoluteLayout).append(Potion::View)
 
     # In screen
-    rmq.append(Potion::View)
-    rmq.append(Potion::View).tag(:foo)
-    rmq.append(Potion::View).tag(:foo)
-    rmq.append(Potion::AbsoluteLayout).tap do |q|
+    append(Potion::View)
+    append(Potion::View).tag(:foo)
+    append(Potion::View).tag(:foo)
+    append(Potion::AbsoluteLayout).tap do |q|
       q.append(Potion::View)
       q.append(Potion::View)
       q.append(Potion::View)
-      rmq.append(Potion::AbsoluteLayout).tap do |q2|
+      q.append(Potion::AbsoluteLayout).tap do |q2|
         q2.append(Potion::View)
       end
     end

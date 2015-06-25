@@ -12,10 +12,10 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    moran (0.0.2)
+    moran (0.5)
       motion-gradle
     motion-async (0.5)
-    newclear (1.1)
+    newclear (1.2)
       reset-sim
     rake (10.4.2)
     reset-sim (1.0)
