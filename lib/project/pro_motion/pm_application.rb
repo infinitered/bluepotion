@@ -81,6 +81,10 @@
       RMQResource
     end
 
+    def r
+      RMQResource
+    end
+
     def net
       BluePotionNet
     end
