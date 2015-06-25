@@ -6,9 +6,7 @@
     end
 
     module ClassMethods
-      attr_reader :xml_resource, :show_action_bar, :bars_title
-
-      @show_action_bar = true
+      attr_reader :xml_resource, :bars_title
 
       def stylesheet(style_sheet_class)
         @rmq_style_sheet_class = style_sheet_class
@@ -23,11 +21,15 @@
       end
       alias_method :uses_xml, :xml_layout
 
-      def action_bar(show_action_bar)
-        @show_action_bar = show_action_bar
+      def action_bar(show_action_bar, opts={})
+        @show_action_bar = ({show:true, up: true}).merge(opts).merge({show: show_action_bar})
       end
       alias_method :nav_bar, :action_bar
       alias_method :uses_action_bar, :action_bar
+
+      def get_action_bar
+        @show_action_bar ||= {show:true, up: true}
+      end
 
       def title(new_title)
         @bars_title = new_title
@@ -69,9 +71,9 @@
       self.getView
     end
 
-    def on_load
-      # abstract
-    end
+    # abstract methods
+    def on_load; end
+    def on_return(opts); end
 
     def color(*params)
       RMQ.color(*params)
@@ -175,6 +177,12 @@
       else
         # Closing current screen or activity if no screens left
         act.close_fragment if act.fragment
+      end
+
+      if act.fragment
+        act.fragment.set_up_action_bar
+        act.fragment.on_return(options)
+      else
         act.finish unless act.fragment
       end
     end
@@ -196,17 +204,24 @@
 
     def hide_keyboard
       input_manager = activity.getSystemService(Android::Content::Context::INPUT_METHOD_SERVICE)
-      input_manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+      input_manager.hideSoftInputFromWindow(view.getWindowToken(), 0)
     end
 
     def action_bar
-      if a = activity
-        a.getActionBar
-      end
+      activity && activity.getActionBar
     end
 
     def menu
       activity.menu
+    end
+
+    def set_up_action_bar
+      if show_action_bar?
+        action_bar.show
+        action_bar.setDisplayHomeAsUpEnabled(show_action_bar_back?)
+      else
+        action_bar.hide
+      end
     end
 
     # Example: add_action_bar_button(title: "My text", show: :if_room)
@@ -242,6 +257,42 @@
       else
         mp "#{self.inspect} No method #{method_name.inspect} implemented for this screen."
         true
+      end
+    end
+
+    def build_and_tag_xml_views
+      return unless @xml_resource
+
+      self.rmq.all.each do |view|
+        if ren = view.resource_entry_name
+          self.rmq.build(view).tag(ren.to_sym)
+        end
+      end
+    end
+
+    def show_action_bar?
+      !!self.class.get_action_bar[:show] == true
+    end
+
+    def show_action_bar_back?
+      !!self.class.get_action_bar[:back] == true
+    end
+
+    def set_title
+      self.title = self.class.bars_title
+    end
+
+    def title
+      @title
+    end
+    def title=(value)
+      @title = value
+
+      if a = self.activity
+        if a_bar = self.action_bar
+          a_bar.title = value
+        end
+        a.title = value
       end
     end
 

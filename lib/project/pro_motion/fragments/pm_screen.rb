@@ -27,8 +27,7 @@
         @view.setId Potion::ViewIdGenerator.generate
       end
 
-      action_bar.hide if hide_action_bar?
-
+      set_up_action_bar
       on_create_view(inflater, parent, saved_instance_state)
 
       @view
@@ -89,41 +88,6 @@
       self.activity.on_fragment_detached(self) if self.activity.respond_to?(:on_fragment_detached)
     end
     def on_detach; end
-
-    def set_title
-      self.title = self.class.bars_title
-    end
-
-    def title
-      @title
-    end
-    def title=(value)
-      @title = value
-
-      if a = self.activity
-        if a_bar = self.action_bar
-          a_bar.title = value
-        end
-        a.title = value
-      end
-    end
-
-    private
-
-    def build_and_tag_xml_views
-      return unless @xml_resource
-
-      self.rmq.all.each do |view|
-        if ren = view.resource_entry_name
-          self.rmq.build(view).tag(ren.to_sym)
-        end
-      end
-    end
-
-    def hide_action_bar?
-      # RM-???: comparing nil to false causes ART crash
-      !self.class.show_action_bar.nil? && self.class.show_action_bar == false
-    end
 
   end
 
