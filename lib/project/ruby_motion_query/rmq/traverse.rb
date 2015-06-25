@@ -110,6 +110,10 @@ class RMQ
 
   end
 
+  def find!(*args) # Do not alias this, strange bugs happen where classes don't have methods
+    self.find(*args).get
+  end
+
   # @return [RMQ] A new rmq instance reducing selected views to those that match selectors provided
   #
   # @param selectors your selector
