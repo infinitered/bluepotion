@@ -1,0 +1,219 @@
+module RubyMotionQuery
+  class RMQ
+
+    # @return [Validation]
+    def self.validation
+      Validation
+    end
+
+    # @return [Validation]
+    def validation
+      Validation
+    end
+
+    # @return [RMQ]
+    def validates(rule, options={})
+      selected.each do |view|
+        view.rmq_data.validations << Validation.new(rule, options)
+      end
+      self
+    end
+
+    # @return [RMQ]
+    def clear_validations!
+      selected.each do |view|
+        view.rmq_data.validations = []
+      end
+      self
+    end
+
+    # This method validates all the selected and is responsible
+    # for calling invalid/valid events
+    #
+    # @return [Boolean] false if any validations fail
+    def valid?
+      result = true
+
+      selected.each do |view|
+        view.rmq_data.validations.each do |validation|
+
+          has_events = view.rmq_data.events
+
+          if validation.valid?(rmq(view).data)
+            if has_events && view.rmq_data.events.has_event?(:valid)
+              view.rmq_data.events[:valid].fire!
+            end
+          else
+            if has_events && view.rmq_data.events.has_event?(:invalid)
+              view.rmq_data.events[:invalid].fire!
+            end
+            result = false
+          end
+        end
+      end
+      return result
+    end
+
+    # @return [Array] of error messages for failed validations
+    def validation_errors
+      errors = []
+      selected.each do |view|
+        view.rmq_data.validations.each do |validation|
+          unless validation.valid_status
+            default_error = "Validation Error - input requires valid #{validation.rule_name}."
+            rule_message  = view.rmq_data.validation_errors[validation.rule_name] || default_error
+            errors.push(rule_message)
+          end
+        end
+      end
+      return errors
+    end
+
+    # @return [Array] of views where validations have failed
+    def invalid
+      selected.reject do |view|
+        view.rmq_data.validations.map{ |validation| validation.valid_status }.reduce(:&)
+      end
+    end
+
+    # @return [Array] of views where validations have not failed
+    def valid
+      selected.select do |view|
+        view.rmq_data.validations.map{ |validation| validation.valid_status }.reduce(:&)
+      end
+    end
+
+  end # End RMQ
+
+  class Validation
+    attr_reader :valid_status, :rule_name
+
+    ####################################################
+    # THIS IS SIGNIFICANTLY DIFFERENT FROM iOS BECAUSE
+    #  Regexp object is not available - but Java is
+    ####################################################
+
+    # Validation Regex from jQuery validation -> https://github.com/jzaefferer/jquery-validation/blob/master/src/core.js#L1094-L1200
+    EMAIL = '^[a-zA-Z0-9!#$%&\'*+\/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&\'*+\/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$'
+    URL = '^(https?|s?ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&\'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&\'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&\'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&\'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&\'\(\)\*\+,;=]|:|@)|\/|\?)*)?$'
+    DATEISO = '^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$'
+    NUMBER = '^-?(?:\d+|\d{1,3}(?:,\d{3})+)?(?:\.\d+)?$'
+    DIGITS = '^\d+$'
+    # Other Fun by http://www.freeformatter.com/regex-tester.html
+    IPV4 = '^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$'
+    TIME = '^(20|21|22|23|[01]\d|\d)((:[0-5]\d){1,2})$'
+    # Future Password strength validations -> http://stackoverflow.com/questions/5142103/regex-for-password-strength
+    USZIP = '^\d{5}(-\d{4})?$'
+    # UK Postal Code regex from: http://stackoverflow.com/a/7259020/814123
+    UKZIP = '^(GIR ?0AA|[A-PR-UWYZ]([0-9]{1,2}|([A-HK-Y][0-9]([0-9ABEHMNPRV-Y])?)|[0-9][A-HJKPS-UW]) ?[0-9][ABD-HJLNP-UW-Z]{2})$'
+    # 7 or 10 digit number, delimiters are spaces, dashes, or periods
+    USPHONE = '^(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]‌​)\s*)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-‌​9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})$'
+    # International Phone numbers
+    INTLPHONE = '^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$'
+    # Strong password (at least [8 chars, 1 upper, 1 lower, 1 number])
+    STRONGPW = '^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$'
+    # Has at least 1 uppercase letter
+    HASUPPER = '^(?=.*[A-Z]).+$'
+    # Has at least 1 lowercase letter
+    HASLOWER = '^(?=.*[a-z]).+$'
+    # Has some kind of value not just whitespace (doesn't require data to be stripped)
+    PRESENCE = '\S+'
+
+    @@validation_methods = {
+      :email => lambda { |value, opts| value.toString.matches(EMAIL)},
+      :url => lambda { |value, opts| value.toString.matches(URL)},
+      :dateiso => lambda { |value, opts| value.toString.matches(DATEISO)},
+      :number => lambda { |value, opts| value.toString.matches(NUMBER)},
+      :digits => lambda { |value, opts| value.toString.matches(DIGITS)},
+      :ipv4 => lambda { |value, opts| value.toString.matches(IPV4)},
+      :time => lambda { |value, opts| value.toString.matches(TIME)},
+      :uszip => lambda { |value, opts| value.toString.matches(USZIP)},
+      :ukzip => lambda { |value, opts| value.toString.matches(UKZIP)},
+      :usphone => lambda { |value, opts| value.toString.matches(USPHONE)},
+      :intlphone => lambda { |value, opts| value.toString.matches(INTLPHONE)},
+      :strong_password => lambda { |value, opts| value.toString.matches(STRONGPW)},
+      :has_upper => lambda { |value, opts| value.toString.matches(HASUPPER)},
+      :has_lower => lambda { |value, opts| value.toString.matches(HASLOWER)},
+      :presence => lambda { |value, opts| value.toString.matches(PRESENCE)},
+      :length => lambda { |value, opts|
+        opts = {
+          exact_length: nil,
+          max_length: Float::INFINITY,
+          min_length: 0,
+          strip: false
+        }.merge(opts)
+
+        # Range magic 8..16
+        if opts[:exact_length].is_a? Range
+          opts[:min_length] = opts[:exact_length].begin
+          opts[:max_length] = opts[:exact_length].end
+          opts[:exact_length] = nil
+        end
+
+        # allowing option to strip input before assessing length
+        value.strip! if opts[:strip]
+
+        # check length validation
+        v = if opts[:exact_length] then (value.length == opts[:exact_length]) else true end
+        v = v && value.length <= opts[:max_length]
+        v = v && value.length >= opts[:min_length]
+      },
+      :custom => lambda { |value, opts| value.toString.matches(opts[:regex])},
+    }
+
+
+    def initialize(rule, options={})
+      @rule = @@validation_methods[rule]
+      raise "RMQ validation error: :#{rule} is not one of the supported validation methods." unless @rule
+      @rule_name = rule
+      @options = options
+      @valid_status = true
+    end
+
+    def valid?(data, options={})
+      @options = options.merge(@options)
+
+      # shortcircuit for universal validation parameters
+      return true if universal_validation_checks(data, @options)
+
+      @valid_status = @rule.call(data, @options)
+    end
+
+    # this method shortcuts specific validation rules.  As such it should only be
+    # added to for universal validation needs.  It must be kept as efficient as possible.
+    def universal_validation_checks (data, options={})
+      # shortcircuit if debugging
+      return true if RubyMotionQuery::RMQ.debugging?
+      # allow blank data if specified
+      return true if (options[:allow_blank] && (data.nil? || data.empty?))
+      # allow whitelist data if specified
+      return true if (options[:white_list] && options[:white_list].include?(data))
+
+      false
+    end
+
+    class << self
+
+      # Add tags
+      # @example
+      #    rmq.validation.valid?('test@test.com', :email)
+      #    rmq.validation.valid?(53.8, :number)
+      #    rmq.validation.valid?(54, :digits)
+      #    rmq.validation.valid?('https://www.tacoland.com', :url)
+      #    rmq.validation.valid?('2014-03-02', :dateiso)
+      #    rmq.validation.valid?('', :email, allow_blank: true)
+      #
+      # @return [Boolean]
+      def valid?(value, rule, options={})
+        Validation.new(rule).valid?(value, options)
+      end
+
+      def add_validator(rule, &block)
+        raise(ArgumentError, "add_validator requires a block") if block.nil?
+
+        @@validation_methods[rule] = block
+      end
+
+    end
+  end
+end
