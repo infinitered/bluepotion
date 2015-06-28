@@ -44,8 +44,22 @@
     def on_create_menu(_); end
 
     def onOptionsItemSelected(item)
+      home_const = 16908332 # R.id.home
+      return onBackPressed if item.getItemId == home_const
       # Don't call super if method returns false
-      super unless on_options_item_selected(item) == false
+      return true if on_options_item_selected(item) == false
+      super
+    end
+
+    def onBackPressed
+      # return if self.fragment && self.fragment.on_back_pressed == false
+      super
+      if self.fragment
+        self.fragment.set_up_action_bar
+        self.fragment.on_return
+      else
+        self.finish
+      end
     end
 
     def open(screen, options={})
