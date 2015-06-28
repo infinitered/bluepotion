@@ -7,11 +7,13 @@ GIT
 PATH
   remote: .
   specs:
-    bluepotion (0.1.4)
+    bluepotion (0.1.5)
 
 GEM
   remote: https://rubygems.org/
   specs:
+    PackingPeanut (1.0.0)
+      moran
     moran (0.5)
       motion-gradle
     motion-async (0.5)
@@ -24,6 +26,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  PackingPeanut
   bluepotion!
   moran
   motion-async

@@ -9,6 +9,7 @@ module Potion
   Bundle = Android::Os::Bundle
   Environment = Android::Os::Environment
   Uri = Android::Net::Uri
+  Url = Java::Net::URL
   ArrayAdapter = Android::Widget::ArrayAdapter
   BaseAdapter = Android::Widget::BaseAdapter
   Dialog = Android::App::Dialog

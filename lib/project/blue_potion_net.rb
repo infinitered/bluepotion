@@ -13,7 +13,7 @@
 # @example
 #   # Create a session and do a single HTML get. It's better
 #   # to use the shared session below.
-#   app.net.get("http://google.com")do |response|
+#   app.net.get("http://google.com") do |response|
 #     mp response.object # <- HTML
 #   end
 #
