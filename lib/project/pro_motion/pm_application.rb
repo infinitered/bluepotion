@@ -103,6 +103,10 @@
       Android::Widget::Toast.makeText(rmq.activity, message, message_length).show
     end
 
+    def alert(options={}, &block)
+      AlertDialog.new(options, &block)
+    end
+
     class << self
       attr_accessor :current_application, :home_screen_class
 
