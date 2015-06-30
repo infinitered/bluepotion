@@ -73,7 +73,7 @@
 
     # abstract methods
     def on_load; end
-    def on_return(opts); end
+    def on_return(opts={}); end
 
     def color(*params)
       RMQ.color(*params)
