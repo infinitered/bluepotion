@@ -22,13 +22,13 @@
       alias_method :uses_xml, :xml_layout
 
       def action_bar(show_action_bar, opts={})
-        @show_action_bar = ({show:true, up: true}).merge(opts).merge({show: show_action_bar})
+        @show_action_bar = ({show:true, back: true}).merge(opts).merge({show: show_action_bar})
       end
       alias_method :nav_bar, :action_bar
       alias_method :uses_action_bar, :action_bar
 
       def get_action_bar
-        @show_action_bar ||= {show:true, up: true}
+        @show_action_bar ||= {show:true, back: true}
       end
 
       def title(new_title)
