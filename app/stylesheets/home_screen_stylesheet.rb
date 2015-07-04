@@ -35,6 +35,13 @@ class HomeScreenStylesheet < ApplicationStylesheet
     st.text = "Open Dialog"
   end
 
+  def xml_button(st)
+    standard_button(st)
+    st.background_color = color.nice_blue
+    st.color = color.black
+    st.text = "Open XML Screen"
+  end
+
   def open_example_table_button(st)
     standard_button(st)
     st.background_color = color.potion_blue

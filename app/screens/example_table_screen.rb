@@ -1,5 +1,5 @@
 class ExampleTableScreen < PMScreen
-  uses_action_bar true
+  action_bar true
   stylesheet ExampleTableScreenStylesheet
   title "Example Table Screen"
 
