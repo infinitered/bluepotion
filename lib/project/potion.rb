@@ -38,6 +38,7 @@ module Potion
 
   # Media
   File = Java::Io::File
+  FileOutputStream = Java::Io::FileOutputStream
   MediaStore = Android::Provider::MediaStore
   Contacts = Android::Provider::ContactsContract::Contacts
 end
