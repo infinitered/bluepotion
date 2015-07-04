@@ -66,10 +66,10 @@ class RMQ
     end
   end
 
-  def wrap(*views)
+  def wrap(view_one, *views) # These strange params is because of RMA bug
     views = [views] unless views.is_a?(Potion::ArrayList) # TODO, WTF, RM bug?
+    views.unshift(view_one)
     views.flatten!
-
     views.select!{ |v| v.is_a?(Potion::View) }
     RMQ.create_with_array_and_selectors(views, views, @originated_from, self)
   end

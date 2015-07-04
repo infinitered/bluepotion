@@ -22,7 +22,7 @@
     def open_fragment(frag, options={})
       mp frag
       mgr = fragmentManager.beginTransaction
-      mgr.add(@fragment_container.getId, frag, "screen-#{fragmentManager.getBackStackEntryCount + 1}")
+      mgr.replace(@fragment_container.getId, frag, "screen-#{fragmentManager.getBackStackEntryCount + 1}")
       mgr.addToBackStack(nil)
       mgr.commit
       frag

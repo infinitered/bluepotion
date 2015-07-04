@@ -21,14 +21,20 @@
       end
       alias_method :uses_xml, :xml_layout
 
+      # Sets up the action bar for this screen.
+      #
+      # Example:
+      #   action_bar true, back: true, icon: true,
+      #     custom_icon: "resourcename", custom_back: "custombackicon"
+      #
       def action_bar(show_action_bar, opts={})
-        @show_action_bar = ({show:true, up: true}).merge(opts).merge({show: show_action_bar})
+        @action_bar_options = ({show:true, back: true, icon: false}).merge(opts).merge({show: show_action_bar})
       end
       alias_method :nav_bar, :action_bar
       alias_method :uses_action_bar, :action_bar
 
-      def get_action_bar
-        @show_action_bar ||= {show:true, up: true}
+      def action_bar_options
+        @action_bar_options ||= action_bar(true, {})
       end
 
       def title(new_title)
@@ -215,10 +221,13 @@
       activity.menu
     end
 
-    def set_up_action_bar
-      if show_action_bar?
+    def set_up_action_bar(options={})
+      if options[:show]
         action_bar.show
-        action_bar.setDisplayHomeAsUpEnabled(show_action_bar_back?)
+        action_bar.setDisplayHomeAsUpEnabled(!!options[:back])
+        action_bar.setDisplayShowHomeEnabled(!!options[:icon])
+        action_bar.setIcon(image.resource(options[:custom_icon].to_s)) if options[:custom_icon]
+        action_bar.setHomeAsUpIndicator(image.resource(options[:custom_back].to_s)) if options[:custom_back]
       else
         action_bar.hide
       end
@@ -268,14 +277,6 @@
           self.rmq.build(view).tag(ren.to_sym)
         end
       end
-    end
-
-    def show_action_bar?
-      !!self.class.get_action_bar[:show] == true
-    end
-
-    def show_action_bar_back?
-      !!self.class.get_action_bar[:back] == true
     end
 
     def set_title

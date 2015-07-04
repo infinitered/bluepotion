@@ -1,7 +1,7 @@
 class HomeScreen < PMScreen
   title "BluePotion Home"
   stylesheet HomeScreenStylesheet
-  action_bar true
+  action_bar true, icon: true, back: false
 
   # This will automatically set to a RelativeLayout if you don't override this method
   def load_view
@@ -25,6 +25,10 @@ class HomeScreen < PMScreen
 
     append(Potion::Button, :dialog_button).on(:tap) do |sender|
       PotionDialog.new(xml_layout: app.resource.layout(:blue_potion_dialog), w: 500, h: 500)
+    end
+
+    append(Potion::Button, :xml_button).on(:tap) do |sender|
+      open ExampleXmlScreen
     end
 
     append(Potion::Button, :open_example_table_button).on(:tap) do |sender|

@@ -90,11 +90,7 @@
         @view.setId Potion::ViewIdGenerator.generate
       end
 
-      if show_action_bar?
-        action_bar.show
-      else
-        action_bar.hide
-      end
+      set_up_action_bar(self.class.action_bar_options)
 
       on_create_view(inflater, parent, saved_instance_state)
 
