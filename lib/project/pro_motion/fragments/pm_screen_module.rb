@@ -28,13 +28,13 @@
       #     custom_icon: "resourcename", custom_back: "custombackicon"
       #
       def action_bar(show_action_bar, opts={})
-        @show_action_bar = ({show:true, back: true, icon: false}).merge(opts).merge({show: show_action_bar})
+        @action_bar_options = ({show:true, back: true, icon: false}).merge(opts).merge({show: show_action_bar})
       end
       alias_method :nav_bar, :action_bar
       alias_method :uses_action_bar, :action_bar
 
-      def get_action_bar
-        @show_action_bar ||= action_bar(true, {})
+      def action_bar_options
+        @action_bar_options ||= action_bar(true, {})
       end
 
       def title(new_title)
@@ -221,7 +221,7 @@
       activity.menu
     end
 
-    def set_up_action_bar(options)
+    def set_up_action_bar(options={})
       if options[:show]
         action_bar.show
         action_bar.setDisplayHomeAsUpEnabled(!!options[:back])

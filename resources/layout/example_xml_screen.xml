@@ -1,7 +1,33 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
-    android:layout_height="match_parent"
-    android:background="#00000000"
-    android:orientation="vertical">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:gravity="center"
+  android:orientation="vertical" >
 
-</RelativeLayout>
+   <TextView
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:padding="24dp"
+     android:text="Hello, BluePotion" />
+
+   <LinearLayout
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:gravity="center"
+     android:orientation="horizontal" >
+
+     <Button
+       android:id="@+id/left_button"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="Click me" />
+
+     <Button
+       android:id="@+id/right_button"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="Or Click Me" />
+
+   </LinearLayout>
+
+</LinearLayout>

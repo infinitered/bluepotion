@@ -51,17 +51,6 @@
       super
     end
 
-    def onBackPressed
-      # return if self.fragment && self.fragment.on_back_pressed == false
-      super
-      if self.fragment
-        self.fragment.set_up_action_bar
-        self.fragment.on_return
-      else
-        self.finish
-      end
-    end
-
     def open(screen, options={})
       find.screen.open screen, options
     end
