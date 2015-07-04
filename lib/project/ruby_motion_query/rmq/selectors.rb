@@ -10,7 +10,7 @@ class RMQ
     @_selectors
   end
 
-  def match(view, new_selectors)
+  def match(view, new_selectors, dummy=nil)
     out = false
 
     # This method is written strange because the return in this example doesn't actually return (RM bug)
