@@ -18,6 +18,15 @@
       mp "PMActivity on_create", debugging_only: true
     end
 
+    # These 2 methods are needed to pass on to inherited activities
+    def onActivityResult(request_code, result_code, data)
+      on_activity_result(request_code, result_code, data)
+    end
+
+    def on_activity_result(request_code, result_code, data)
+      # Abstract
+    end
+
     def onResume
       super
       on_resume
