@@ -25,8 +25,12 @@
       context.applicationInfo
     end
 
+    def package_manager
+      context.getPackageManager
+    end
+
     def name
-      application_info.loadLabel(context.getPackageManager())
+      application_info.loadLabel(package_manager)
     end
 
     def identifier
