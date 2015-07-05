@@ -16,8 +16,11 @@ Motion::Project::App.setup do |app|
   app.package = "com.infinitered.bluepotion"
   app.theme = "@android:style/Theme.Holo.Light"
   app.permissions = [:internet, :access_network_state] # :access_coarse_location, :access_fine_location, :write_external_storage
-  #app.version_name = "0.0.2"
   app.icon = 'ic_launcher'
+  
+  # Version name is for you - version code must always be higher in Google Play (tied to git builds)
+  app.version_name = "1.0.0"
+  app.version_code = (`git rev-list HEAD --count`.strip.to_i).to_s  
 
   app.application_class = "BluePotionApplication"
   app.main_activity = "PMHomeActivity"
