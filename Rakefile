@@ -19,8 +19,8 @@ Motion::Project::App.setup do |app|
   app.icon = 'ic_launcher'
   
   # Version name is for you - version code must always be higher in Google Play (tied to git builds)
-  app.version_name = "1.0.0"
-  app.version_code = (`git rev-list HEAD --count`.strip.to_i).to_s  
+  # app.version_name = "1.0.0"
+  # app.version_code = (`git rev-list HEAD --count`.strip.to_i).to_s  
 
   app.application_class = "BluePotionApplication"
   app.main_activity = "PMHomeActivity"
