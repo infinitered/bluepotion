@@ -55,7 +55,7 @@
     end
 
     def on_activity_result(request_code, result_code, data)
-      if @fragment && @fragment.respond_to?(:handle_activity_result)
+      if @fragment && @fragment.respond_to?(:activity_result)
         @fragment.activity_result(request_code, result_code, data)
       end
     end
