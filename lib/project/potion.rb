@@ -35,12 +35,16 @@ module Potion
   # Graphics
   Color = Android::Graphics::Color
   Typeface = Android::Graphics::Typeface
+  Bitmap = Android::Graphics::Bitmap
 
   # Media
   File = Java::Io::File
   FileOutputStream = Java::Io::FileOutputStream
   MediaStore = Android::Provider::MediaStore
   Contacts = Android::Provider::ContactsContract::Contacts
+  # This is needed since you can't access constants of interfaces
+  # Basically is Android::Provider::MediaStore::Images::Media::INTERNAL_CONTENT_URI
+  INTERNAL_CONTENT_URI = Potion::Uri.parse("content://media/internal/images/media")
 end
 
 #
