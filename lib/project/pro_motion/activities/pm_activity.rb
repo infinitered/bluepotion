@@ -27,6 +27,11 @@
       # Abstract
     end
 
+    def onStart
+      super
+      on_start if respond_to?(:on_start)
+    end
+
     def onResume
       super
       on_resume
@@ -66,6 +71,11 @@
 
     def close(options={})
       find.screen.close options
+    end
+
+    def set_content layout_xml
+      layout_id = find.resource.layout(layout_xml)
+      setContentView(layout_id)
     end
 
   end
