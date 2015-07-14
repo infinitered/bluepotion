@@ -5,7 +5,9 @@ class RMQ
       when :click, :tap, :touch
         handle_click(view, &block)
       when :change
-        handle_change(view, &block)
+        handle_change(view, args, &block)
+      when :done
+        handle_done(view, &block)
       else
         raise "[RMQ ERROR] Unrecognized event: #{event}"
       end
@@ -25,13 +27,20 @@ class RMQ
     end
   end
 
-  def handle_change(view, &block)
+  def handle_change(view, args, &block)
     # Seek bar change
     if view.respond_to? :setOnSeekBarChangeListener
       view.onSeekBarChangeListener = RMQSeekChange.new(args, &block)
     # Text change
     elsif view.respond_to? :addTextChangeListener
       view.addTextChangedListener(RMQTextChange.new(&block))
+    end
+  end
+
+  def handle_done(view, &block)
+    # Keyboard done button pressed
+    if view.respond_to? :setOnEditorActionListener
+      view.onEditorActionListener = RMQKeyboardAction.new(&block)
     end
   end
 
