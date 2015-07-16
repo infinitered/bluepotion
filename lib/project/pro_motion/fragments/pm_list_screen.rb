@@ -121,7 +121,7 @@
 
       build_and_tag_xml_views
 
-      #set_title
+      set_title
       on_load
       on_activity_created
     end
