@@ -61,21 +61,23 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
   def getView(position, convert_view, parent); view(position, convert_view, parent); end
   def view(position, convert_view, parent)
     data = item(position)
+    # Consider the final option to be an inflated Android::R::Layout::Simple_list_item_1
     out = convert_view || rmq.create!(data[:cell_class] || Potion::TextView)
-    update_view(out, data[:title])
+    update_view(out, data[:update])
     if data[:action]
       find(out).on(:tap) { find.screen.send(data[:action], data[:arguments], position) }
     end
     out
   end
 
-  def update_view(view, data)
-    if cell_options[:update].is_a?(Proc)
-      cell_options[:update].call(out, data)
-    elsif cell_options[:update].is_a?(Symbol) || cell_options[:update].is_a?(String)
-      find.screen.send(cell_options[:update], out, data)
+  def update_view(view, update)
+    if update.is_a?(Proc)
+      update.call(out, data)
+    elsif update.is_a?(Symbol) || update.is_a?(String)
+      find.screen.send(update, out, data)
     else
-      out.text = data
+      # WAIT WHAT?   This needs to be evaluated... something is strange here
+      #out.text = data
     end
   end
 end

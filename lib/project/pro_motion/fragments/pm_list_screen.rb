@@ -55,7 +55,8 @@
       @adapter ||= begin
         td = table_data
         if td.is_a?(Array)
-          PMBaseAdapter.new(data: td)
+          cells = td.first[:cells]
+          PMBaseAdapter.new(data: cells)
         elsif td.is_a?(Hash)
           mp "Please supply a cursor in #{self.inspect}#table_data." unless td[:cursor]
           PMCursorAdapter.new(td)
@@ -120,7 +121,7 @@
 
       build_and_tag_xml_views
 
-      set_title
+      #set_title
       on_load
       on_activity_created
     end
