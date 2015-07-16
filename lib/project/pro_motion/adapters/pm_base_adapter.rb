@@ -89,6 +89,7 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
       else
         # Default is Sipmle List Item 1
         # TODO:  Possibly use Android::R::Layout::Simple_list_item_2 which has subtitle
+        #https://android.googlesource.com/platform/frameworks/base/+/master/core/res/res/layout/simple_list_item_2.xml
         inflater = Potion::LayoutInflater.from(find.activity)
         row_view = inflater.inflate(Android::R::Layout::Simple_list_item_1, nil, true)
       end
