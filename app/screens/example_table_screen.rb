@@ -18,13 +18,13 @@ class ExampleTableScreen < PMListScreen
     }]
   end
 
-  def visit_state args
-    mp "Called"
+  def visit_state (args, position)
+    mp "You clicked on #{args[:state]}"
   end
 
   def on_load
     mp "ExampleTableScreen on_load"
-    #find.log_tree
+    #find.log_tree Errors
   end
 
   def people=(value)

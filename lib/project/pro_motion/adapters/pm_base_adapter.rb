@@ -61,23 +61,38 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
   def getView(position, convert_view, parent); view(position, convert_view, parent); end
   def view(position, convert_view, parent)
     data = item(position)
-    # Consider the final option to be an inflated Android::R::Layout::Simple_list_item_1
-    out = convert_view || rmq.create!(data[:cell_class] || Potion::TextView)
-    update_view(out, data[:update])
+    out = selected_view(convert_view, data)
+    update_view(out, data)
     if data[:action]
       find(out).on(:tap) { find.screen.send(data[:action], data[:arguments], position) }
     end
     out
   end
 
-  def update_view(view, update)
+  def update_view(view, data)
+    update = data[:update]
     if update.is_a?(Proc)
       update.call(out, data)
     elsif update.is_a?(Symbol) || update.is_a?(String)
       find.screen.send(update, out, data)
     else
-      # WAIT WHAT?   This needs to be evaluated... something is strange here
-      #out.text = data
+      # Specific to use of Simple list item 1
+      view.text = data[:title]
     end
+  end
+
+  def selected_view(cv, data)
+    row_view = cv
+    unless row_view
+      if data[:cell_class]
+        row_view = rmq.create!(data[:cell_class])
+      else
+        # Default is Sipmle List Item 1
+        # TODO:  Possibly use Android::R::Layout::Simple_list_item_2 which has subtitle
+        inflater = Potion::LayoutInflater.from(find.activity)
+        row_view = inflater.inflate(Android::R::Layout::Simple_list_item_1, nil, true)
+      end
+    end
+    row_view
   end
 end
