@@ -1,20 +1,30 @@
-class ExampleTableScreen < PMScreen
+class ExampleTableScreen < PMListScreen
   action_bar true
   stylesheet ExampleTableScreenStylesheet
   title "Example Table Screen"
 
   def load_view
     mp "ExampleTableScreen load_view"
+    Potion::ListView.new(self.activity)
+  end
 
-    Potion::LinearLayout.new(self.activity)
+  def table_data
+    [{
+      title: "Northwest States",
+      cells: [
+        { title: "Oregon", action: :visit_state, arguments: { state: "oregon" }},
+        { title: "Washington", action: :visit_state, arguments: { state: "washington" }}
+      ]
+    }]
+  end
+
+  def visit_state (args, position)
+    mp "You clicked on #{args[:state]}"
   end
 
   def on_load
     mp "ExampleTableScreen on_load"
-
-    append(Potion::TextView,  :hello_label)
-
-    find.log_tree
+    #find.log_tree Errors
   end
 
   def people=(value)
