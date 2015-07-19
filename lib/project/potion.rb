@@ -45,6 +45,8 @@ module Potion
   # This is needed since you can't access constants of interfaces
   # Basically is Android::Provider::MediaStore::Images::Media::INTERNAL_CONTENT_URI
   INTERNAL_CONTENT_URI = Potion::Uri.parse("content://media/internal/images/media")
+
+  Handler = Android::Os::Handler
 end
 
 #

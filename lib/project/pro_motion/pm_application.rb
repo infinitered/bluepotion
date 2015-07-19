@@ -115,6 +115,17 @@
       AlertDialog.new(options, &block)
     end
 
+    # Execute the given block after the given number of seconds
+    #
+    # @example
+    # app.after(10) do
+    #   p "This will print in 10 seconds"
+    # end
+    #
+    def after(delay, &block)
+      DelayedExecution.after(delay, &block)
+    end
+
     class << self
       attr_accessor :current_application, :home_screen_class
 
