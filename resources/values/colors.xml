@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="ink">#1F1F1F</color>
+    <color name="firecracker">#F80000</color>
     <color name="transparent">#00000000</color>
     <color name="translucent_black">#D7000000</color>
 </resources>

@@ -1,10 +1,16 @@
-class ImageCell < Android::Widget::LinearLayout
+class ImageCell < Android::Widget::FrameLayout
 
-  def initialize x
+  def initialize app
     mp "Woah ImageCell initialized"
+  #   inflater = app.find.activity.layoutInflater
+  #   row = inflater.inflate(R::Layout::Image_cell, nil, true)
+  #   rmq.append!(row)
   end
 
   def on_load
+    mp "on_load called in ImageCell"
+    @test = find.append(Potion::Label)
+
     #@price = rmq.append(UILabel, :price_text_style)
     #rmq.all.reapply_styles
   end

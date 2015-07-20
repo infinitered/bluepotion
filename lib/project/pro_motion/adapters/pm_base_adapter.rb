@@ -86,16 +86,22 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
   def selected_view(cv, data)
     row_view = cv
     unless row_view
-      #if data[:cell_class]
-      #  row_view = rmq.create!(data[:cell_class])
-      #else
+      if data[:cell_class]
+        row_view = rmq.create!(data[:cell_class])
+      elsif data[:cell_xml]
+        row_view = inflate_row(data[:cell_xml])
+      else
         # Default is Sipmle List Item 1
         # TODO:  Possibly use Android::R::Layout::Simple_list_item_2 which has subtitle
         #https://android.googlesource.com/platform/frameworks/base/+/master/core/res/res/layout/simple_list_item_2.xml
-        inflater = Potion::LayoutInflater.from(find.activity)
-        row_view = inflater.inflate(Android::R::Layout::Simple_list_item_1, nil, true)
-      #end
+        row_view = inflate_row(Android::R::Layout::Simple_list_item_1)
+      end
     end
     row_view
+  end
+
+  def inflate_row(xml_resource)
+    inflater = Potion::LayoutInflater.from(find.activity)
+    row_view = inflater.inflate(xml_resource, nil, true)
   end
 end

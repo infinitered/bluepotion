@@ -13,13 +13,13 @@ class ExampleCustomTableCellsScreen < PMListScreen
       title: "BluePotion Developers",
       cells: [{
         title: "Gant",
-        cell_class: ImageCell,
+        cell_xml: R::Layout::Image_cell,
         properties: {image: "taco"},
         action: :view_developer,
         arguments: { github: "GantMan" }
       },{
         title: "Todd",
-        cell_class: ImageCell,
+        cell_xml: R::Layout::Image_cell,
         properties: {image: "taco"},
         action: :view_developer,
         arguments: { github: "twerth" }
