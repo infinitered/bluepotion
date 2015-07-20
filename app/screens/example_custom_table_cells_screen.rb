@@ -11,14 +11,23 @@ class ExampleCustomTableCellsScreen < PMListScreen
   def table_data
     [{
       title: "BluePotion Developers",
-      cells: [
-        { title: "Gant", action: :view_developer, arguments: { state: "oregon" }},
-        { title: "Todd", action: :view_developer, arguments: { state: "washington" }}
-      ]
+      cells: [{
+        title: "Gant",
+        cell_class: ImageCell,
+        properties: {image: "taco"},
+        action: :view_developer,
+        arguments: { github: "GantMan" }
+      },{
+        title: "Todd",
+        cell_class: ImageCell,
+        properties: {image: "taco"},
+        action: :view_developer,
+        arguments: { github: "twerth" }
+      }]
     }]
   end
 
-  def view_developer options
-    mp options
+  def view_developer(args, position)
+    mp args
   end
 end

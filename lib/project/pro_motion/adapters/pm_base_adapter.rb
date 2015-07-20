@@ -75,24 +75,26 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
       update.call(out, data)
     elsif update.is_a?(Symbol) || update.is_a?(String)
       find.screen.send(update, out, data)
-    else
+    elsif view.is_a?(Potion::TextView)
       # Specific to use of Simple list item 1
       view.text = data[:title]
+    else
+      mp "We don't know how to update your cell"
     end
   end
 
   def selected_view(cv, data)
     row_view = cv
     unless row_view
-      if data[:cell_class]
-        row_view = rmq.create!(data[:cell_class])
-      else
+      #if data[:cell_class]
+      #  row_view = rmq.create!(data[:cell_class])
+      #else
         # Default is Sipmle List Item 1
         # TODO:  Possibly use Android::R::Layout::Simple_list_item_2 which has subtitle
         #https://android.googlesource.com/platform/frameworks/base/+/master/core/res/res/layout/simple_list_item_2.xml
         inflater = Potion::LayoutInflater.from(find.activity)
         row_view = inflater.inflate(Android::R::Layout::Simple_list_item_1, nil, true)
-      end
+      #end
     end
     row_view
   end

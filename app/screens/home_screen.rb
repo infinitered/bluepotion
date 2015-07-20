@@ -35,6 +35,10 @@ class HomeScreen < PMScreen
       open ExampleTableScreen, people: ["Todd", "Darin", "Gant", "Jamon"], test_int: 123, test_symbol: :my_symbol
     end
 
+    append(Potion::Button, :open_example_custom_cells).on(:tap) do
+      open ExampleCustomTableCellsScreen
+    end
+
     append(Potion::Button, :countdown_button).on(:tap) do |sender|
       original_text = sender.text
       sender.enabled = false
