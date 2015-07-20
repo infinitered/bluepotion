@@ -74,7 +74,7 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
     if update.is_a?(Proc)
       update.call(out, data)
     elsif update.is_a?(Symbol) || update.is_a?(String)
-      find.screen.send(update, out, data)
+      find.screen.send(update, view, data)
     elsif view.is_a?(Potion::TextView)
       # Specific to use of Simple list item 1
       view.text = data[:title]
