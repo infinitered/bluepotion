@@ -78,7 +78,14 @@ class RMQ
     out.flatten!.uniq
   end
 
-
+  def reapply_styles
+    selected.each do |selected_view|
+      selected_view.rmq_data.styles.each do |style_name|
+        apply_style_to_view selected_view, style_name
+      end
+    end
+    self
+  end
 
 end
 
