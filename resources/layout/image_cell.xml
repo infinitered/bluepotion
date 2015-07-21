@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/cell_icon"
         android:layout_centerVertical="true"
+        android:paddingLeft="8dp"
         android:scaleType="center"
         android:maxWidth="50dp"
         android:minHeight="50dp" />
@@ -17,6 +18,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/cell_icon"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/cell_label"
         android:layout_centerVertical="true"

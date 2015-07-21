@@ -12,17 +12,17 @@ class ExampleCustomTableCellsScreen < PMListScreen
     [{
       title: "BluePotion Developers",
       cells: [{
+        title: "I'm a Regular Cell"
+      },{
         title: "Gant",
         cell_xml: R::Layout::Image_cell,
         update: :update_xml_cell,
-        properties: {image: "taco"},
         action: :view_developer,
         arguments: { github: "GantMan" }
       },{
         title: "Todd",
         cell_xml: R::Layout::Image_cell,
         update: :update_xml_cell,
-        properties: {image: "taco"},
         action: :view_developer,
         arguments: { github: "twerth" }
       }]
@@ -34,11 +34,9 @@ class ExampleCustomTableCellsScreen < PMListScreen
   end
 
   def update_xml_cell(cell, cell_data)
-    # Let's set the title
+    # Let's set the cell info specific to Image_cell
     rmq_cell = find(cell)
     rmq_cell.find(Potion::Label).data = cell_data[:title]
     rmq_cell.find(Potion::ImageView).get.imageResource = rmq.image.resource("ic_launcher")
-    mp cell
-    mp cell_data
   end
 end
