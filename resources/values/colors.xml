@@ -2,6 +2,7 @@
 <resources>
     <color name="ink">#1F1F1F</color>
     <color name="firecracker">#cf9696</color>
+    <color name="blue_steel">#638e8e</color>
     <color name="transparent">#00000000</color>
     <color name="translucent_black">#D7000000</color>
 </resources>

@@ -13,6 +13,7 @@ class ApplicationStylesheet < RMQStylesheet
     color.add_named :mustard,       "#FFFF00"
     color.add_named :nice_blue,     "#87C9FF"
     color.add_named :light_blue,    '#69C3EE'
+    color.add_named :blue_steel,    '#638e8e'
   end
 
   def standard_text_view(st)

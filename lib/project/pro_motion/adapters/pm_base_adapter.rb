@@ -70,11 +70,16 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
   end
 
   def update_view(view, data)
+    $junk = view
     update = data[:update]
     if update.is_a?(Proc)
       update.call(out, data)
     elsif update.is_a?(Symbol) || update.is_a?(String)
       find.screen.send(update, view, data)
+    elsif data[:properties]
+      data[:properties].each do |k, v|
+        view.send("#{k}=", v)
+      end
     elsif view.is_a?(Potion::TextView)
       # Specific to use of Simple list item 1
       view.text = data[:title]
