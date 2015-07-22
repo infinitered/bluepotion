@@ -7,8 +7,14 @@ class ImageCell < Android::Widget::FrameLayout
     rmq.append!(@row)
   end
 
-  def dev_name=(dev_name)
+  def custom_name=(dev_name)
     find(@row).find(Potion::Label).data = dev_name
+  end
+
+  def color=(new_color)
+    find(@row).style do |st|
+      st.background_color = new_color
+    end
   end
 
 

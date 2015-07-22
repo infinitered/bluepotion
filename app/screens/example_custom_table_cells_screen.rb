@@ -23,25 +23,26 @@ class ExampleCustomTableCellsScreen < PMListScreen
         title: "XML Custom Image Cell 1",
         cell_xml: R::Layout::Image_cell,
         update: :update_xml_cell,
-        action: :view_developer,
-        arguments: { github: "GantMan" }
+        action: :make_magic,
+        arguments: { github: "SUCH WOW" }
       },{
         title: "XML Custom Imge Cell 2",
         cell_xml: R::Layout::Image_cell,
         update: :update_xml_cell,
-        action: :view_developer,
-        arguments: { github: "twerth" }
+        action: :make_magic,
+        arguments: { github: "MUCH AMAZE" }
       },{
       # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       # Illustrating Cell Class - Update via Class
       # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         cell_class: ImageCell,
-        properties: { dev_name: "Darin"}
+        properties: { custom_name: "Random Background", color: rmq.color.random}
       }]
     }]
   end
 
-  def view_developer(args, position)
+  # Cell logic in the screen for XML
+  def make_magic(args, position)
     mp args
   end
 
