@@ -24,19 +24,25 @@ class ExampleCustomTableCellsScreen < PMListScreen
         cell_xml: R::Layout::Image_cell,
         update: :update_xml_cell,
         action: :make_magic,
-        arguments: { github: "SUCH WOW" }
+        arguments: { saying: "SUCH WOW" }
       },{
         title: "XML Custom Imge Cell 2",
         cell_xml: R::Layout::Image_cell,
         update: :update_xml_cell,
         action: :make_magic,
-        arguments: { github: "MUCH AMAZE" }
+        arguments: { other_saying: "MUCH AMAZE" }
       },{
       # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       # Illustrating Cell Class - Update via Class
       # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         cell_class: ImageCell,
-        properties: { custom_name: "Random Background", color: rmq.color.random}
+        action: :make_magic,
+        arguments: { simple: "!!!!!"},
+        properties: {
+          custom_name: "Random Color Cell Class",
+          color: rmq.color.random,
+          i_dont_exist: true
+        }
       }]
     }]
   end
