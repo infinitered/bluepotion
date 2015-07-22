@@ -115,6 +115,14 @@
       AlertDialog.new(options, &block)
     end
 
+    # Send user to native Texting
+    # app.sms("555-555-5555")
+    def sms(phone_number)
+      sms_intent = Android::Content::Intent.new("android.intent.action.VIEW")
+      sms_intent.setData(Android::Net::Uri.fromParts("sms", phone_number.to_s, nil))
+      find.activity.startActivity(sms_intent)
+    end
+
     # Execute the given block after the given number of seconds
     #
     # @example
