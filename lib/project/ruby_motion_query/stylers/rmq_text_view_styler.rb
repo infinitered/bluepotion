@@ -41,6 +41,10 @@ class RMQTextViewStyler < RMQViewStyler
     @view.gravity = convert_gravity(gravity)
   end
 
+  def enabled=(enabled)
+    @view.setEnabled(enabled)
+  end
+
   def finalize
     super
     @text_style ||= Android::Graphics::Typeface::NORMAL

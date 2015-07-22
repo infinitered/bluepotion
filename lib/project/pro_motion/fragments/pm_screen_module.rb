@@ -213,6 +213,12 @@
       input_manager.hideSoftInputFromWindow(view.getWindowToken(), 0)
     end
 
+    def show_keyboard
+      field = activity.getCurrentFocus()
+      input_manager = activity.getSystemService(Android::Content::Context::INPUT_METHOD_SERVICE)
+      input_manager.showSoftInput(field, Android::View::InputMethod::InputMethodManager::SHOW_FORCED)
+    end
+
     def action_bar
       activity && activity.getActionBar
     end
