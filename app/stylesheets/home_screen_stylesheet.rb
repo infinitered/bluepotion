@@ -49,6 +49,11 @@ class HomeScreenStylesheet < ApplicationStylesheet
     st.text = "Open table screen"
   end
 
+  def open_example_custom_cells(st)
+    standard_button(st)
+    st.text = "Open table with custom cells"
+  end
+
   def countdown_button(st)
     standard_button(st)
     st.background_color = color.light_blue

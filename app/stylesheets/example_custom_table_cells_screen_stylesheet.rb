@@ -1,4 +1,4 @@
-class ExampleTableScreenStylesheet < ApplicationStylesheet
+class ExampleCustomTableCellsScreenStylesheet < ApplicationStylesheet
 
   def root_view(st)
     st.layout_width = :full
