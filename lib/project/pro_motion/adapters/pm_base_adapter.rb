@@ -74,7 +74,11 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
     if update.is_a?(Proc)
       update.call(out, data)
     elsif update.is_a?(Symbol) || update.is_a?(String)
-      find.screen.send(update, view, data)
+      if find.screen.respond_to?(update)
+        find.screen.send(update, view, data)
+      else
+        mp "Warning: #{find.screen.class} does not respond to #{update}"
+      end
     elsif data[:properties]
       data[:properties].each do |k, v|
         if view.respond_to?("#{k}=")
@@ -86,7 +90,7 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
     elsif view.is_a?(Potion::TextView)
       # Specific to use of Simple list item 1
       view.text = data[:title]
-    else
+    elsif update
       mp "We don't know how to update your cell"
     end
   end
