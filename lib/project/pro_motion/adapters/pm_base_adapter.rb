@@ -86,8 +86,6 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
     elsif view.is_a?(Potion::TextView)
       # Specific to use of Simple list item 1
       view.text = data[:title]
-    else
-      mp "We don't know how to update your cell"
     end
   end
 
