@@ -65,6 +65,11 @@
     end
 
     def update_table_data
+      # base adapters must reacquire their data from the PMListScreen "delegate"
+      if adapter.is_a?(PMBaseAdapter)
+        td = table_data
+        adapter.data = td && td.first && td.first[:cells]
+      end
       adapter.notifyDataSetChanged
     end
 
