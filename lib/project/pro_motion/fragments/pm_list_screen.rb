@@ -13,7 +13,8 @@
 
     def load_view
       # Potion::LinearLayout.new(self.activity)
-      self.view = create!(Potion::ListView, :list)
+      lv = create(Potion::ListView).tag(:list)
+      self.view = lv.get
       # find(self.view).style do |st|
         # st.layout_width = :match_parent
         # st.layout_height = :match_parent
@@ -66,7 +67,9 @@
 
     def update_table_data
       # base adapters must reacquire their data from the PMListScreen "delegate"
-      if adapter.is_a?(PMBaseAdapter)
+      if adapter.instance_of?(PMCursorAdapter)
+        # TODO:  Reload for PMCursorAdapter
+      elsif adapter.is_a?(PMBaseAdapter)
         td = table_data
         adapter.data = td && td.first && td.first[:cells]
       end
