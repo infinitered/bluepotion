@@ -116,8 +116,8 @@ module RubyMotionQuery
     HASUPPER = '^(?=.*[A-Z]).+$'
     # Has at least 1 lowercase letter
     HASLOWER = '^(?=.*[a-z]).+$'
-    # Has some kind of value not just whitespace (doesn't require data to be stripped)
-    PRESENCE = '\S+'
+    # is just whitespace
+    NOT_PRESENCE = '^\s*$' #Needed for android presence madness
 
     @@validation_methods = {
       :email => lambda { |value, opts| value.toString.matches(EMAIL)},
@@ -134,7 +134,7 @@ module RubyMotionQuery
       :strong_password => lambda { |value, opts| value.toString.matches(STRONGPW)},
       :has_upper => lambda { |value, opts| value.toString.matches(HASUPPER)},
       :has_lower => lambda { |value, opts| value.toString.matches(HASLOWER)},
-      :presence => lambda { |value, opts| value.toString.matches(PRESENCE)},
+      :presence => lambda { |value, opts| !value.toString.matches(NOT_PRESENCE)},
       :length => lambda { |value, opts|
         opts = {
           exact_length: nil,
