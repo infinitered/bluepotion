@@ -48,8 +48,8 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
     data.length
   end
 
-  def getItem(position); item(position); end
-  def item(position)
+  def getItem(position); item_data(position); end
+  def item_data(position)
     data[position]
   end
 
@@ -60,7 +60,7 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
 
   def getView(position, convert_view, parent); view(position, convert_view, parent); end
   def view(position, convert_view, parent)
-    data = item(position)
+    data = item_data(position)
     out = selected_view(convert_view, data)
     update_view(out, data)
     if data[:action]
