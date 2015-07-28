@@ -5,6 +5,13 @@
 BluePotion
 -----------
 
+## Prerequisites
+
+  - RubyMotion android: `motion android-setup` (install API 16)
+  - Gradle: `brew install gradle`
+  - GenyMotion Emulator (optional) [Gant Laborde's post on Genymotion](http://www.iconoclastlabs.com/blog/rubymotion-android-in-the-emulator-with-genymotion).
+
+
 ## Warning, BluePotion is an alpha release.
 
 BluePotion is the Android version of [RedPotion](http://redpotion.org). We're spending a lot of time working on it right now. It's currently in Alpha.
