@@ -20,7 +20,7 @@
     end
 
     def open_fragment(frag, options={})
-      mp frag
+      mp "open fragment: #{frag.inspect}"
       mgr = fragmentManager.beginTransaction
       mgr.replace(@fragment_container.getId, frag, "screen-#{fragmentManager.getBackStackEntryCount + 1}")
       mgr.addToBackStack(nil)

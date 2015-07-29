@@ -24,11 +24,22 @@ class RMQViewStyler
   end
 
   def layout_params
-    @layout_params ||= @view.getLayoutParams
+    @layout_params ||= begin
+      #@view.setMargins(0, 0, 0, 0)
+      #mp @view.LayoutParams
+      if lp = @view.getLayoutParams
+        lp
+      else
+        #mp 1
+        #mp @view
+        Android::View::ViewGroup::LayoutParams.new(0,0)
+        #Android::Widget::LinearLayout::LayoutParams.new(0,0)
+      end
+    end
   end
 
   def layout=(value)
-    lp = layout_params
+    return unless lp = layout_params
 
     if value == :full
       lp.width = convert_dimension_value(:full)

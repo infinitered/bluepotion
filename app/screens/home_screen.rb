@@ -57,7 +57,7 @@ class HomeScreen < PMScreen
 
     append(Potion::CalendarView, :calendar)
 
-    debug
+    #debug
   end
 
   def show_weather_in_sf
@@ -76,7 +76,7 @@ class HomeScreen < PMScreen
   def debug
     $o = self
     create_some_test_views
-    rmq.activity.rmq.log_tree
+    #rmq.activity.rmq.log_tree
   end
 
   def create_some_test_views

@@ -10,7 +10,7 @@ BluePotion
   - RubyMotion android: `motion android-setup` (install API 16)
   - Gradle: `brew install gradle`
   - GenyMotion Emulator (optional) [Gant Laborde's post on Genymotion](http://www.iconoclastlabs.com/blog/rubymotion-android-in-the-emulator-with-genymotion).
-
+  - For running on your device, [do this](http://www.kingoapp.com/root-tutorials/how-to-enable-usb-debugging-mode-on-android.htm)
 
 ## Warning, BluePotion is an alpha release.
 
