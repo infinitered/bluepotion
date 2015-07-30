@@ -37,4 +37,15 @@ Motion::Project::App.setup do |app|
     #dependency 'com.android.support', :artifact => 'appcompat-v7', :version => '21.0.3'
     #dependency "com.google.android.gms", :artifact => "play-services-maps", :version => "7.3.0"
   end
+
+  # TODO, figure out why fragments are being recreated when we allow landscape orientation
+  app.manifest.child('application') do |application|
+    application.children("activity").each do |activity|
+      activity.update(
+        "android:screenOrientation" => "portrait",
+        "android:configChanges" => "orientation"
+      )
+    end
+  end
+
 end
