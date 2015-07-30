@@ -1,5 +1,5 @@
 class RMQViewData
-  attr_accessor :events, :built, :is_screen_root_view, :activity, :screen, :cached_rmq
+  attr_accessor :events, :built, :is_screen_root_view, :screen, :cached_rmq #, :cache_queries
 
   def screen_root_view?
     !@is_screen_root_view.nil?
@@ -11,6 +11,12 @@ class RMQViewData
 
   def clear_query_cache
     @query_cache = {}
+  end
+
+  def activity
+    if @screen
+      @screen.getActivity
+    end
   end
 
   # @return [Hash] Array of tag names assigned to to this view

@@ -95,6 +95,7 @@ class RMQ
     self_selected = self.selected
     if working_selectors.length == 1 && self_selected.length == 1
       single_selected = self_selected[0]
+      #if single_seleced.rmq_data.cache_queries
       single_selector = working_selectors[0]
       #if single_selector.is_a?(Symbol)
         if cached = single_selected.rmq_data.query_cache[single_selector]

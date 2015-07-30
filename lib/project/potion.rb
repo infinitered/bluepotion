@@ -14,6 +14,8 @@ module Potion
   BaseAdapter = Android::Widget::BaseAdapter
   Dialog = Android::App::Dialog
   EditorInfo = Android::View::Inputmethod::EditorInfo
+  System = Java::Lang::System
+  DecimalFormat =	Java::Text::DecimalFormat
 
   # Layouts
   LayoutInflater = Android::View::LayoutInflater

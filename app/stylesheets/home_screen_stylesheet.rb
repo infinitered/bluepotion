@@ -61,6 +61,13 @@ class HomeScreenStylesheet < ApplicationStylesheet
     st.text = "Run Countdown"
   end
 
+  def benchmarks_button(st)
+    standard_button(st)
+    st.background_color = color.light_blue
+    st.color = color.black
+    st.text = "Benchmarks"
+  end
+
   def calendar(st)
     st.layout = {w: :full, h: 400}
     st.background_color = color.black
