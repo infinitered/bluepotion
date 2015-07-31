@@ -1,9 +1,11 @@
 class PMBaseAdapter < Android::Widget::BaseAdapter
   attr_accessor :data
+  attr_accessor :view_types
 
   def initialize(opts={})
     super()
-    @data = opts.fetch(:data, [])
+    self.data = opts.fetch(:data, [])
+    self.view_types = opts.fetch(:view_types, []) || []
   end
 
   def screen
@@ -35,12 +37,20 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
 
   def getViewTypeCount(); view_type_count; end
   def view_type_count()
-    1
+    # named or not, we need at least one
+    @view_types.count > 0 ? @view_types.count : 1
   end
 
   def getItemViewType(position); item_view_type_id(position); end
   def item_view_type_id(position)
-    0
+    data_item = @data[position]
+    if data_item[:prevent_reuse]
+      Android::Widget::Adapter::IGNORE_ITEM_VIEW_TYPE
+    else
+      idx = @view_types.index(data_item[:cell_type] || data_item[:view_type])
+      idx = 0 if idx < 0
+      idx
+    end
   end
 
   def getCount(); count(); end
