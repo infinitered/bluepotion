@@ -7,6 +7,10 @@ class Time
     Time.new(date.getTime())
   end
 
+  def self.milliseconds_since_epoch
+    Java::Lang::System.currentTimeMillis.doubleValue
+  end
+
   def today?
     today = Time.now
     (self.year == today.year) && (self.month == today.month) && (self.date == today.date)

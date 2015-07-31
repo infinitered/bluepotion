@@ -55,9 +55,48 @@ class HomeScreen < PMScreen
       end
     end
 
-    append(Potion::CalendarView, :calendar)
+    append(Potion::Button, :benchmarks_button).on(:tap) do
+      run_benchmarks
+    end
 
-    #debug
+    #append(Potion::CalendarView, :calendar)
+
+    debug
+  end
+
+  def run_benchmarks
+    mp "\nRunning bencharks ----------------------"
+
+    iterations = 10000
+    benchmark = Benchmark
+    out = ""
+
+    out << benchmark.run_single("", "find(:benchmarks_button)", iterations) do
+      find(:benchmarks_button)
+    end
+
+    root_view = find.root_view
+    out << benchmark.run_single("root_view = find.root_view", "root_view.find(:benchmarks_button)", iterations) do
+      root_view.find(:benchmarks_button)
+    end
+
+    root_view_q = find(find.root_view)
+    out << benchmark.run_single("root_view_q = find(find.root_view)", "root_view_q.find(:benchmarks_button)", iterations) do
+      root_view_q.find(:benchmarks_button)
+    end
+
+    root_view_q = find(find.root_view)
+    out << benchmark.run_single("root_view_q = find(find.root_view)", "root_view_q.find(:benchmarks_button)", iterations) do
+      root_view_q.find(:benchmarks_button)
+    end
+
+    q = find(Potion::AbsoluteLayout).first
+    q.children.first.tag(:ab_layout_child)
+    out << benchmark.run_single("q = find(Potion::AbsoluteLayout).first; q.children.first.tag(:ab_layout_child)", "q.find(:ab_layout_child)", iterations) do
+      q.find(:ab_layout_child)
+    end
+
+    #app.toast out
   end
 
   def show_weather_in_sf

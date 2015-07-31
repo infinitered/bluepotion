@@ -30,7 +30,6 @@ class RMQ
         built = true
       end
 
-      rmq_data.activity = self.activity
       rmq_data.screen = self.screen
 
       subviews_added << new_view
