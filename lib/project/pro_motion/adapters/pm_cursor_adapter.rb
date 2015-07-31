@@ -17,6 +17,10 @@ class PMCursorAdapter < PMBaseAdapter
     cursor
   end
 
+  def item_view_type_id(position)
+    0
+  end
+
   def view(position, convert_view, parent)
     data = item(position)
     out = convert_view || rmq.create!(cell_options[:cell_class] || Potion::TextView)

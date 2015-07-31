@@ -1,8 +1,27 @@
 # http://hipbyte.myjetbrains.com/youtrack/issue/RM-773 - can't put this in a module yet :(
 #module ProMotion
 
+  module PMListReusability
+
+    def self.included(base)
+      base.extend(ClassMethods)
+    end
+
+    module ClassMethods
+
+      attr_reader :pm_cell_types
+
+      def cell_types(new_cell_types=[])
+        @pm_cell_types ||= new_cell_types
+      end
+
+    end
+  end
+
+
   class PMListScreen < Android::App::ListFragment
     include PMScreenModule
+    include PMListReusability
 
     attr_accessor :view
 
@@ -57,7 +76,7 @@
         td = table_data
         if td.is_a?(Array)
           cells = td.first[:cells]
-          PMBaseAdapter.new(data: cells)
+          PMBaseAdapter.new(data: cells, view_types: self.class.pm_cell_types)
         elsif td.is_a?(Hash)
           mp "Please supply a cursor in #{self.inspect}#table_data." unless td[:cursor]
           PMCursorAdapter.new(td)
