@@ -47,7 +47,7 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
     if data_item[:prevent_reuse]
       Android::Widget::Adapter::IGNORE_ITEM_VIEW_TYPE
     else
-      idx = @view_types.index(data_item[:view_type])
+      idx = @view_types.index(data_item[:cell_type] || data_item[:view_type])
       idx = 0 if idx < 0
       idx
     end
