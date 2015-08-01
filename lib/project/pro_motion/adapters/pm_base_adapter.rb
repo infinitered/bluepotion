@@ -37,32 +37,22 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
   def view_type_count()
     # all custom items added up (+1 for non-custom)
     view_types.length + 1
-    1
   end
 
   def getItemViewType(position); item_view_type_id(position); end
   def item_view_type_id(position)
-    # mp "item_view_type_id"
-    # mp @data
-    # mp position
-    # data_item = @data[position]
-    # idx = nil
-    # if data_item[:prevent_reuse]
-    #   idx = Android::Widget::Adapter::IGNORE_ITEM_VIEW_TYPE
-    # else
-    #   # Check if we're a custom cell
-    #   idx = view_types.index(data_item[:cell_xml] || data_item[:cell_class])
-    #   if idx
-    #     # it was custom, id is index + 1
-    #     idx += 1
-    #   else
-    #     # not a custom cell, id is 0
-    #     idx = 0
-    #   end
-    # end
+    data_item = @data[position]
+    idx = nil
+    if data_item[:prevent_reuse]
+      idx = Android::Widget::Adapter::IGNORE_ITEM_VIEW_TYPE
+    else
+      # get custom cell index
+      idx = view_types.index(data_item[:cell_xml] || data_item[:cell_class])
+      # Shift custom cells up 1, no custom == index 0
+      idx = idx ? (idx + 1) : 0
+    end
 
-    # idx
-    0
+    idx
   end
 
   def getCount(); count(); end
@@ -85,7 +75,7 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
     data = item_data(position)
     out = selected_view(convert_view, data)
     update_view(out, data)
-    if @data[:action]
+    if data[:action]
       find(out).on(:tap) { find.screen.send(data[:action], data[:arguments], position) }
     end
     out
