@@ -1,11 +1,9 @@
 class PMBaseAdapter < Android::Widget::BaseAdapter
   attr_accessor :data
-  #attr_accessor :view_types
 
   def initialize(opts={})
     super()
     self.data = opts.fetch(:data, [])
-    self.view_types = opts.fetch(:view_types, []) || []
   end
 
   def screen
@@ -27,7 +25,7 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
 
   def isEmpty(); is_empty?; end
   def is_empty?
-    data.blank?
+    @data.blank?
   end
 
   def hasStableIds(); has_stable_ids?; end
@@ -38,7 +36,7 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
   def getViewTypeCount(); view_type_count; end
   def view_type_count()
     # all custom items added up (+1 for non-custom)
-    cell_xmls.length + cell_classes.length + 1
+    view_types.length + 1
   end
 
   def getItemViewType(position); item_view_type_id(position); end
@@ -47,20 +45,28 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
     if data_item[:prevent_reuse]
       Android::Widget::Adapter::IGNORE_ITEM_VIEW_TYPE
     else
-      idx = @view_types.index(data_item[:cell_type] || data_item[:view_type])
-      idx = 0 if idx < 0
+      # Check if we're a custom cell
+      idx = view_types.index(data_item[:cell_xml] || data_item[:cell_class])
+      if idx
+        # it was custom, id is index + 1
+        idx += 1
+      else
+        # not a custom cell, id is 0
+        idx = 0
+      end
+
       idx
     end
   end
 
   def getCount(); count(); end
   def count()
-    data.length
+    @data.length
   end
 
   def getItem(position); item_data(position); end
   def item_data(position)
-    data[position]
+    @data[position]
   end
 
   def getItemId(position); item_id(position); end
@@ -70,27 +76,27 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
 
   def getView(position, convert_view, parent); view(position, convert_view, parent); end
   def view(position, convert_view, parent)
-    data = item_data(position)
-    out = selected_view(convert_view, data)
-    update_view(out, data)
-    if data[:action]
-      find(out).on(:tap) { find.screen.send(data[:action], data[:arguments], position) }
+    @data = item_data(position)
+    out = selected_view(convert_view, @data)
+    update_view(out, @data)
+    if @data[:action]
+      find(out).on(:tap) { find.screen.send(@data[:action], @data[:arguments], position) }
     end
     out
   end
 
   def update_view(view, data)
-    update = data[:update]
+    update = @data[:update]
     if update.is_a?(Proc)
-      update.call(out, data)
+      update.call(out, @data)
     elsif update.is_a?(Symbol) || update.is_a?(String)
       if find.screen.respond_to?(update)
-        find.screen.send(update, view, data)
+        find.screen.send(update, view, @data)
       else
         mp "Warning: #{find.screen.class} does not respond to #{update}"
       end
-    elsif data[:properties]
-      data[:properties].each do |k, v|
+    elsif @data[:properties]
+      @data[:properties].each do |k, v|
         if view.respond_to?("#{k}=")
           view.send("#{k}=", v)
         else
@@ -99,27 +105,24 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
       end
     elsif view.is_a?(Potion::TextView)
       # Specific to use of Simple list item 1
-      view.text = data[:title]
+      view.text = @data[:title]
     elsif update
       mp "We don't know how to update your cell"
     end
   end
 
-  def cell_xmls
-    data.map{ |i| i[:cell_xml]}.compact.uniq
-  end
-
-  def cell_classes
-    data.map{ |i| i[:cell_class]}.compact.uniq
+  def view_types
+    # unique cell_xmls and cell_classes
+    @data.map{ |i| i[:cell_xml] || i[:cell_class]}.compact.uniq
   end
 
   def selected_view(cv, data)
     row_view = cv
     unless row_view
-      if data[:cell_class]
-        row_view = rmq.create!(data[:cell_class])
-      elsif data[:cell_xml]
-        row_view = inflate_row(data[:cell_xml])
+      if @data[:cell_class]
+        row_view = rmq.create!(@data[:cell_class])
+      elsif @data[:cell_xml]
+        row_view = inflate_row(@data[:cell_xml])
       else
         # Default is Sipmle List Item 1
         # TODO:  Possibly use Android::R::Layout::Simple_list_item_2 which has subtitle
