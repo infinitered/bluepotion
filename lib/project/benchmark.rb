@@ -4,10 +4,17 @@ class Benchmark
       @_decimal_formatter ||= Potion::DecimalFormat.new("#,###,###")
     end
 
+    def total_run
+      @total_run
+    end
+
     def run_single(setup_desc, code_desc, iterations, &block)
+      @total_run ||= 0
       start_time = Time.milliseconds_since_epoch
       0.upto(iterations) do
+        @total_run += 1
         block.call
+        #mp "[#{@total_run}]"
       end
       end_time = Time.milliseconds_since_epoch
 

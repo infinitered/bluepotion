@@ -75,6 +75,7 @@ class Android::View::View
   end
 
   def subviews
+    # TODO, see if anyone uses this, and remove
     out = []
 
     if self.is_a?(Potion::ViewGroup)
