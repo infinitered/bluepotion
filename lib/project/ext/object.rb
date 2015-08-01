@@ -77,25 +77,29 @@ class Object
       return unless RMQ.debugging?
     end
 
+    @@mp_backspace ||= "\b\b " * (Android::App::Application.name.length + 20)
+
     if s.nil?
       s = "<nil>"
-    elsif s.is_a?(Array)
-      s = s.map{|e| e.inspect }.join("\n")
-    else
-      s = s.to_s
+    #elsif s.is_a?(Array) # TODO - THIS DOESN'T WORK
+      #s = s.map{|e| e.inspect }.join("\n")
+    #else
+      #s = s.to_s
     end
-    backspace = "\b\b " * (Android::App::Application.name.length + 20)
-    lines = s.split("\n")
-    lines.each do |line|
-      if RMQ.debugging?
-        out = backspace
-        out << "\e[1;#{36}m#{self.object_id}\e[0m #{self.short_class_name}".ljust(50)
-        out << "  \e[1;#{34}m#{line}\e[0m"
-        puts out
-      else
-        puts "#{backspace} \e[1;#{34}m#{line}\e[0m"
-      end
-    end
+
+    puts "#{@@mp_backspace} \e[1;#{34}m#{s}\e[0m"
+
+    #lines = s.split("\n")
+    #lines.each do |line|
+      #if RMQ.debugging?
+        #out = @@mp_backspace
+        #out << "\e[1;#{36}m#{self.object_id}\e[0m #{self.short_class_name}".ljust(50)
+        #out << "  \e[1;#{34}m#{line}\e[0m"
+        #puts out
+      #else
+        #puts "#{@@mp_backspace} \e[1;#{34}m#{line}\e[0m"
+      #end
+    #end
   end
 
   def app
