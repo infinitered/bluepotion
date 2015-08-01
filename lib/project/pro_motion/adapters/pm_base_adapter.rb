@@ -1,6 +1,6 @@
 class PMBaseAdapter < Android::Widget::BaseAdapter
   attr_accessor :data
-  attr_accessor :view_types
+  #attr_accessor :view_types
 
   def initialize(opts={})
     super()
@@ -37,8 +37,8 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
 
   def getViewTypeCount(); view_type_count; end
   def view_type_count()
-    # named or not, we need at least one
-    @view_types.count > 0 ? @view_types.count : 1
+    # all custom items added up (+1 for non-custom)
+    cell_xmls.length + cell_classes.length + 1
   end
 
   def getItemViewType(position); item_view_type_id(position); end
@@ -103,6 +103,14 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
     elsif update
       mp "We don't know how to update your cell"
     end
+  end
+
+  def cell_xmls
+    data.map{ |i| i[:cell_xml]}.compact.uniq
+  end
+
+  def cell_classes
+    data.map{ |i| i[:cell_class]}.compact.uniq
   end
 
   def selected_view(cv, data)
