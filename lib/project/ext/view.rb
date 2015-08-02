@@ -8,6 +8,13 @@ class Android::View::View
     #super
   #end
 
+  def cleanup
+    if @_rmq_data
+      @_rmq_data.cleanup
+      @_rmq_data = nil
+    end
+  end
+
   def to_s
     self.inspect
   end

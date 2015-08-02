@@ -31,19 +31,21 @@ class ExampleCustomTableCellsScreen < PMListScreen
         update: :update_xml_cell,
         action: :make_magic,
         arguments: { other_saying: "MUCH AMAZE" }
-      },{
-      # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      # Illustrating Cell Class - Update via Class
-      # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        cell_class: ImageCell,
-        action: :make_magic,
-        arguments: { simple: "!!!!!"},
-        properties: {
-          custom_name: "Random Color Cell Class",
-          color: rmq.color.random,
-          i_dont_exist: true
-        }
-      }]
+      }
+      #,{
+      ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      ## Illustrating Cell Class - Update via Class
+      ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        #cell_class: ImageCell,
+        #action: :make_magic,
+        #arguments: { simple: "!!!!!"},
+        #properties: {
+          #custom_name: "Random Color Cell Class",
+          #color: rmq.color.random,
+          #i_dont_exist: true
+        #}
+      #}
+      ]
     }]
   end
 

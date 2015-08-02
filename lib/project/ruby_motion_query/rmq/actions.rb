@@ -41,7 +41,7 @@ class RMQ
   end
 
   def cleanup
-    selected.each { |view| view.rmq_data.cleanup }
+    selected.each { |view| view.cleanup }
   end
 
   def clear_cache
