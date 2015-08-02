@@ -57,6 +57,7 @@
     end
 
     def onDestroy
+      return
       mp "onDestroy screen", debugging_only: true
       find.all.cleanup
       find.children.remove
