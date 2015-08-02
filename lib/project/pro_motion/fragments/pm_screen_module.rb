@@ -57,7 +57,7 @@
     end
 
     def onDestroy
-      return
+      return super # disable rmq cleaning while debugging, but still super
       mp "onDestroy screen", debugging_only: true
       find.all.cleanup
       find.children.remove
