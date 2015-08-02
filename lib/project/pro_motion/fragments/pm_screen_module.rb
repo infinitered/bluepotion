@@ -5,7 +5,6 @@
       base.extend(ClassMethods)
     end
 
-
     module ClassMethods
       attr_reader :xml_resource, :bars_title
 
@@ -74,6 +73,16 @@
 
     def stylesheet=(value)
       self.rmq.stylesheet = value
+    end
+
+    def find(*working_selectors) # I do not call rmq below for performance reasons
+      crmq = (rmq_data.cached_rmq ||= RMQ.create_with_selectors([], self))
+
+      if working_selectors.length == 0
+        crmq
+      else
+        RMQ.create_with_selectors(working_selectors, self, crmq)
+      end
     end
 
     def rmq(*working_selectors)

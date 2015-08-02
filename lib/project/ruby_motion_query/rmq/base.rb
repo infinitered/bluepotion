@@ -6,12 +6,12 @@ class RMQ
     #mp $rmq_initialized
   end
 
-  def finalize
-    mp 'finalize' # Never called
-    $rmq_initialized -= 1
-    mp $rmq_initialized
-    super
-  end
+  #def finalize
+    #mp 'finalize' # Never called
+    #$rmq_initialized -= 1
+    #mp $rmq_initialized
+    #super
+  #end
 
   def originated_from=(value)
     if value
