@@ -34,6 +34,8 @@ class RMQ
     # Text change
     elsif view.respond_to? :addTextChangedListener
       view.addTextChangedListener(RMQTextChange.new(&block))
+    elsif view.respond_to? :setOnValueChangedListener
+      view.onValueChangedListener = RMQNumberPickerChange.new(&block)
     end
   end
 

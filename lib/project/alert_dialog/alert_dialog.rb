@@ -9,6 +9,11 @@
 #     mp "Fine!"
 #   end
 # end
+#
+# Example of alert with input
+# app.alert(title: "What's your name?", style: :input) do |choice, input_text|
+#  mp "User clicked #{choice} and typed #{input_text}"
+# end
 
 # Generic AlertDialog
 class AlertDialog < Android::App::DialogFragment
@@ -19,11 +24,12 @@ class AlertDialog < Android::App::DialogFragment
     @options = {
       theme: Android::App::AlertDialog::THEME_HOLO_LIGHT,
       title: "Alert!",
-      message: "",
+      message: nil,
       positive_button: "OK",
       negative_button: "Cancel",
       positive_button_handler: self,
       negative_button_handler: self,
+      style: nil,
       show: true
     }.merge(options)
 
@@ -38,7 +44,7 @@ class AlertDialog < Android::App::DialogFragment
   end
 
   def onCreateDialog(saved_instance_state)
-    builder = Android::App::AlertDialog::Builder.new(getActivity(), @options[:theme])
+    builder = Android::App::AlertDialog::Builder.new(activity, @options[:theme])
 
     builder.title = @options[:title]
     builder.message = @options[:message]
@@ -48,15 +54,31 @@ class AlertDialog < Android::App::DialogFragment
     builder.setNegativeButton(@options[:negative_button], @options[:negative_button_handler]) if @options[:negative_button]
 
     # Add custom view?
+    @options[:view] = simple_text_view if @options[:style] == :input
     builder.view = @options[:view] if @options[:view]
 
     # DONE!
     builder.create()
   end
 
+  def simple_text_view
+    # Set up the input
+    input = Potion::EditText.new(activity)
+    input.singleLine = true
+    input.id = R::Id::Alert_edit_text
+    # possible input types - future feature
+    #input.inputType = (Android::Text::InputType.TYPE_CLASS_TEXT | Android::Text::InputType.TYPE_TEXT_VARIATION_PASSWORD)
+    input
+  end
+
   def onClick(dialog, id)
     button_text = (id == Android::App::AlertDialog::BUTTON_POSITIVE) ? @options[:positive_button] : @options[:negative_button]
-    @callback.call(button_text) if @callback
+
+    # if a text_view is present, grab what the user gave us
+    text_view = dialog.findViewById(R::Id::Alert_edit_text)
+    input_text = text_view ? text_view.text.toString : nil
+
+    @callback.call(button_text, input_text) if @callback
   end
 
 end
