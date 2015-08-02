@@ -49,12 +49,14 @@ class RMQ
 
   def apply_style_to_view(view, style_name)
     #begin
-      styler = self.styler_for(view)
-      self.stylesheet.send(style_name, styler)
-      styler.finalize
+      if self.stylesheet
+        styler = self.styler_for(view)
+        self.stylesheet.send(style_name, styler)
+        styler.finalize
 
-      view.rmq_data.styles << style_name unless view.rmq_data.has_style?(style_name)
-      view.rmq_style_applied
+        view.rmq_data.styles << style_name unless view.rmq_data.has_style?(style_name)
+        view.rmq_style_applied
+      end
     #rescue NoMethodError => e
       #if e.message =~ /.*#{style_name.to_s}.*/
         #$stderr.puts "\n[RMQ ERROR]  style_name :#{style_name} doesn't exist for a #{view.class.name}. Add 'def #{style_name}(st)' to #{stylesheet.class.name} class\n\n"

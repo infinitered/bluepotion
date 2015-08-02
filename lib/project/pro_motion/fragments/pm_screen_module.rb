@@ -5,6 +5,7 @@
       base.extend(ClassMethods)
     end
 
+
     module ClassMethods
       attr_reader :xml_resource, :bars_title
 
@@ -53,6 +54,20 @@
 
     def rmq_data
       @_rmq_data ||= RMQScreenData.new
+    end
+
+    def onDestroy
+      mp "onDestroy screen", debugging_only: true
+      find.all.each do |view|
+        view.rmq_data.cleanup
+        view.rmq_data = nil
+      end
+      find.children.remove
+      if @_rmq_data
+        @_rmq_data.cleanup
+        @_rmq_data = nil
+      end
+      super
     end
 
     def stylesheet

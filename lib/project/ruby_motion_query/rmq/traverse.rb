@@ -41,7 +41,8 @@ class RMQ
     if @originated_from.is_a?(Android::App::Activity)
       @originated_from.root_view
     else
-      self.controller.root_view
+      c = self.controller
+      c.root_view if c
     end
   end
 
@@ -66,8 +67,16 @@ class RMQ
     end
   end
 
+  def only_root_view_selected?
+    selected.length == 1 && selected[0].rmq_data.is_screen_root_view
+  end
+
   def all
-    wrap(root_view).find
+    if only_root_view_selected?
+      find
+    else
+      wrap(root_view).find
+    end
   end
 
   def children(*working_selectors)
@@ -89,7 +98,6 @@ class RMQ
   alias :subviews :children
 
   def find(*working_selectors)
-    #mp 2
     normalize_selectors(working_selectors)
 
     self_selected = self.selected

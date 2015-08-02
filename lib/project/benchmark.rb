@@ -25,7 +25,9 @@ class Benchmark
       out << "\n  Setup: #{setup_desc}\n  Code: #{code_desc}"
       out << "\n  Total milliseconds: #{decimal_formatter.format(total_time)}"
       out << "\n  Milliseconds per iteration: #{per_item}"
-      mp out
+      out << "\n  RMQ allocations: #{$rmq_initialized.to_s}"
+      puts out
+      Potion::System.gc
       out
     end
   end

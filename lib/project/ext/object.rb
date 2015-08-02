@@ -31,7 +31,7 @@ class Object
       out << klass_name.to_s
     end
 
-    out
+    mp out
   end
 
   def inspect
@@ -83,23 +83,23 @@ class Object
       s = "<nil>"
     #elsif s.is_a?(Array) # TODO - THIS DOESN'T WORK
       #s = s.map{|e| e.inspect }.join("\n")
-    #else
-      #s = s.to_s
+    else
+      s = s.to_s
     end
 
-    puts "#{@@mp_backspace} \e[1;#{34}m#{s}\e[0m"
+    #puts "#{@@mp_backspace} \e[1;#{34}m#{s}\e[0m"
 
-    #lines = s.split("\n")
-    #lines.each do |line|
+    lines = s.split("\n")
+    lines.each do |line|
       #if RMQ.debugging?
         #out = @@mp_backspace
         #out << "\e[1;#{36}m#{self.object_id}\e[0m #{self.short_class_name}".ljust(50)
         #out << "  \e[1;#{34}m#{line}\e[0m"
         #puts out
       #else
-        #puts "#{@@mp_backspace} \e[1;#{34}m#{line}\e[0m"
+        puts "#{@@mp_backspace} \e[1;#{34}m#{line}\e[0m"
       #end
-    #end
+    end
   end
 
   def app
@@ -109,6 +109,5 @@ class Object
   def device
     rmq.device
   end
-
 
 end

@@ -64,10 +64,50 @@ class HomeScreen < PMScreen
     debug
   end
 
+  #def foo(a, b)
+    #bar a, b
+  #end
+
+  #def bar(c, d)
+    #c + d
+  #end
+
   def run_benchmarks
     mp "\nRunning bencharks ----------------------"
 
-    iterations = 1000
+    #p = Potion::View.new
+    #p = nil
+    #Potion::System.gc
+
+    #total = 0
+    #h = {}
+    ##a = [1,2]
+    #0.upto(100000) do |i|
+      #mp i
+      ##h[i] = RMQ.new
+      ##a.each{}
+    #end
+
+    #mp 'done'
+      #h[i] = {}
+      #h.each do |k,v|
+        #a = nil
+      #end
+      #h[i] = nil #{i: i} #, a: {i: i}, b: {i: i}, c: {i: i}}
+      #total += foo(i, 2)
+    #end
+
+    #total = 0
+    #Benchmark.run_single("", "test", 100000) do
+      #total += foo(1, 2)
+    #end
+
+    #mp total
+    #mp 'done'
+
+    #return
+
+    iterations = 500
     benchmark = Benchmark
 
     benchmark.run_single("", "nothing", iterations) do
@@ -92,11 +132,11 @@ class HomeScreen < PMScreen
       root_view_q.find(:benchmarks_button).count
     end
 
-    #q = find(Potion::AbsoluteLayout).first
-    #q.children.first.tag(:ab_layout_child)
-    #out << benchmark.run_single("q = find(Potion::AbsoluteLayout).first; q.children.first.tag(:ab_layout_child)", "q.find(:ab_layout_child)", iterations) do
-      #q.find(:ab_layout_child).count
-    #end
+    q = find(Potion::AbsoluteLayout).first
+    q.children.first.tag(:ab_layout_child)
+    benchmark.run_single("q = find(Potion::AbsoluteLayout).first; q.children.first.tag(:ab_layout_child)", "q.find(:ab_layout_child)", iterations) do
+      q.find(:ab_layout_child).count
+    end
 
     #app.toast out
   end

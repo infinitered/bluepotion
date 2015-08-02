@@ -1,27 +1,20 @@
 # Used throughout the specs
-def hash_to_subviews(view, hash, new_hash = {}, view_name = nil)
-  mp 2
-  return unless view && hash.length > 0
-  mp 3
-  mp hash
+def hash_to_subviews(parent_view, hash, new_hash = {}, view_name = nil)
+  return unless parent_view && hash.length > 0
 
   hash.each do |k,v|
-    mp 3.5
     if k == :klass
-      mp 4
-      o = rmq.create(k)
-      view.append o
+      o = parent_view.append(v).get
       new_hash[view_name] = {
         name: view_name,
         view: o,
+        #view: nil,
         subs: {}
       }
     elsif k == :subs
-      mp 5
       hash_to_subviews(new_hash[view_name][:view], v, new_hash[view_name][:subs])
     else
-      mp 6
-      hash_to_subviews(view, v, new_hash, k)
+      hash_to_subviews(parent_view, v, new_hash, k)
     end
   end
 

@@ -3,6 +3,11 @@ class Android::View::View
     "<#{id} #{short_class_name}>"
   end
 
+  #def onDestroy
+    #mp 'onDestroy view'
+    #super
+  #end
+
   def to_s
     self.inspect
   end

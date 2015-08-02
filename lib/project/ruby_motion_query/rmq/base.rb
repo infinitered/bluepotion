@@ -1,6 +1,16 @@
 class RMQ
   def initialize
     @selected_dirty = true
+    $rmq_initialized ||= 0
+    $rmq_initialized += 1
+    #mp $rmq_initialized
+  end
+
+  def finalize
+    mp 'finalize' # Never called
+    $rmq_initialized -= 1
+    mp $rmq_initialized
+    super
   end
 
   def originated_from=(value)
@@ -15,8 +25,9 @@ class RMQ
       elsif value.is_a?(RMQStylesheet)
         @originated_from = value.controller
       else
+        @originated_from = nil
         #debug.log_detailed('Invalid originated_from', objects: {value: value})
-        mp "Invalid originated_from: #{value.inspect}"
+        #mp "Invalid originated_from: #{value.inspect}"
       end
     else
       @originated_from = nil
@@ -44,9 +55,15 @@ class RMQ
   def originated_from_or_its_view
     if @originated_from.is_a?(Potion::Activity) || @originated_from.is_a?(PMScreen)
       @originated_from.root_view
-    else
+    elsif @originated_from.is_a?(Potion::View)
       @originated_from
     end
+
+    #if @originated_from.is_a?(Potion::Activity) || @originated_from.is_a?(PMScreen)
+      #@originated_from.root_view
+    #else
+      #@originated_from
+    #end
   end
 
   def get
@@ -182,22 +199,34 @@ class RMQ
       @_selected = []
 
       if RMQ.is_blank?(self.selectors)
-        @_selected << originated_from_or_its_view
+        if orig = originated_from_or_its_view
+          @_selected << orig
+        end
       #elsif self.selectors.length == 1 and self.selectors.first.is_a?(Java::Lang::Integer)
         ### Special case where we find by id
         #@_selected << self.root_view.findViewById(self.selectors.first)
       else
         working_selectors = self.selectors.dup
+
         extract_views_from_selectors(@_selected, working_selectors)
 
         unless RMQ.is_blank?(working_selectors)
           subviews = all_subviews_for(root_view)
+
+          #return @_selected
           subviews.each do |subview|
             @_selected << subview if match(subview, working_selectors)
           end
         end
 
       end
+
+      #@_selected.each do |s|
+        #unless s.is_a?(Potion::View)
+          #mp "bad selected: #{s}"
+          #caller
+        #end
+      #end
 
       @selected_dirty = false
     else
@@ -220,26 +249,36 @@ class RMQ
 
   def all_subviews_for(view)
     out = []
+    return out unless view.is_a?(Potion::ViewGroup)
 
-    view.subviews.each do |subview|
-      out << subview
-      out << all_subviews_for(subview)
-    end
-    out.flatten!
-    out
-  end
+    needs_flattening = false
 
-  def all_superviews_for(view, out = [])
-    if (sv = view.superview)
-      out << sv
-
-      # Stop at root_view of screen or activity
-      unless (sv.rmq_data.screen_root_view?) || (sv == self.activity.root_view) # TODO speed this up if needed
-        all_superviews_for(sv, out)
+    (0...view.getChildCount).each_with_index do |i|
+      sbv = view.getChildAt(i)
+      if sbv && view != sbv
+        out << sbv
+        if sbv.is_a?(Potion::ViewGroup) && sbv.getChildCount > 0
+          needs_flattening = true
+          out << all_subviews_for(sbv)
+        end
       end
     end
+
+    out.flatten! if needs_flattening
     out
   end
+
+  #def all_superviews_for(view, out = [])
+    #if (sv = view.superview)
+      #out << sv
+
+      ## Stop at root_view of screen or activity
+      #unless (sv.rmq_data.screen_root_view?) || (sv == self.activity.root_view) # TODO speed this up if needed
+        #all_superviews_for(sv, out)
+      #end
+    #end
+    #out
+  #end
 
 end # RMQ
 

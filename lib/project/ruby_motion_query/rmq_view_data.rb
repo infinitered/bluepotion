@@ -5,6 +5,24 @@ class RMQViewData
     !@is_screen_root_view.nil?
   end
 
+  def cleanup
+    clear_query_cache
+    if @cached_rmq
+      @cached_rmq.selectors = nil
+      @cached_rmq.parent_rmq = nil
+      @cached_rmq = nil
+    end
+    @events = nil
+    @screen = nil
+    @_tags = nil
+    @_styles = nil
+    @_validation_errors = nil
+    @validation_errors = nil
+    @is_screen_root_view = false
+    @built = false
+    nil
+  end
+
   def query_cache
     @_query_cache ||= {}
   end
