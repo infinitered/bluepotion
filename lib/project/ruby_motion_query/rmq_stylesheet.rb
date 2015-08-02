@@ -1,13 +1,39 @@
 class RMQStylesheet
-  attr_accessor :controller
-
-  def initialize(controller)
+  def initialize(parent_screen)
     unless RMQStylesheet.application_was_setup
       RMQStylesheet.application_was_setup = true
       application_setup
     end
-    @controller = controller
+    @screen = parent_screen
     setup
+  end
+
+  # @ deprecated
+  def controller=(value)
+    @screen = value
+  end
+  # @ deprecated
+  def controller
+    @screen
+  end
+
+  def screen
+    @screen
+  end
+
+  def find(*working_selectors) # Not calling rmq below for performance reasons (one less method invocation)
+    if @screen
+      @screen.rmq(working_selectors)
+    else
+      super
+    end
+  end
+  def rmq(*working_selectors)
+    if @screen
+      @screen.rmq(working_selectors)
+    else
+      super
+    end
   end
 
   def application_setup

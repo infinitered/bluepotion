@@ -8,6 +8,8 @@ class BluePotionApplication < PMApplication
 
   def on_create
     RMQ.debugging = true
+    RMQ.caching_enabled = false
+
     mp "BluePotionApplication on_create", debugging_only: true
 
     VW::SessionClient.debug = true # Debug network calls
