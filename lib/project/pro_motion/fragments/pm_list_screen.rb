@@ -15,15 +15,6 @@
       v = Potion::View.new(app.context) # TODO, fix this horrible hack
       lv = rmq(v).create(Potion::ListView).tag(:list)
       self.view = lv.get
-
-      # Potion::LinearLayout.new(self.activity)
-      # find(self.view).style do |st|
-        # st.layout_width = :match_parent
-        # st.layout_height = :match_parent
-        # st.layout_weight = 1
-        # st.view.drawSelectorOnTop = false
-      # end
-      # self.view
     end
 
     def screen_setup
