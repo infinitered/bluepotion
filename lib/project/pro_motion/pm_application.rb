@@ -141,12 +141,6 @@
         email_string += "?subject=#{command[:subject].to_s}"
         email_string += "&body=#{command[:message].to_s}"
         email_intent.setData(Android::Net::Uri.parse(email_string))
-        # Uri.parse("mailto:?subject=" + subject + "&body=" + body)
-        # email_intent.type = "message/rfc822"
-        # email_intent.setData(Android::Net::Uri.parse(command[:email]))
-        # email_intent.putExtra("android.intent.extra.SUBJECT", command[:subject]) if command[:subject]
-        # email_intent.putExtra("android.intent.extra.TEXT", command[:message]) if command[:message]
-        # Android::Content::Intent.createChooser(email_intent, "Send Email")
       when :web
         web_intent = Android::Content::Intent.new(action_view)
         web_intent.setData(Android::Net::Uri.parse(command[:web]))
