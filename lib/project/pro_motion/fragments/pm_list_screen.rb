@@ -12,9 +12,11 @@
     end
 
     def load_view
-      # Potion::LinearLayout.new(self.activity)
-      lv = create(Potion::ListView).tag(:list)
+      v = Potion::View.new(app.context) # TODO, fix this horrible hack
+      lv = rmq(v).create(Potion::ListView).tag(:list)
       self.view = lv.get
+
+      # Potion::LinearLayout.new(self.activity)
       # find(self.view).style do |st|
         # st.layout_width = :match_parent
         # st.layout_height = :match_parent
@@ -95,8 +97,9 @@
         @view = inflater.inflate(r(:layout, @xml_resource), parent, false)
       else
         v = load_view
+        mp v
         @view ||= v
-        @view.setId Potion::ViewIdGenerator.generate
+        @view.id = Potion::ViewIdGenerator.generate
       end
 
       set_up_action_bar(self.class.action_bar_options)
