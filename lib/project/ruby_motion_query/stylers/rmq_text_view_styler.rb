@@ -5,6 +5,7 @@ class RMQTextViewStyler < RMQViewStyler
 
   def font_family=(font_family)
     @font_family = font_family
+    @lazy_typeface = true
   end
 
   def text_style=(text_style)
@@ -19,6 +20,7 @@ class RMQTextViewStyler < RMQViewStyler
       when "normal"
         Android::Graphics::Typeface::NORMAL
       end
+    @lazy_typeface = true
   end
 
   def text_color=(text_color)
@@ -47,8 +49,10 @@ class RMQTextViewStyler < RMQViewStyler
 
   def finalize
     super
-    @text_style ||= Android::Graphics::Typeface::NORMAL
-    typeface = Android::Graphics::Typeface.create(@font_family, @text_style) if @font_family
-    @view.setTypeface(typeface, @text_style) # ok for typeface to be nil
+    if @lazy_typeface
+      @text_style ||= Android::Graphics::Typeface::NORMAL
+      typeface = Android::Graphics::Typeface.create(@font_family, @text_style) if @font_family
+      @view.setTypeface(typeface, @text_style) # ok for typeface to be nil
+    end
   end
 end
