@@ -118,9 +118,44 @@
     # Send user to native Texting
     # app.sms("555-555-5555")
     def sms(phone_number)
-      sms_intent = Android::Content::Intent.new("android.intent.action.VIEW")
-      sms_intent.setData(Android::Net::Uri.fromParts("sms", phone_number.to_s, nil))
-      find.activity.startActivity(sms_intent)
+      mp "[BP Deprecated] use app.launch(sms: #{phone_number}) over app.sms"
+      launch(sms: phone_number)
+    end
+
+    # Launch native services via intent
+    # app.launch(sms: '5045558008')
+    # app.launch(web: 'http://giphy.com')
+    # app.launch(email: 'your@mom.com')
+    # app.launch(email: 'your@mom.com', subject: "Hey Chica", message: "Howdy")
+    # app.launch(chooser: 'I hope you have a nice day!')
+    def launch(command={})
+      action_view = "android.intent.action.VIEW"
+      action_send = "android.intent.action.SEND"
+      launch_intent = case command.keys.first #somewhat fragile, re-evaluate
+      when :sms
+        sms_intent = Android::Content::Intent.new(action_view)
+        sms_intent.setData(Android::Net::Uri.fromParts("sms", command[:sms].to_s, nil))
+      when :email
+        email_intent = Android::Content::Intent.new(action_send)
+        email_intent.type = "message/rfc822"
+        web_intent.setData(Android::Net::Uri.parse(command[:email]))
+        email_intent.putExtra("android.intent.extra.SUBJECT", command[:subject]) if command[:subject]
+        email_intent.putExtra("android.intent.extra.TEXT", command[:message]) if command[:message]
+        Android::Content::Intent.createChooser(email_intent, "Send Email")
+      when :web
+        web_intent = Android::Content::Intent.new(action_view)
+        web_intent.setData(Android::Net::Uri.parse(command[:web]))
+      when :chooser
+        message_intent = Android::Content::Intent.new(action_send)
+        # should we restrict?  I think not...
+        # message_intent.type = "text/plain"
+        message_intent.putExtra("android.intent.extra.TEXT", command[:chooser].to_s) if command[:message]
+        Android::Content::Intent.createChooser(message_intent, nil)
+      else
+        mp "[BP Warning] Unsupported launch type '#{command.keys.first}'"
+      end
+
+      find.activity.startActivity(launch_intent) if launch_intent
     end
 
     # Execute the given block after the given number of seconds
