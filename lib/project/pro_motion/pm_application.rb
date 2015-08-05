@@ -124,6 +124,7 @@
 
     # Launch native services via intent
     # app.launch(sms: '5045558008')
+    # app.launch(tel: '5045558008')
     # app.launch(web: 'http://giphy.com')
     # app.launch(email: 'your@mom.com')
     # app.launch(email: 'your@mom.com', subject: "Hey Chica", message: "Howdy")
@@ -131,26 +132,32 @@
     def launch(command={})
       action_view = "android.intent.action.VIEW"
       action_send = "android.intent.action.SEND"
-      launch_intent = case command.keys.first #TODO: fragile, re-evaluate
-      when :sms
+      action_dial = "android.intent.action.DIAL"
+      key_list = command.keys
+      launch_intent = case
+      when key_list.include?(:sms)
         sms_intent = Android::Content::Intent.new(action_view)
         sms_intent.setData(Android::Net::Uri.fromParts("sms", command[:sms].to_s, nil))
-      when :email
+      when key_list.include?(:email)
         email_intent = Android::Content::Intent.new(action_view)
         email_string = "mailto:#{command[:email]}"
         email_string += "?subject=#{command[:subject].to_s}"
         email_string += "&body=#{command[:message].to_s}"
         email_intent.setData(Android::Net::Uri.parse(email_string))
-      when :web
+      when key_list.include?(:web)
         web_intent = Android::Content::Intent.new(action_view)
         web_intent.setData(Android::Net::Uri.parse(command[:web]))
-      when :chooser
+      when key_list.include?(:tel)
+        tel_intent = Android::Content::Intent.new(action_dial)
+        tel_intent.setData(Android::Net::Uri.fromParts("tel", command[:tel], nil))
+      when key_list.include?(:chooser)
         message_intent = Android::Content::Intent.new(action_send)
         message_intent.type = "text/plain"
         message_intent.putExtra("android.intent.extra.TEXT", command[:chooser].to_s) if command[:chooser]
         Android::Content::Intent.createChooser(message_intent, nil)
       else
-        mp "[BP Warning] Unsupported launch type '#{command.keys.first}'"
+        mp "[BP Warning] Launch type unknown - '#{command.keys.inspect}'"
+        nil
       end
 
       find.activity.startActivity(launch_intent) if launch_intent
