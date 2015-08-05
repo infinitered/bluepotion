@@ -131,24 +131,29 @@
     def launch(command={})
       action_view = "android.intent.action.VIEW"
       action_send = "android.intent.action.SEND"
-      launch_intent = case command.keys.first #somewhat fragile, re-evaluate
+      launch_intent = case command.keys.first #TODO: fragile, re-evaluate
       when :sms
         sms_intent = Android::Content::Intent.new(action_view)
         sms_intent.setData(Android::Net::Uri.fromParts("sms", command[:sms].to_s, nil))
       when :email
-        email_intent = Android::Content::Intent.new(action_send)
-        email_intent.type = "message/rfc822"
-        web_intent.setData(Android::Net::Uri.parse(command[:email]))
-        email_intent.putExtra("android.intent.extra.SUBJECT", command[:subject]) if command[:subject]
-        email_intent.putExtra("android.intent.extra.TEXT", command[:message]) if command[:message]
-        Android::Content::Intent.createChooser(email_intent, "Send Email")
+        email_intent = Android::Content::Intent.new(action_view)
+        email_string = "mailto:#{command[:email]}"
+        email_string += "?subject=#{command[:subject].to_s}"
+        email_string += "&body=#{command[:message].to_s}"
+        email_intent.setData(Android::Net::Uri.parse(email_string))
+        # Uri.parse("mailto:?subject=" + subject + "&body=" + body)
+        # email_intent.type = "message/rfc822"
+        # email_intent.setData(Android::Net::Uri.parse(command[:email]))
+        # email_intent.putExtra("android.intent.extra.SUBJECT", command[:subject]) if command[:subject]
+        # email_intent.putExtra("android.intent.extra.TEXT", command[:message]) if command[:message]
+        # Android::Content::Intent.createChooser(email_intent, "Send Email")
       when :web
         web_intent = Android::Content::Intent.new(action_view)
         web_intent.setData(Android::Net::Uri.parse(command[:web]))
       when :chooser
         message_intent = Android::Content::Intent.new(action_send)
         # should we restrict?  I think not...
-        # message_intent.type = "text/plain"
+        message_intent.type = "text/plain"
         message_intent.putExtra("android.intent.extra.TEXT", command[:chooser].to_s) if command[:message]
         Android::Content::Intent.createChooser(message_intent, nil)
       else
