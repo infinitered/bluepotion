@@ -58,14 +58,14 @@ class AlertDialog < Android::App::DialogFragment
     builder.view = @options[:view] if @options[:view]
 
     # DONE!
-    builder.create()
+    builder.create
   end
 
   def simple_text_view
     # Set up the input
     input = Potion::EditText.new(activity)
     input.singleLine = true
-    input.id = R::Id::Alert_edit_text
+    input.id = @text_view_id = Potion::ViewIdGenerator.generate
     # possible input types - future feature
     #input.inputType = (Android::Text::InputType.TYPE_CLASS_TEXT | Android::Text::InputType.TYPE_TEXT_VARIATION_PASSWORD)
     input
@@ -75,7 +75,7 @@ class AlertDialog < Android::App::DialogFragment
     button_text = (id == Android::App::AlertDialog::BUTTON_POSITIVE) ? @options[:positive_button] : @options[:negative_button]
 
     # if a text_view is present, grab what the user gave us
-    text_view = dialog.findViewById(R::Id::Alert_edit_text)
+    text_view = dialog.findViewById(@text_view_id)
     input_text = text_view ? text_view.text.toString : nil
 
     @callback.call(button_text, input_text) if @callback
