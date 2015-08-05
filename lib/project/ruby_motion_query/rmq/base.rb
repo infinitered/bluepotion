@@ -99,16 +99,17 @@ class RMQ
     end
 
     wide = (opt == :wide)
-    out =  "\n id          |scr| class                 | style_name              | frame                                 |"
+    out =  "\n id          |object id   |scr| class                 | style_name              | frame                                 |"
     out << "\n" unless wide
-    out <<   " sv id       |een| superview             | subviews count          | tags                                  |"
-    line =   " ––––––––––––|–––|–––––––––––––––––––––––|–––––––––––––––––––––––––|–––––––––––––––––––––––––––––––––––––––|\n"
+    out <<   " sv id       |object id   |een| superview             | subviews count          | tags                                  |"
+    line =   " ––––––––––––|------------|–––|–––––––––––––––––––––––|–––––––––––––––––––––––––|–––––––––––––––––––––––––––––––––––––––|\n"
     out << "\n"
     out << line.chop if wide
     out << line
 
     selected.each do |view|
       out << " #{view.id.to_s.ljust(12)}|"
+      out << " #{view.object_id.to_s.ljust(12)}|"
       out << (view.rmq_data.screen_root_view? ? " √ |" : "   |")
 
       name = view.short_class_name
@@ -130,6 +131,7 @@ class RMQ
       out << "\n" unless wide
       if view.superview
         out << " #{view.superview.id.to_s.ljust(12)}|"
+        out << "           |"
         out << "   |"
         out << " #{(view.superview ? view.superview.short_class_name : '')[0..21].ljust(22)}|"
       end
@@ -151,22 +153,33 @@ class RMQ
   def tree_to_s(selected_views, depth = 0)
     out = ""
 
+    mp 1
+
     selected_views.each do |view|
+      mp 2
+      mp view.rmq_data.tags
       if depth == 0
         out << "\n"
       else
+        mp 3
         0.upto(depth - 1) do |i|
+          mp 4
           out << (i == (depth - 1) ? "    ├" : "    │")
         end
       end
 
       out << '───'
 
-      out << "#{view.id} "
+      mp 5
+      out << "#{view.id}|#{view.object_id} "
       out << "SCREEN ROOT/" if view.rmq_data.screen_root_view?
       out << "#{view.short_class_name[0..21]}"
       out << "  ( :#{view.rmq_data.style_name.to_s[0..23]} )" if view.rmq_data.style_name
-      out << "  [ #{view.rmq_data.tag_names.join(',')} ]" if view.rmq_data.tag_names.length > 0
+      if view.rmq_data.tag_names.length > 0
+        mp 6
+        mp view.rmq_data.tag_names.inspect
+        out << "  [ #{view.rmq_data.tag_names.join(',')} ]"
+      end
 
       #if view.origin
         #format = '#0.#'

@@ -17,7 +17,10 @@
     def on_create(bundle); end
 
     def onCreateView(inflater, parent, saved_instance_state)
+      mp "PMScreen onCreateView #{self.class}" if RMQ.debugging?
       super
+
+      self.cleanup
 
       if @xml_resource = self.class.xml_resource
         @view = inflater.inflate(r(:layout, @xml_resource), parent, false)

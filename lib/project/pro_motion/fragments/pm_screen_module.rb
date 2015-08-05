@@ -56,15 +56,19 @@
     end
 
     def onDestroy
-      return super # disable rmq cleaning while debugging, but still super
-      mp "onDestroy screen", debugging_only: true
+      #return super # disable rmq cleaning while debugging, but still super
+      mp "onDestroy screen: #{self.class}", debugging_only: true
+      self.cleanup
+      super
+    end
+
+    def cleanup
       find.all.cleanup
       find.children.remove
       if @_rmq_data
         @_rmq_data.cleanup
         @_rmq_data = nil
       end
-      super
     end
 
     def stylesheet
@@ -139,13 +143,17 @@
       self.rmq.build(view_or_class, style, opts).get
     end
 
-    # temporary stand-in for Java's R class
+    def log_tree
+      rmq.log_tree
+    end
+
+    # temporary stand-in for Java's R class, TODO remove this
     def r(resource_type, resource_name)
       resources.getIdentifier(resource_name.to_s, resource_type.to_s,
                               activity.getApplicationInfo.packageName)
     end
 
-    def show_toast(message)
+    def show_toast(message) # TODO, remove this, use app.toast
       Android::Widget::Toast.makeText(activity, message, Android::Widget::Toast::LENGTH_SHORT).show
     end
 
