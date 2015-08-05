@@ -13,7 +13,13 @@
 
     def load_view
       # Potion::LinearLayout.new(self.activity)
-      lv = create(Potion::ListView).tag(:list)
+      lv = rmq.create(Potion::ListView).tag(:list)
+      mp "lv"
+      mp lv.inspect
+      mp lv.size
+
+      mp "lv.get"
+      mp lv.get
       self.view = lv.get
       # find(self.view).style do |st|
         # st.layout_width = :match_parent
@@ -95,8 +101,9 @@
         @view = inflater.inflate(r(:layout, @xml_resource), parent, false)
       else
         v = load_view
+        mp v
         @view ||= v
-        @view.setId Potion::ViewIdGenerator.generate
+        @view.id = Potion::ViewIdGenerator.generate
       end
 
       set_up_action_bar(self.class.action_bar_options)
