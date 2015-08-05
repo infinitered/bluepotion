@@ -55,6 +55,9 @@
       @_rmq_data ||= RMQScreenData.new
     end
 
+    def dummy_workaround_for_kind_of
+    end
+
     def onDestroy
       #return super # disable rmq cleaning while debugging, but still super
       mp "onDestroy screen: #{self.class}", debugging_only: true

@@ -28,6 +28,8 @@ class RMQ
       else
         RMQ.app.current_screen
       end
+    elsif @originated_from.respond_to?(:dummy_workaround_for_kind_of) # TODO, kind_of? doesn't seem to work, verify. Workaround here
+      @originated_from
     else
       RMQ.app.current_screen
     end
