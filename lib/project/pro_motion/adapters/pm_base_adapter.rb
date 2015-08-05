@@ -119,6 +119,7 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
         row_view = rmq.create!(data[:cell_class])
       elsif data[:cell_xml]
         row_view = inflate_row(data[:cell_xml])
+        rmq.tag_all_from_resource_entry_name(row_view)
       else
         # Default is Sipmle List Item 1
         # TODO:  Possibly use Android::R::Layout::Simple_list_item_2 which has subtitle
