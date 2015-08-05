@@ -146,9 +146,8 @@
         web_intent.setData(Android::Net::Uri.parse(command[:web]))
       when :chooser
         message_intent = Android::Content::Intent.new(action_send)
-        # should we restrict?  I think not...
         message_intent.type = "text/plain"
-        message_intent.putExtra("android.intent.extra.TEXT", command[:chooser].to_s) if command[:message]
+        message_intent.putExtra("android.intent.extra.TEXT", command[:chooser].to_s) if command[:chooser]
         Android::Content::Intent.createChooser(message_intent, nil)
       else
         mp "[BP Warning] Unsupported launch type '#{command.keys.first}'"
