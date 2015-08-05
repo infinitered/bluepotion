@@ -107,35 +107,35 @@ class HomeScreen < PMScreen
 
     #return
 
-    iterations = 500
+    iterations = 100
     benchmark = Benchmark
 
     benchmark.run_single("", "nothing", iterations) do
     end
 
-    benchmark.run_single("", "find(:benchmarks_button)", iterations) do
-      find(:benchmarks_button)
+    benchmark.run_single("", "find(:benchmarks_button).length", iterations) do
+      find(:benchmarks_button).length
     end
 
     root_view = find.root_view
-    benchmark.run_single("root_view = find.root_view", "root_view.find(:benchmarks_button)", iterations) do
-      root_view.find(:benchmarks_button).count
+    benchmark.run_single("root_view = find.root_view", "root_view.find(:benchmarks_button).length", iterations) do
+      root_view.find(:benchmarks_button).length
     end
 
     root_view_q = find(find.root_view)
-    benchmark.run_single("root_view_q = find(find.root_view)", "root_view_q.find(:benchmarks_button)", iterations) do
-      root_view_q.find(:benchmarks_button).count
+    benchmark.run_single("root_view_q = find(find.root_view)", "root_view_q.find(:benchmarks_button).length", iterations) do
+      root_view_q.find(:benchmarks_button).length
     end
 
     root_view_q = find(find.root_view)
-    benchmark.run_single("root_view_q = find(find.root_view)", "root_view_q.find(:benchmarks_button)", iterations) do
-      root_view_q.find(:benchmarks_button).count
+    benchmark.run_single("root_view_q = find(find.root_view)", "root_view_q.find(:benchmarks_button).length", iterations) do
+      root_view_q.find(:benchmarks_button).length
     end
 
     q = find(Potion::AbsoluteLayout).first
     q.children.first.tag(:ab_layout_child)
-    benchmark.run_single("q = find(Potion::AbsoluteLayout).first; q.children.first.tag(:ab_layout_child)", "q.find(:ab_layout_child)", iterations) do
-      q.find(:ab_layout_child).count
+    benchmark.run_single("q = find(Potion::AbsoluteLayout).first; q.children.first.tag(:ab_layout_child)", "q.find(:ab_layout_child).length", iterations) do
+      q.find(:ab_layout_child).length
     end
 
     #app.toast out

@@ -21,16 +21,40 @@
   #new_hash
 #end
 
+class TestScreen < PMScreen
+  title "Test Screen"
+  #stylesheet HomeScreenStylesheet
+  #action_bar true, icon: true, back: false
+
+  def on_load
+  end
+end
+
+
 describe 'base' do
   before do
-    @screen = PMScreen.new
+    #@activity = PMActivity.new
+    #@activity.open_fragment @screen
+    #@screen = TestScreen.new
+    #@screen = PMActivity.new
+    #@screen = TestScreen.new
+    #@screen.load_view
+    #@root_view = @screen.view
+    #mp @root_view.inspect
     #@screen.view = rmq.create(Potion::FrameLayout).cleanup.get
+    @screen = TestScreen.new
     @root_view = Potion::FrameLayout.new
     @screen.view = @root_view
   end
 
   it 'should create simplest' do
     RMQ.new.should.not == nil
+
+    #main_activity.activity_init
+    #main_activity.open_fragment @screen
+    #mp main_activity.inspect
+    #mp main_activity.find.screen.inspect
+    #mp find.activity.inspect
   end
 
   it 'should have root_view setup in "before"' do

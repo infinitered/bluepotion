@@ -8,7 +8,7 @@ class BluePotionApplication < PMApplication
 
   def on_create
     RMQ.debugging = true
-    RMQ.caching_enabled = false
+    RMQ.caching_enabled = true
 
     mp "BluePotionApplication on_create", debugging_only: true
 
