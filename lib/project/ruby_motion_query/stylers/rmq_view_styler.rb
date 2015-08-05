@@ -257,6 +257,18 @@ class RMQViewStyler
     createDrawable(corner_radius)
   end
 
+  def visibility=(value)
+    case value
+    when :visible, true
+      view.setVisibility(Potion::View::VISIBLE)
+    when :invisible, false
+      view.setVisibility(Potion::View::INVISIBLE)
+    when :gone
+      view.setVisibility(Potion::View::GONE)
+    end
+  end
+  alias :visible= :visibility=
+
   private
 
   def padding
