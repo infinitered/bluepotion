@@ -113,6 +113,14 @@ class HomeScreen < PMScreen
     benchmark.run_single("", "nothing", iterations) do
     end
 
+    benchmark.run_single("", "RMQ.new", iterations) do
+      RMQ.new
+    end
+
+    benchmark.run_single("", "rmq", iterations) do
+      rmq
+    end
+
     benchmark.run_single("", "find(:benchmarks_button).length", iterations) do
       find(:benchmarks_button).length
     end
