@@ -12,15 +12,11 @@
     end
 
     def load_view
-      # Potion::LinearLayout.new(self.activity)
-      lv = rmq.create(Potion::ListView).tag(:list)
-      mp "lv"
-      mp lv.inspect
-      mp lv.size
-
-      mp "lv.get"
-      mp lv.get
+      v = Potion::View.new(app.context) # TODO, fix this horrible hack
+      lv = rmq(v).create(Potion::ListView).tag(:list)
       self.view = lv.get
+
+      # Potion::LinearLayout.new(self.activity)
       # find(self.view).style do |st|
         # st.layout_width = :match_parent
         # st.layout_height = :match_parent

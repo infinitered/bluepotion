@@ -128,9 +128,11 @@ class RMQ
       out << s.ljust(36)
       out << "   |"
       out << "\n" unless wide
-      out << " #{view.superview.id.to_s.ljust(12)}|"
-      out << "   |"
-      out << " #{(view.superview ? view.superview.short_class_name : '')[0..21].ljust(22)}|"
+      if view.superview
+        out << " #{view.superview.id.to_s.ljust(12)}|"
+        out << "   |"
+        out << " #{(view.superview ? view.superview.short_class_name : '')[0..21].ljust(22)}|"
+      end
       out << " #{view.subviews.length.to_s.ljust(23)} |"
       #out << "  #{view.subviews.length.to_s.rjust(8)} #{view.superview.short_class_name.ljust(20)} #{view.superview.object_id.to_s.rjust(10)}"
       out << " #{view.rmq_data.tag_names.join(',').ljust(38)}|"
