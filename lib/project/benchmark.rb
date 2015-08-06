@@ -11,7 +11,7 @@ class Benchmark
     def run_single(setup_desc, code_desc, iterations, &block)
       @total_run ||= 0
       start_time = Time.milliseconds_since_epoch
-      0.upto(iterations) do
+      iterations.times do
         @total_run += 1
         block.call
         #mp "[#{@total_run}]"
@@ -26,7 +26,7 @@ class Benchmark
       out << "\n  Total milliseconds: #{decimal_formatter.format(total_time)}"
       out << "\n  Milliseconds per iteration: #{per_item}"
       out << "\n  RMQ allocations: #{$rmq_initialized.to_s}"
-      puts out
+      mp out
       Potion::System.gc
       out
     end

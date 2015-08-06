@@ -12,6 +12,17 @@ class RMQViewStyler
     @corner_radius = nil
   end
 
+  def cleanup
+    @layout_params = nil
+    @needs_finalize = nil
+    @context = nil
+    @bg_color = nil
+    @corner_radius = nil
+    @margin = nil
+    @padding = nil
+    @view = nil
+  end
+
   def convert_dimension_value(value)
     case value
     when :match_parent, :full
@@ -250,7 +261,7 @@ class RMQViewStyler
   end
 
   def density
-    @density ||= context.getResources.getDisplayMetrics.density
+    @density ||= @context.getResources.getDisplayMetrics.density
   end
 
   def create_drawable(corner_radius)

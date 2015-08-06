@@ -68,7 +68,6 @@ class Object
     rmq(*args).get
   end
 
-
   # BluePotion stuff
 
   # REMOVE when mp starts working
@@ -87,10 +86,8 @@ class Object
       s = s.to_s
     end
 
-    #puts "#{@@mp_backspace} \e[1;#{34}m#{s}\e[0m"
-
     lines = s.split("\n")
-    lines.each do |line|
+    @@mp_tproc ||= proc do |line| # This hack fixes RMA bug, TODO remove when RMA block retention bug is fixed
       #if RMQ.debugging?
         #out = @@mp_backspace
         #out << "\e[1;#{36}m#{self.object_id}\e[0m #{self.short_class_name}".ljust(50)
@@ -100,6 +97,7 @@ class Object
         puts "#{@@mp_backspace} \e[1;#{34}m#{line}\e[0m"
       #end
     end
+    lines.each &@@mp_tproc
   end
 
   def app

@@ -105,10 +105,13 @@ class HomeScreen < PMScreen
     #mp total
     #mp 'done'
 
-    #return
 
     iterations = 100
     benchmark = Benchmark
+
+    #100000.times do |i|
+      #mp i
+    #end
 
     benchmark.run_single("", "nothing", iterations) do
     end
@@ -145,6 +148,21 @@ class HomeScreen < PMScreen
     benchmark.run_single("q = find(Potion::AbsoluteLayout).first; q.children.first.tag(:ab_layout_child)", "q.find(:ab_layout_child).length", iterations) do
       q.find(:ab_layout_child).length
     end
+
+    q = find(:benchmarks_button)
+    benchmark.run_single("q = find(:benchmarks_button)", "q.apply_style(:benchmark_style_1)", iterations) do
+      q.apply_style(:benchmark_style_1)
+    end
+
+    q = find(:benchmarks_button)
+    benchmark.run_single("q = find(:benchmarks_button)", "q.apply_style(:benchmark_style_1, :benchmark_style_2, :benchmark_style_3)", iterations) do
+      q.apply_style(:benchmark_style_1, :benchmark_style_2, :benchmark_style_3)
+    end
+
+    #q = find.all
+    #benchmark.run_single("q = find.all", "q.reapply_styles", iterations) do
+      #q.reapply_styles
+    #end
 
     #app.toast out
   end

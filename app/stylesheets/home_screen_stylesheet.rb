@@ -73,6 +73,13 @@ class HomeScreenStylesheet < ApplicationStylesheet
     st.background_color = color.black
   end
 
+  def benchmark_style_1(st)
+  end
+  def benchmark_style_2(st)
+  end
+  def benchmark_style_3(st)
+  end
+
 end
 
 __END__
