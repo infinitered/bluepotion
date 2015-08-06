@@ -41,7 +41,7 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
 
   def getItemViewType(position); item_view_type_id(position); end
   def item_view_type_id(position)
-    data_item = @data[position]
+    data_item = self.item_data(position)
     idx = nil
     if data_item[:prevent_reuse]
       idx = Android::Widget::Adapter::IGNORE_ITEM_VIEW_TYPE
