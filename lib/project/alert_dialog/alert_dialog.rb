@@ -75,7 +75,7 @@ class AlertDialog < Android::App::DialogFragment
     button_text = (id == Android::App::AlertDialog::BUTTON_POSITIVE) ? @options[:positive_button] : @options[:negative_button]
 
     # if a text_view is present, grab what the user gave us
-    text_view = dialog.findViewById(@text_view_id)
+    text_view = @text_view_id && dialog.findViewById(@text_view_id)
     input_text = text_view ? text_view.text.toString : nil
 
     @callback.call(button_text, input_text) if @callback
