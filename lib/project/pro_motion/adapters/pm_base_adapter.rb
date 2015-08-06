@@ -76,9 +76,17 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
     out = selected_view(convert_view, data)
     update_view(out, data)
     if data[:action]
-      find(out).on(:tap) { find.screen.send(data[:action], data[:arguments], position) }
+      find(out).on(:tap) do
+        arguments = action_arguments data, position
+        find.screen.send(data[:action], arguments, position) 
+      end
     end
     out
+  end
+
+  # configure what to pass back when we tap that action
+  def action_arguments(data, position)
+    data[:arguments]
   end
 
   def update_view(view, data)

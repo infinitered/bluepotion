@@ -17,5 +17,12 @@ class PMCursorAdapter < PMBaseAdapter
     cursor.moveToPosition(position)
     cell_options # return the one & only one cell_options
   end
+
+  # slighty different arguments to send when tapping
+  def action_arguments(data, position)
+    item_data(position) # move the cursor into position
+    @cursor
+  end
+
 end
 
