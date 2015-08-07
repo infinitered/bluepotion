@@ -29,6 +29,10 @@
       context.getPackageManager
     end
 
+    def content_resolver
+      context.contentResolver
+    end
+
     def name
       application_info.loadLabel(package_manager)
     end
