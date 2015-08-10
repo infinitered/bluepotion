@@ -237,6 +237,8 @@
         case mode
         when :adjust_resize
           Android::View::WindowManager::LayoutParams::SOFT_INPUT_ADJUST_RESIZE
+        when :adjust_pan
+          Android::View::WindowManager::LayoutParams::SOFT_INPUT_ADJUST_PAN
         end
       activity.getWindow().setSoftInputMode(mode_const)
     end
