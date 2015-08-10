@@ -4,6 +4,7 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
   def initialize(opts={})
     super()
     self.data = opts.fetch(:data, [])
+    @extra_view_types = opts.fetch(:extra_view_types, [])
   end
 
   def screen
@@ -78,7 +79,7 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
     if data[:action]
       find(out).on(:tap) do
         arguments = action_arguments data, position
-        find.screen.send(data[:action], arguments, position) 
+        find.screen.send(data[:action], arguments, position)
       end
     end
     out
@@ -116,8 +117,8 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
   end
 
   def view_types
-    # unique cell_xmls and cell_classes
-    data.map{ |i| i[:cell_xml] || i[:cell_class]}.compact.uniq
+    # unique cell_xmls and cell_classes + any potentially dynamic types
+    data.map{ |i| i[:cell_xml] || i[:cell_class]}.compact.uniq + @extra_view_types
   end
 
   def selected_view(cv, data)
@@ -142,4 +143,5 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
     inflater = Potion::LayoutInflater.from(find.activity)
     row_view = inflater.inflate(xml_resource, nil, true)
   end
+
 end
