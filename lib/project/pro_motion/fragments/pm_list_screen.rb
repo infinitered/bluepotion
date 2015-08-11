@@ -50,7 +50,9 @@
         td = table_data
         if td.is_a?(Array)
           cells = td.first[:cells]
-          PMBaseAdapter.new(data: cells)
+          # Pass data to adapter, and identify if dynamic data will be used, too.
+          PMBaseAdapter.new(data: cells, extra_view_types: self.class.extra_view_types)
+          #PMBaseAdapter.new(data: cells)
         elsif td.is_a?(Hash)
           mp "Please supply a cursor in #{self.inspect}#table_data." unless td[:cursor]
           PMCursorAdapter.new(td)
@@ -157,6 +159,12 @@
       self.activity.on_fragment_detached(self) if self.activity.respond_to?(:on_fragment_detached)
     end
     def on_detach; end
+
+    # first time is a set, all after are get
+    def self.extra_view_types(*extra_types)
+      extra_types ||= []
+      @_extra_view_types ||= extra_types
+    end
 
   end
 
