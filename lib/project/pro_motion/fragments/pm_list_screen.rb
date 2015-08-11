@@ -19,7 +19,14 @@
     end
 
     def add_adapter
-      self.view.setAdapter(adapter)
+      found_listviews = find.activity.find(Potion::ListView)
+      if found_listviews.count.zero?
+        mp "PM ListView Error - We couldn't find any listviews on this screen."
+      elsif found_listviews.count > 1
+        mp "PM ListView Error - Too many ListViews, please implement add_adapter on your screen."
+      else
+        found_listviews.get.adapter = adapter
+      end
     end
 
     def adapter

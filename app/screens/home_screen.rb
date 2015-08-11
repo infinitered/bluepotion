@@ -39,6 +39,10 @@ class HomeScreen < PMScreen
       open ExampleCustomTableCellsScreen
     end
 
+    append(Potion::Button, :open_example_partial_list_xml).on(:tap) do
+      open ExamplePartialListXML
+    end
+
     append(Potion::Button, :countdown_button).on(:tap) do |sender|
       original_text = sender.text
       sender.enabled = false

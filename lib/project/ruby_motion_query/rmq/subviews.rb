@@ -83,6 +83,7 @@ class RMQ
   # @return [RMQ]
   def remove
     # AdapterView HAS removeView but does not support it -> http://developer.android.com/reference/android/widget/AdapterView.html
+    # Potentially monkeypatch to no-op instead of UnsupportedOperationException?
     selected.each { |view| view.parent.removeView(view) unless view.parent.is_a?(Android::Widget::AdapterView) }
     self
   end
