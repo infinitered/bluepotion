@@ -13,7 +13,7 @@
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/embedded_listview"
+        android:id="@+id/some_internal_listview"
         android:layout_below="@+id/textView" />
 
 </RelativeLayout>

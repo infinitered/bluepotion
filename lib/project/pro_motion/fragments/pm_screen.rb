@@ -59,9 +59,11 @@
       build_and_tag_xml_views
 
       set_title
+      extended_screen_setup
       on_load
       on_activity_created
     end
+    def extended_screen_setup; end
     def on_load; end
     def on_activity_created; end
 
