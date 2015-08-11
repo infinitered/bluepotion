@@ -54,6 +54,12 @@ class HomeScreenStylesheet < ApplicationStylesheet
     st.text = "Open table with custom cells"
   end
 
+  def open_example_partial_list_xml(st)
+    standard_button(st)
+    st.text = "Open XML with embedded ListView"
+    st.background_color = color.blue_steel
+  end
+
   def countdown_button(st)
     standard_button(st)
     st.background_color = color.light_blue
