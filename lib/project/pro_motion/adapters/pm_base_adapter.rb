@@ -118,7 +118,7 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
 
   def view_types
     # unique cell_xmls and cell_classes + any potentially dynamic types
-    data.map{ |i| i[:cell_xml] || i[:cell_class]}.compact.uniq + @extra_view_types
+    @_vt ||= (data.map{ |i| i[:cell_xml] || i[:cell_class]}.compact + @extra_view_types).uniq
   end
 
   def selected_view(cv, data)
