@@ -1,18 +1,23 @@
 class PotionDialog
 
-  def initialize(options)
+  attr_reader :dialog
 
+  def initialize(options)
+    @dialog = setup(options)
+  end
+
+  def setup(options)
     @width = options[:width] || options[:w]
     @height = options[:height] || options[:h]
 
     # err if missing required options
     raise "[BluePotion ERROR] PotionDialog#initialize Requires an xml_layout" unless options[:xml_layout]
     raise "[BluePotion ERROR] PotionDialog#initialize Cannot have width without height" if @width && !@height
-    raise "[BluePotion ERROR] PotionDialog#initialize Cannot have height without width" if @height && !@width    
-    
-    # Merging defaults    
-    opts = { 
-      title: false, 
+    raise "[BluePotion ERROR] PotionDialog#initialize Cannot have height without width" if @height && !@width
+
+    # Merging defaults
+    opts = {
+      title: false,
       show: true
     }.merge(options)
 
@@ -28,7 +33,7 @@ class PotionDialog
     dialog = Potion::Dialog.new(find.activity)
 
     # manage title
-    if options[:title] 
+    if options[:title]
       dialog.title = options[:title]
     else
       dialog.requestWindowFeature(Potion::Window::FEATURE_NO_TITLE)
@@ -40,7 +45,7 @@ class PotionDialog
     # set width and height of Dialog Window
     if @width && @height
       dialog.window.setLayout(@width, @height)
-    end 
+    end
     dialog
   end
 end
