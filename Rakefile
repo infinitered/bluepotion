@@ -17,10 +17,10 @@ Motion::Project::App.setup do |app|
   app.theme = "@android:style/Theme.Holo.Light"
   app.permissions = [:internet, :access_network_state] # :access_coarse_location, :access_fine_location, :write_external_storage
   app.icon = 'ic_launcher'
-  
+
   # Version name is for you - version code must always be higher in Google Play (tied to git builds)
   # app.version_name = "1.0.0"
-  # app.version_code = (`git rev-list HEAD --count`.strip.to_i).to_s  
+  # app.version_code = (`git rev-list HEAD --count`.strip.to_i).to_s
 
   app.application_class = "BluePotionApplication"
   app.main_activity = "PMHomeActivity"
@@ -32,6 +32,9 @@ Motion::Project::App.setup do |app|
 
     # support lib
     dependency "com.android.support", artifact: "support-v4", version: "18.0.+"
+
+    # pull to refresh
+    dependency 'in.srain.cube:ultra-ptr:1.0.10'
 
     # Google's Android Play Services
     #dependency 'com.android.support', :artifact => 'appcompat-v7', :version => '21.0.3'
