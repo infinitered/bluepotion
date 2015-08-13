@@ -22,9 +22,21 @@
     end
 
     def load_view
-      v = Potion::View.new(app.context) # TODO, fix this horrible hack
-      lv = rmq(v).create(Potion::ListView).tag(:list)
-      self.view = lv.get
+      # Dynamic Pull to Refresh?
+      # v = Potion::View.new(app.context) # TODO, fix this horrible hack
+      # ptr_v = rmq(v).create(In::Srain::Cube::Views::Ptr::PtrClassicFrameLayout).tag(:ptr_parent).style do |st|
+      #   st.layout_width = :wrap_content
+      #   st.layout_height = :wrap_content
+      #   st.background_color = rmq.color.black
+      # end
+      # lv = ptr_v.append(Potion::ListView).tag(:list)
+      # self.view = ptr_v.get
+
+
+      # FOR NOW
+
+      # We need a simple listview - that's all
+      Potion::ListView.new(app.context)
     end
 
     def extended_screen_setup

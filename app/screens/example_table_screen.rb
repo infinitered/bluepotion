@@ -3,10 +3,10 @@ class ExampleTableScreen < PMListScreen
   stylesheet ExampleTableScreenStylesheet
   title "Example Table Screen"
 
-  def load_view
-    mp "ExampleTableScreen load_view"
-    Potion::ListView.new(self.activity)
-  end
+  # def load_view
+  #   mp "ExampleTableScreen load_view"
+  #   Potion::ListView.new(self.activity)
+  # end
 
   def table_data
     states = [

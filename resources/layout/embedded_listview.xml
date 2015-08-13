@@ -10,7 +10,8 @@
        android:textAppearance="?android:attr/textAppearanceLarge"
        android:text="I'm not part of the listview!  I'm just hanging out."
        android:id="@+id/text_view"
-       android:layout_marginLeft="10dp"
+       android:paddingLeft="10dp"
+       android:background="#AFAFAF"
        android:gravity="center_vertical" />
 
     <in.srain.cube.views.ptr.PtrClassicFrameLayout
