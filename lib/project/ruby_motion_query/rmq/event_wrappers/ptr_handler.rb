@@ -1,10 +1,10 @@
-class PtrHandler
+class PTRHandler
   def initialize(&block)
     @refresh_callback = block
   end
 
   def checkCanDoRefresh(frame, content, header)
-    true
+    !content.canScrollVertically(-1)
   end
 
   def onRefreshBegin(frame)

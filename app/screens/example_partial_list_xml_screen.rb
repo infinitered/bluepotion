@@ -9,6 +9,11 @@ class ExamplePartialListXML < PMListScreen
     }]
   end
 
+  def on_refresh
+    mp "I was refreshed!"
+    update_table_data
+    stop_refreshing
+  end
 
   private
 

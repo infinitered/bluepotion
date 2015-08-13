@@ -1,34 +1,29 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivityFragment">
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   android:orientation="vertical" android:layout_width="match_parent"
+   android:layout_height="match_parent"
+   android:id="@+id/root_view">
 
-    <TextView android:text="I'm not part of the listview!  I'm just hanging out." android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView" />
+   <TextView
+       android:layout_width="match_parent"
+       android:layout_height="50dp"
+       android:textAppearance="?android:attr/textAppearanceLarge"
+       android:text="I'm not part of the listview!  I'm just hanging out."
+       android:id="@+id/text_view"
+       android:layout_marginLeft="10dp"
+       android:gravity="center_vertical" />
 
-    <in.srain.cube.views.ptr.PtrFrameLayout
+    <in.srain.cube.views.ptr.PtrClassicFrameLayout
         android:id="@+id/store_house_ptr_frame"
         xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="match_parent">
 
-        cube_ptr:ptr_resistance="1.7"
-        cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
-        cube_ptr:ptr_duration_to_close="300"
-        cube_ptr:ptr_duration_to_close_header="2000"
-        cube_ptr:ptr_keep_header_when_refresh="true"
-        cube_ptr:ptr_pull_to_fresh="false" >
+       <ListView
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:id="@+id/list_view"
+           android:layout_gravity="center_horizontal" />
 
-
-        <ListView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/some_internal_listview"
-            android:layout_below="@+id/textView" />
-
-    </in.srain.cube.views.ptr.PtrFrameLayout>
-
-</RelativeLayout>
+    </in.srain.cube.views.ptr.PtrClassicFrameLayout>
+</LinearLayout>
