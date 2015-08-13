@@ -1,4 +1,5 @@
 class ExamplePartialListXML < PMListScreen
+  refreshable
   xml_layout :embedded_listview
   title "View with a ListView Inside"
 
