@@ -2,16 +2,41 @@
 #module ProMotion
 
   class PMListScreen < PMScreen
+    include RefreshableList
 
     def table_data
       mp "Implement a table_data method in #{self.inspect}."
       []
     end
 
+    def screen_setup
+      # This method will grow as BP grows towards RP
+      set_up_refreshable
+    end
+
+    def set_up_refreshable
+      # named get_refreshable bc of Promotion # Possible PR to is_refreshable?
+      if self.class.respond_to?(:get_refreshable) && self.class.get_refreshable
+        make_refreshable(self.class.get_refreshable_params)
+      end
+    end
+
     def load_view
-      v = Potion::View.new(app.context) # TODO, fix this horrible hack
-      lv = rmq(v).create(Potion::ListView).tag(:list)
-      self.view = lv.get
+      # Dynamic Pull to Refresh?
+      # v = Potion::View.new(app.context) # TODO, fix this horrible hack
+      # ptr_v = rmq(v).create(In::Srain::Cube::Views::Ptr::PtrClassicFrameLayout).tag(:ptr_parent).style do |st|
+      #   st.layout_width = :wrap_content
+      #   st.layout_height = :wrap_content
+      #   st.background_color = rmq.color.black
+      # end
+      # lv = ptr_v.append(Potion::ListView).tag(:list)
+      # self.view = ptr_v.get
+
+
+      # FOR NOW
+
+      # We need a simple listview - that's all
+      Potion::ListView.new(app.context)
     end
 
     def extended_screen_setup

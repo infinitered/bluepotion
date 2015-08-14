@@ -67,7 +67,11 @@
     def on_load; end
     def on_activity_created; end
 
-    def onStart; super; on_start; end
+    def onStart
+      super
+      screen_setup if self.respond_to?(:screen_setup)
+      on_start
+    end
     def on_start; end
     alias :on_appear :on_start
 
