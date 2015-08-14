@@ -133,6 +133,8 @@
     # app.launch(email: 'your@mom.com')
     # app.launch(email: 'your@mom.com', subject: "Hey Chica", message: "Howdy")
     # app.launch(chooser: 'I hope you have a nice day!')
+    # Maps are so powerful, we just pass your stuff along! -> https://developers.google.com/maps/documentation/android/intents
+    # app.launch(map: "https://www.google.com/maps/dir/current+location/29.99474,-90.17873")
     def launch(command={})
       action_view = "android.intent.action.VIEW"
       action_send = "android.intent.action.SEND"
@@ -152,13 +154,18 @@
         web_intent = Android::Content::Intent.new(action_view)
         web_intent.setData(Android::Net::Uri.parse(command[:web]))
       when key_list.include?(:tel)
+        clean_tel = command[:tel].gsub("tel:", "") #for ease of URLs
         tel_intent = Android::Content::Intent.new(action_dial)
-        tel_intent.setData(Android::Net::Uri.fromParts("tel", command[:tel], nil))
+        tel_intent.setData(Android::Net::Uri.fromParts("tel", clean_tel, nil))
       when key_list.include?(:chooser)
         message_intent = Android::Content::Intent.new(action_send)
         message_intent.type = "text/plain"
         message_intent.putExtra("android.intent.extra.TEXT", command[:chooser].to_s) if command[:chooser]
         Android::Content::Intent.createChooser(message_intent, nil)
+      when key_list.include?(:map)
+        map_intent = Android::Content::Intent.new(action_view)
+        map_intent.setData(Android::Net::Uri.parse(command[:map]))
+        map_intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity")
       else
         mp "[BP Warning] Launch type unknown - '#{command.keys.inspect}'"
         nil
