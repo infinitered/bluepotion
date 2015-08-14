@@ -85,42 +85,6 @@
       @_extra_view_types ||= extra_types
     end
 
-
-
-
-    ############## THIS SHOULD BE IN A SEPARATE FILE ##############
-    ###############  RMA WOULDN"T LET ME USE A MODULE #############
-
-    def make_refreshable(params={})
-      @ptr = find!(In::Srain::Cube::Views::Ptr::PtrFrameLayout)
-      header = In::Srain::Cube::Views::Ptr::Header::MaterialHeader.new(app.context)
-      ptr_colors = params[:color_array] || [color.dark_gray]
-      header.setColorSchemeColors(ptr_colors)
-      header.setPtrFrameLayout(@ptr)
-      @ptr.setHeaderView(header)
-      @ptr.addPtrUIHandler(header)
-      @ptr.ptrHandler = PTRHandler.new do |frame|
-        on_refresh if respond_to?(:on_refresh)
-      end
-    end
-
-    def self.refreshable(params = {})
-      @refreshable_params = params
-      @refreshable = true
-    end
-
-    def self.get_refreshable
-      @refreshable ||= false
-    end
-
-    def self.get_refreshable_params
-      @refreshable_params ||= nil
-    end
-
-    def stop_refreshing
-      @ptr.refreshComplete
-    end
-
   end
 
 #end
