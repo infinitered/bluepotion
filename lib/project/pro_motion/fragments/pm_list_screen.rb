@@ -43,8 +43,12 @@
       add_adapter
     end
 
+    def find_list_view
+      find.activity.find(Potion::ListView)
+    end
+
     def add_adapter
-      found_listviews = find.activity.find(Potion::ListView)
+      found_listviews = find_list_view
       if found_listviews.count.zero?
         mp "PM ListView Error - We couldn't find any listviews on this screen."
       elsif found_listviews.count > 1
