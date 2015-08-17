@@ -29,6 +29,11 @@ gem install bluepotion
 bluepotion create myapp
 cd myapp
 bundle
+brew install gradle # if gradle is not installed. Requires homebrew
+rake gradle:install
+
+# Start your Genymotion virtual device or plug in your Android device
+
 rake newclear
 ```
 
