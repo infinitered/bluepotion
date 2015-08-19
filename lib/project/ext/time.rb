@@ -3,7 +3,9 @@ class Time
     timestring = iso8601_string.toString
     timestring = timestring.replaceAll("Z", "+00:00")
     timestring = timestring.substring(0, 22) + timestring.substring(23)
-    date = Java::Text::SimpleDateFormat.new("yyyy-MM-dd'T'HH:mm:ss+SSS").parse(timestring)
+    sdf = Java::Text::SimpleDateFormat.new("yyyy-MM-dd'T'HH:mm:ss+SSS")
+    sdf.setTimeZone(Java::Util::TimeZone.getTimeZone("UTC"))
+    date = sdf.parse(timestring)
     Time.new(date.getTime())
   end
 
