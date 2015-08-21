@@ -64,10 +64,11 @@
         if td.is_a?(Array)
           cells = td.first[:cells]
           # Pass data to adapter, and identify if dynamic data will be used, too.
-          PMBaseAdapter.new(data: cells, extra_view_types: self.class.extra_view_types)
+          PMBaseAdapter.new(data: cells, extra_view_types: self.class.extra_view_types).tap { |a| a.screen = self }
+
         elsif td.is_a?(Hash)
           mp "Please supply a cursor in #{self.inspect}#table_data." unless td[:cursor]
-          PMCursorAdapter.new(td)
+          PMCursorAdapter.new(td).tap { |a| a.screen = self }
         end
       end
     end

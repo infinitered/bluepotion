@@ -11,7 +11,7 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
     @screen ||= rmq.screen
   end
   def screen=(value)
-    @screen
+    @screen = value
   end
 
   def areAllItemsEnabled(); are_all_items_enabled?; end
@@ -79,7 +79,7 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
     if data[:action]
       find(out).on(:tap) do
         arguments = action_arguments data, position
-        find.screen.send(data[:action], arguments, position)
+        screen.send(data[:action], arguments, position)
       end
     end
     out
@@ -95,10 +95,10 @@ class PMBaseAdapter < Android::Widget::BaseAdapter
     if update.is_a?(Proc)
       update.call(out, data)
     elsif update.is_a?(Symbol) || update.is_a?(String)
-      if find.screen.respond_to?(update)
-        find.screen.send(update, view, data)
+      if screen.respond_to?(update)
+        screen.send(update, view, data)
       else
-        mp "Warning: #{find.screen.class} does not respond to #{update}"
+        mp "Warning: #{screen.class} does not respond to #{update}"
       end
     elsif data[:properties]
       data[:properties].each do |k, v|
