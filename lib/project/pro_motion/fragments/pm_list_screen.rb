@@ -90,6 +90,12 @@
       @_extra_view_types ||= extra_types
     end
 
+    def on_destroy
+      return unless @adapter
+      @adapter.screen = nil
+      @adapter = nil
+    end
+
   end
 
 #end
