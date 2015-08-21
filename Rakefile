@@ -10,7 +10,7 @@ Motion::Project::App.setup do |app|
   app.api_version = "16"
   app.target_api_version = "16"
 
-  app.archs = ["x86"] unless ARGV.include?("device") || ARGV.include?("release")
+  app.archs = ["x86"] unless ARGV.include?("device") || ARGV.include?("spec:device") || ARGV.include?("release")
 
   app.name = 'BluePotion'
   app.package = "com.infinitered.bluepotion"
