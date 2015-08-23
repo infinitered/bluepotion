@@ -68,7 +68,7 @@ class PotionCommandLine
     def create_app(app_name)
       puts '     Creating app'
 
-      `motion create --template=git@github.com:infinitered/bluepotion-template.git #{app_name}`
+      `motion create --template=https://github.com/infinitered/bluepotion-template.git #{app_name}`
 
       puts %{
       Complete. Things you should do:
