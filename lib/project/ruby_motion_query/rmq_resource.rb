@@ -30,5 +30,14 @@ class RMQResource
       return nil if resource_id.nil? || resource_id == 0
       PMApplication.current_application.resources.getString(resource_id)
     end
+
+    # pull text from a resource (its a CharSequence which plays nicely with spannables)
+    def text(name=nil)
+      return nil unless name
+      resource_id = find(:string, name)
+      return nil if resource_id.nil? || resource_id == 0
+      PMApplication.current_application.resources.getText(resource_id)
+    end
+
   end
 end
