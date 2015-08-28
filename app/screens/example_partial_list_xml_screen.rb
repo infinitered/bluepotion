@@ -3,6 +3,17 @@ class ExamplePartialListXML < PMListScreen
   xml_layout :embedded_listview
   title "View with a ListView Inside"
 
+  def on_load
+    find(:text_view).on(:tap) do
+      d_opts = {
+        w: rmq.device.width * 0.8,
+        h: rmq.device.height * 0.8,
+        xml_layout: app.r.layout(:dialog_list_view),
+      }
+      @dialog = PotionDialog.new(d_opts).dialog
+    end
+  end
+
   def table_data
     [{
       cells: buncho_cells
