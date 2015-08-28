@@ -8,7 +8,7 @@
        android:layout_width="match_parent"
        android:layout_height="50dp"
        android:textAppearance="?android:attr/textAppearanceLarge"
-       android:text="I'm not part of the listview!  I'm just hanging out."
+       android:text="I'm not part of the listview! ... CLICK ME THOUGH!"
        android:id="@+id/text_view"
        android:paddingLeft="10dp"
        android:background="#AFAFAF"
