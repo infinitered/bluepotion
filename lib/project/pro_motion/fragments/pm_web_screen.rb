@@ -1,36 +1,35 @@
-class PMWebScreen < Android::Webkit::WebViewFragment
-  include PMScreenModule
+# Finding it more and more easy to just derive from PMScreen
+class PMWebScreen < PMScreen
+  attr_accessor :webview
 
-  #def onCreate(bundle); super; on_create(bundle); end
-  def on_create(bundle)
-
-    # Defaults
-    opts = {
-      url: nil,
-      save_password: true,
-      save_form_data: true,
-      javascript: true,
-      zoomable: false,
-      custom_client: nil,
-      cookies: true
-    }#.merge(options)
-
-    # Apply settings
-    settings = web.settings
-    settings.savePassword = opts[:save_password]
-    settings.saveFormData = opts[:save_form_data]
-    settings.javaScriptEnabled = opts[:javascript]
-    settings.supportZoom = opts[:zoomable]
-    web.setWebViewClient(opts[:custom_client]) if opts[:custom_client]
-    web.loadUrl(opts[:url]) if opts[:url]
-
-    accept_cookies if opts[:cookies]
-
+  def screen_setup
+    web_view_setup
   end
 
-  def accept_cookies
+  def web_view_setup
+    # SPECIAL NOTE: Must create from activity, not from context (breaks dialogs)
+    @webview = Android::Webkit::WebView.new(find.activity)
+    append(@webview)
+    settings = @webview.settings
+    settings.savePassword = true
+    settings.saveFormData = true
+    settings.javaScriptEnabled = true
+    settings.supportZoom = false
+
+    # By default some URLs try to launch a browser. Very unlikely that this is
+    # the behaviour we'll want in an app.   So we use this to stop
+    #@webview.webViewClient = PMWebClient.new
+
+    accept_cookies
+  end
+
+  def open_url(url)
+    @webview.loadUrl(url)
+  end
+
+  def accept_cookies(accept_cookies=true)
     cookie_manager = Android::Webkit::CookieManager.getInstance()
-    cookie_manager.setAcceptCookie(true)
+    cookie_manager.acceptCookie = accept_cookies
   end
 
   def web
