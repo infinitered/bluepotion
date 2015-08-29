@@ -17,7 +17,10 @@
     def on_create(bundle); end
 
     def onCreateView(inflater, parent, saved_instance_state)
+      mp "PMScreen onCreateView #{self.class}" if RMQ.debugging?
       super
+
+      self.cleanup
 
       if @xml_resource = self.class.xml_resource
         @view = inflater.inflate(r(:layout, @xml_resource), parent, false)
@@ -56,13 +59,19 @@
       build_and_tag_xml_views
 
       set_title
+      extended_screen_setup
       on_load
       on_activity_created
     end
+    def extended_screen_setup; end
     def on_load; end
     def on_activity_created; end
 
-    def onStart; super; on_start; end
+    def onStart
+      super
+      screen_setup if self.respond_to?(:screen_setup)
+      on_start
+    end
     def on_start; end
     alias :on_appear :on_start
 

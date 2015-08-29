@@ -12,6 +12,17 @@ class RMQViewStyler
     @corner_radius = nil
   end
 
+  def cleanup
+    @layout_params = nil
+    @needs_finalize = nil
+    @context = nil
+    @bg_color = nil
+    @corner_radius = nil
+    @margin = nil
+    @padding = nil
+    @view = nil
+  end
+
   def convert_dimension_value(value)
     case value
     when :match_parent, :full
@@ -24,11 +35,22 @@ class RMQViewStyler
   end
 
   def layout_params
-    @layout_params ||= @view.getLayoutParams
+    @layout_params ||= begin
+      #@view.setMargins(0, 0, 0, 0)
+      #mp @view.LayoutParams
+      if lp = @view.getLayoutParams
+        lp
+      else
+        #mp 1
+        #mp @view
+        Android::View::ViewGroup::LayoutParams.new(0,0)
+        #Android::Widget::LinearLayout::LayoutParams.new(0,0)
+      end
+    end
   end
 
   def layout=(value)
-    lp = layout_params
+    return unless lp = layout_params
 
     if value == :full
       lp.width = convert_dimension_value(:full)
@@ -239,12 +261,24 @@ class RMQViewStyler
   end
 
   def density
-    @density ||= context.getResources.getDisplayMetrics.density
+    @density ||= @context.getResources.getDisplayMetrics.density
   end
 
   def create_drawable(corner_radius)
     createDrawable(corner_radius)
   end
+
+  def visibility=(value)
+    case value
+    when :visible, true
+      view.setVisibility(Potion::View::VISIBLE)
+    when :invisible, false
+      view.setVisibility(Potion::View::INVISIBLE)
+    when :gone
+      view.setVisibility(Potion::View::GONE)
+    end
+  end
+  alias :visible= :visibility=
 
   private
 

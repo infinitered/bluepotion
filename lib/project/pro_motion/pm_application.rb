@@ -29,6 +29,10 @@
       context.getPackageManager
     end
 
+    def content_resolver
+      context.contentResolver
+    end
+
     def name
       application_info.loadLabel(package_manager)
     end
@@ -113,6 +117,72 @@
 
     def alert(options={}, &block)
       AlertDialog.new(options, &block)
+    end
+
+    # Send user to native Texting
+    # app.sms("555-555-5555")
+    def sms(phone_number)
+      mp "[BP Deprecated] use app.launch(sms: #{phone_number}) over app.sms"
+      launch(sms: phone_number)
+    end
+
+    # Launch native services via intent
+    # app.launch(sms: '5045558008')
+    # app.launch(tel: '5045558008')
+    # app.launch(web: 'http://giphy.com')
+    # app.launch(email: 'your@mom.com')
+    # app.launch(email: 'your@mom.com', subject: "Hey Chica", message: "Howdy")
+    # app.launch(chooser: 'I hope you have a nice day!')
+    # Maps are so powerful, we just pass your stuff along! -> https://developers.google.com/maps/documentation/android/intents
+    # app.launch(map: "https://www.google.com/maps/dir/current+location/29.99474,-90.17873")
+    def launch(command={})
+      action_view = "android.intent.action.VIEW"
+      action_send = "android.intent.action.SEND"
+      action_dial = "android.intent.action.DIAL"
+      key_list = command.keys
+      launch_intent = case
+      when key_list.include?(:sms)
+        sms_intent = Android::Content::Intent.new(action_view)
+        sms_intent.setData(Android::Net::Uri.fromParts("sms", command[:sms].to_s, nil))
+      when key_list.include?(:email)
+        email_intent = Android::Content::Intent.new(action_view)
+        email_string = "mailto:#{command[:email]}"
+        email_string += "?subject=#{command[:subject].to_s}"
+        email_string += "&body=#{command[:message].to_s}"
+        email_intent.setData(Android::Net::Uri.parse(email_string))
+      when key_list.include?(:web)
+        web_intent = Android::Content::Intent.new(action_view)
+        web_intent.setData(Android::Net::Uri.parse(command[:web]))
+      when key_list.include?(:tel)
+        clean_tel = command[:tel].gsub("tel:", "") #for ease of URLs
+        tel_intent = Android::Content::Intent.new(action_dial)
+        tel_intent.setData(Android::Net::Uri.fromParts("tel", clean_tel, nil))
+      when key_list.include?(:chooser)
+        message_intent = Android::Content::Intent.new(action_send)
+        message_intent.type = "text/plain"
+        message_intent.putExtra("android.intent.extra.TEXT", command[:chooser].to_s) if command[:chooser]
+        Android::Content::Intent.createChooser(message_intent, nil)
+      when key_list.include?(:map)
+        map_intent = Android::Content::Intent.new(action_view)
+        map_intent.setData(Android::Net::Uri.parse(command[:map]))
+        map_intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity")
+      else
+        mp "[BP Warning] Launch type unknown - '#{command.keys.inspect}'"
+        nil
+      end
+
+      find.activity.startActivity(launch_intent) if launch_intent
+    end
+
+    # Execute the given block after the given number of seconds
+    #
+    # @example
+    # app.after(10) do
+    #   p "This will print in 10 seconds"
+    # end
+    #
+    def after(delay, &block)
+      DelayedExecution.after(delay, &block)
     end
 
     class << self

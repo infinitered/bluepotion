@@ -32,8 +32,10 @@ class RMQ
     if view.respond_to? :setOnSeekBarChangeListener
       view.onSeekBarChangeListener = RMQSeekChange.new(args, &block)
     # Text change
-    elsif view.respond_to? :addTextChangeListener
+    elsif view.respond_to? :addTextChangedListener
       view.addTextChangedListener(RMQTextChange.new(&block))
+    elsif view.respond_to? :setOnValueChangedListener
+      view.onValueChangedListener = RMQNumberPickerChange.new(&block)
     end
   end
 

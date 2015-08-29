@@ -65,6 +65,11 @@
       super
     end
 
+    def onBackPressed
+      super
+      finish if fragmentManager.getBackStackEntryCount == 0
+    end
+
     def open(screen, options={})
       find.screen.open screen, options
     end

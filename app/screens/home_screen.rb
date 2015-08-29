@@ -24,7 +24,8 @@ class HomeScreen < PMScreen
     end
 
     append(Potion::Button, :dialog_button).on(:tap) do |sender|
-      PotionDialog.new(xml_layout: app.resource.layout(:blue_potion_dialog), w: 500, h: 500)
+      # Simple way
+      PotionDialog.new(xml_layout: app.resource.layout(:blue_potion_dialog), w: rmq.device.width * 0.8, h: rmq.device.height * 0.8)
     end
 
     append(Potion::Button, :xml_button).on(:tap) do |sender|
@@ -33,6 +34,14 @@ class HomeScreen < PMScreen
 
     append(Potion::Button, :open_example_table_button).on(:tap) do |sender|
       open ExampleTableScreen, people: ["Todd", "Darin", "Gant", "Jamon"], test_int: 123, test_symbol: :my_symbol
+    end
+
+    append(Potion::Button, :open_example_custom_cells).on(:tap) do
+      open ExampleCustomTableCellsScreen
+    end
+
+    append(Potion::Button, :open_example_partial_list_xml).on(:tap) do
+      open ExamplePartialListXML
     end
 
     append(Potion::Button, :countdown_button).on(:tap) do |sender|
@@ -51,9 +60,116 @@ class HomeScreen < PMScreen
       end
     end
 
-    append(Potion::CalendarView, :calendar)
+    append(Potion::Button, :benchmarks_button).on(:tap) do
+      run_benchmarks
+    end
+
+    #append(Potion::CalendarView, :calendar)
 
     debug
+  end
+
+  #def foo(a, b)
+    #bar a, b
+  #end
+
+  #def bar(c, d)
+    #c + d
+  #end
+
+  def run_benchmarks
+    mp "\nRunning bencharks ----------------------"
+
+    #p = Potion::View.new
+    #p = nil
+    #Potion::System.gc
+
+    #total = 0
+    #h = {}
+    ##a = [1,2]
+    #0.upto(100000) do |i|
+      #mp i
+      ##h[i] = RMQ.new
+      ##a.each{}
+    #end
+
+    #mp 'done'
+      #h[i] = {}
+      #h.each do |k,v|
+        #a = nil
+      #end
+      #h[i] = nil #{i: i} #, a: {i: i}, b: {i: i}, c: {i: i}}
+      #total += foo(i, 2)
+    #end
+
+    #total = 0
+    #Benchmark.run_single("", "test", 100000) do
+      #total += foo(1, 2)
+    #end
+
+    #mp total
+    #mp 'done'
+
+
+    iterations = 100
+    benchmark = Benchmark
+
+    #100000.times do |i|
+      #mp i
+    #end
+
+    benchmark.run_single("", "nothing", iterations) do
+    end
+
+    benchmark.run_single("", "RMQ.new", iterations) do
+      RMQ.new
+    end
+
+    benchmark.run_single("", "rmq", iterations) do
+      rmq
+    end
+
+    benchmark.run_single("", "find(:benchmarks_button).length", iterations) do
+      find(:benchmarks_button).length
+    end
+
+    root_view = find.root_view
+    benchmark.run_single("root_view = find.root_view", "root_view.find(:benchmarks_button).length", iterations) do
+      root_view.find(:benchmarks_button).length
+    end
+
+    root_view_q = find(find.root_view)
+    benchmark.run_single("root_view_q = find(find.root_view)", "root_view_q.find(:benchmarks_button).length", iterations) do
+      root_view_q.find(:benchmarks_button).length
+    end
+
+    root_view_q = find(find.root_view)
+    benchmark.run_single("root_view_q = find(find.root_view)", "root_view_q.find(:benchmarks_button).length", iterations) do
+      root_view_q.find(:benchmarks_button).length
+    end
+
+    q = find(Potion::AbsoluteLayout).first
+    q.children.first.tag(:ab_layout_child)
+    benchmark.run_single("q = find(Potion::AbsoluteLayout).first; q.children.first.tag(:ab_layout_child)", "q.find(:ab_layout_child).length", iterations) do
+      q.find(:ab_layout_child).length
+    end
+
+    q = find(:benchmarks_button)
+    benchmark.run_single("q = find(:benchmarks_button)", "q.apply_style(:benchmark_style_1)", iterations) do
+      q.apply_style(:benchmark_style_1)
+    end
+
+    q = find(:benchmarks_button)
+    benchmark.run_single("q = find(:benchmarks_button)", "q.apply_style(:benchmark_style_1, :benchmark_style_2, :benchmark_style_3)", iterations) do
+      q.apply_style(:benchmark_style_1, :benchmark_style_2, :benchmark_style_3)
+    end
+
+    #q = find.all
+    #benchmark.run_single("q = find.all", "q.reapply_styles", iterations) do
+      #q.reapply_styles
+    #end
+
+    #app.toast out
   end
 
   def show_weather_in_sf
@@ -72,7 +188,7 @@ class HomeScreen < PMScreen
   def debug
     $o = self
     create_some_test_views
-    rmq.activity.rmq.log_tree
+    #rmq.activity.rmq.log_tree
   end
 
   def create_some_test_views

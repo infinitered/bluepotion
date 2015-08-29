@@ -31,7 +31,7 @@ class Object
       out << klass_name.to_s
     end
 
-    out
+    mp out
   end
 
   def inspect
@@ -68,7 +68,6 @@ class Object
     rmq(*args).get
   end
 
-
   # BluePotion stuff
 
   # REMOVE when mp starts working
@@ -77,25 +76,28 @@ class Object
       return unless RMQ.debugging?
     end
 
+    @@mp_backspace ||= "\b\b " * (Android::App::Application.name.length + 20)
+
     if s.nil?
       s = "<nil>"
-    elsif s.is_a?(Array)
-      s = s.map{|e| e.inspect }.join("\n")
+    #elsif s.is_a?(Array) # TODO - THIS DOESN'T WORK
+      #s = s.map{|e| e.inspect }.join("\n")
     else
       s = s.to_s
     end
-    backspace = "\b\b " * (Android::App::Application.name.length + 20)
+
     lines = s.split("\n")
-    lines.each do |line|
-      if RMQ.debugging?
-        out = backspace
-        out << "\e[1;#{36}m#{self.object_id}\e[0m #{self.short_class_name}".ljust(50)
-        out << "  \e[1;#{34}m#{line}\e[0m"
-        puts out
-      else
-        puts "#{backspace} \e[1;#{34}m#{line}\e[0m"
-      end
+    @@mp_tproc ||= proc do |line| # This hack fixes RMA bug, TODO remove when RMA block retention bug is fixed
+      #if RMQ.debugging?
+        #out = @@mp_backspace
+        #out << "\e[1;#{36}m#{self.object_id}\e[0m #{self.short_class_name}".ljust(50)
+        #out << "  \e[1;#{34}m#{line}\e[0m"
+        #puts out
+      #else
+        puts "#{@@mp_backspace} \e[1;#{34}m#{line}\e[0m"
+      #end
     end
+    lines.each &@@mp_tproc
   end
 
   def app
@@ -105,6 +107,5 @@ class Object
   def device
     rmq.device
   end
-
 
 end

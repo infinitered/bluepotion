@@ -1,159 +1,100 @@
 # http://hipbyte.myjetbrains.com/youtrack/issue/RM-773 - can't put this in a module yet :(
 #module ProMotion
 
-  class PMListScreen < Android::App::ListFragment
-    include PMScreenModule
-
-    attr_accessor :view
+  class PMListScreen < PMScreen
+    include RefreshableList
 
     def table_data
       mp "Implement a table_data method in #{self.inspect}."
       []
     end
 
-    def load_view
-      # Potion::LinearLayout.new(self.activity)
-      self.view = create!(Potion::ListView, :list)
-      # find(self.view).style do |st|
-        # st.layout_width = :match_parent
-        # st.layout_height = :match_parent
-        # st.layout_weight = 1
-        # st.view.drawSelectorOnTop = false
-      # end
-      # self.view
+    def screen_setup
+      # This method will grow as BP grows towards RP
+      set_up_refreshable
     end
 
-    def screen_setup
-      add_table_view
-      add_empty_view
+    def set_up_refreshable
+      # named get_refreshable bc of Promotion # Possible PR to is_refreshable?
+      if self.class.respond_to?(:get_refreshable) && self.class.get_refreshable
+        make_refreshable(self.class.get_refreshable_params)
+      end
+    end
+
+    def load_view
+      # Dynamic Pull to Refresh?
+      # v = Potion::View.new(app.context) # TODO, fix this horrible hack
+      # ptr_v = rmq(v).create(In::Srain::Cube::Views::Ptr::PtrClassicFrameLayout).tag(:ptr_parent).style do |st|
+      #   st.layout_width = :wrap_content
+      #   st.layout_height = :wrap_content
+      #   st.background_color = rmq.color.black
+      # end
+      # lv = ptr_v.append(Potion::ListView).tag(:list)
+      # self.view = ptr_v.get
+
+
+      # FOR NOW
+
+      # We need a simple listview - that's all
+      Potion::ListView.new(app.context)
+    end
+
+    def extended_screen_setup
       add_adapter
     end
 
-    def add_table_view
-      # create(Potion::ListView, :list).style do |st|
-      #   st.layout_width = :match_parent
-      #   st.layout_height = :match_parent
-      #   st.layout_weight = 1
-      #   st.view.drawSelectorOnTop = false
-      # end
-    end
-
-    def add_empty_view
-      # append(Potion::TextView, :empty).style do |st|
-      #   st.layout_width = :match_parent
-      #   st.layout_height = :match_parent
-      #   st.background = "#FFFFFF"
-      #   st.text = "No data"
-      # end
+    def find_list_view
+      find.activity.find(Potion::ListView)
     end
 
     def add_adapter
-      self.view.setAdapter(adapter)
+      found_listviews = find_list_view
+      if found_listviews.count.zero?
+        mp "PM ListView Error - We couldn't find any listviews on this screen."
+      elsif found_listviews.count > 1
+        mp "PM ListView Error - Too many ListViews, please implement add_adapter on your screen."
+      else
+        found_listviews.get.adapter = adapter
+      end
     end
 
     def adapter
       @adapter ||= begin
         td = table_data
         if td.is_a?(Array)
-          PMBaseAdapter.new(data: td)
+          cells = td.first[:cells]
+          # Pass data to adapter, and identify if dynamic data will be used, too.
+          PMBaseAdapter.new(data: cells, extra_view_types: self.class.extra_view_types).tap { |a| a.screen = self }
+
         elsif td.is_a?(Hash)
           mp "Please supply a cursor in #{self.inspect}#table_data." unless td[:cursor]
-          PMCursorAdapter.new(td)
+          PMCursorAdapter.new(td).tap { |a| a.screen = self }
         end
       end
     end
 
     def update_table_data
+      # base adapters must reacquire their data from the PMListScreen "delegate"
+      if adapter.instance_of?(PMCursorAdapter)
+        # TODO:  Reload for PMCursorAdapter
+      elsif adapter.is_a?(PMBaseAdapter)
+        td = table_data
+        adapter.data = td && td.first && td.first[:cells]
+      end
       adapter.notifyDataSetChanged
     end
 
-    ### Boilerplate from PMScreen ###
-
-    def onAttach(activity)
-      super
-      activity.on_fragment_attached(self) if activity.respond_to?(:on_fragment_attached)
-      on_attach(activity)
+    # first time is a set, all after are get
+    def self.extra_view_types(*extra_types)
+      extra_types ||= []
+      @_extra_view_types ||= extra_types
     end
-    def on_attach(activity); end
 
-    def onCreate(bundle); super; on_create(bundle); end
-    def on_create(bundle); end
-
-    def onCreateView(inflater, parent, saved_instance_state)
-      super
-
-      if @xml_resource = self.class.xml_resource
-        @view = inflater.inflate(r(:layout, @xml_resource), parent, false)
-      else
-        v = load_view
-        @view ||= v
-        @view.setId Potion::ViewIdGenerator.generate
-      end
-
-      set_up_action_bar(self.class.action_bar_options)
-
-      on_create_view(inflater, parent, saved_instance_state)
-
-      @view
+    def on_destroy
+      return unless @adapter
+      @adapter.screen = nil
+      @adapter = nil
     end
-    def on_create_view(inflater, parent, saved_instance_state); end
-
-    # def load_view
-    #   Potion::FrameLayout.new(self.activity)
-    # end
-
-    def onActivityCreated(saved_instance_state)
-      mp "PMScreen onActivityCreated" if RMQ.debugging?
-
-      super
-
-      @view.rmq_data.is_screen_root_view = true
-
-      self.rmq.build(@view)
-
-      screen_setup
-
-      if self.class.rmq_style_sheet_class
-        self.rmq.stylesheet = self.class.rmq_style_sheet_class
-        @view.rmq.apply_style(:root_view) #if @view.rmq.stylesheet.respond_to?(:root_view)
-      end
-
-      build_and_tag_xml_views
-
-      set_title
-      on_load
-      on_activity_created
-    end
-    def on_load; end
-    def on_activity_created; end
-
-    def onStart; super; on_start; end
-    def on_start; end
-    alias :on_appear :on_start
-
-    def onResume; super; on_resume; end
-    def on_resume; end
-
-    def on_create_menu(menu); end
-
-    def onPause; super; on_pause; end
-    def on_pause; end
-
-    def onStop; super; on_stop; end
-    def on_stop; end
-
-    def onDestroyView; super; on_destroy_view; end
-    def on_destroy_view; end
-
-    def onDestroy; super; on_destroy; end
-    def on_destroy; end
-
-    def onDetach
-      super
-      on_detach
-      self.activity.on_fragment_detached(self) if self.activity.respond_to?(:on_fragment_detached)
-    end
-    def on_detach; end
 
   end
 

@@ -3,6 +3,18 @@ class Android::View::View
     "<#{id} #{short_class_name}>"
   end
 
+  #def onDestroy
+    #mp 'onDestroy view'
+    #super
+  #end
+
+  def cleanup
+    if @_rmq_data
+      @_rmq_data.cleanup
+      @_rmq_data = nil
+    end
+  end
+
   def to_s
     self.inspect
   end
@@ -37,13 +49,21 @@ class Android::View::View
   def on_styled
   end
 
-  def rmq(*working_selectors)
-    q = RMQ.create_with_selectors(working_selectors, self) #.tap do |o|
-    q
-      #if vc = self.rmq_data.view_controller
-        #o.weak_view_controller = vc
+    #def rmq(*working_selectors)
+      #crmq = (rmq_data.cached_rmq ||= RMQ.create_with_selectors([], self))
+
+      #if working_selectors.length == 0
+        #crmq
+      #else
+        #RMQ.create_with_selectors(working_selectors, self, crmq)
       #end
     #end
+
+  def find(*working_selectors) # Not calling rmq below for performance reasons (one less method invocation)
+    RMQ.create_with_selectors(working_selectors, self)
+  end
+  def rmq(*working_selectors)
+    RMQ.create_with_selectors(working_selectors, self)
   end
 
   def color(*params)
@@ -67,6 +87,7 @@ class Android::View::View
   end
 
   def subviews
+    # TODO, see if anyone uses this, and remove
     out = []
 
     if self.is_a?(Potion::ViewGroup)

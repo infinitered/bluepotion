@@ -30,7 +30,6 @@ class RMQ
         built = true
       end
 
-      rmq_data.activity = self.activity
       rmq_data.screen = self.screen
 
       subviews_added << new_view
@@ -68,13 +67,13 @@ class RMQ
   alias :insert :add_subview
 
   def tag_all_from_resource_entry_name(view)
-    view.rmq.find.each do |view|
+    @@tag_all_from_resource_entry_name_tproc ||= proc do |view|
       if ren = view.resource_entry_name
         view.rmq_data.tag(ren.to_sym)
       end
     end
+    view.rmq.find.each &@@tag_all_from_resource_entry_name_tproc
   end
-
 
   # Removes the selected views from their parent's (superview) subview array
   #
@@ -83,7 +82,9 @@ class RMQ
   #
   # @return [RMQ]
   def remove
-    selected.each { |view| view.parent.removeView(view) }
+    # AdapterView HAS removeView but does not support it -> http://developer.android.com/reference/android/widget/AdapterView.html
+    # Potentially monkeypatch to no-op instead of UnsupportedOperationException?
+    selected.each { |view| view.parent.removeView(view) unless view.parent.is_a?(Android::Widget::AdapterView) }
     self
   end
 

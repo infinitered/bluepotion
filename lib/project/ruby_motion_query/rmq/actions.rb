@@ -40,6 +40,16 @@ class RMQ
     self
   end
 
+  def cleanup
+    selected.each { |view| view.cleanup }
+    self
+  end
+
+  def clear_cache
+    selected.each { |view| view.rmq_data.clear_query_cache }
+    self
+  end
+
   #def toggle
     #selected.each { |view| view.hidden = !view.hidden? }
     #self

@@ -43,5 +43,11 @@ class RMQDevice
       #TODO
     end
 
+    def unique_id
+      # This is no simple task... and can sometimes be nil based on device implementation
+      # This does seem, however, to be the best answer for now.
+      Android::Provider::Settings::Secure.getString(find.app.getContentResolver, "android_id")
+    end
+
   end
 end

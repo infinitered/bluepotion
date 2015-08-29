@@ -28,6 +28,8 @@ class RMQ
       else
         RMQ.app.current_screen
       end
+    elsif @originated_from.respond_to?(:dummy_workaround_for_kind_of) # TODO, kind_of? doesn't seem to work, verify. Workaround here
+      @originated_from
     else
       RMQ.app.current_screen
     end
@@ -41,7 +43,8 @@ class RMQ
     if @originated_from.is_a?(Android::App::Activity)
       @originated_from.root_view
     else
-      self.controller.root_view
+      c = self.controller
+      c.root_view if c
     end
   end
 
@@ -66,8 +69,16 @@ class RMQ
     end
   end
 
+  def only_root_view_selected?
+    selected.length == 1 && selected[0].rmq_data.is_screen_root_view
+  end
+
   def all
-    wrap(root_view).find
+    if only_root_view_selected?
+      self.find
+    else
+      self.wrap(self.root_view).find
+    end
   end
 
   def children(*working_selectors)
@@ -91,10 +102,38 @@ class RMQ
   def find(*working_selectors)
     normalize_selectors(working_selectors)
 
-    #if working_selectors.length == 1 && self.selected.length == 1 && working_selectors.first.is_a?(Java::Lang::Integer)
-        #return selected_first.findViewById(r(:id, working_selectors.first))
-    #end
+    if RMQ.caching_enabled?
+      self_selected = self.selected
+      if working_selectors.length == 1 && self_selected.length == 1
+        single_selected = self_selected[0]
+        #if single_seleced.rmq_data.cache_queries
+        single_selector = working_selectors[0]
+        #if single_selector.is_a?(Symbol)
+          if cached = single_selected.rmq_data.query_cache[single_selector]
+            #mp "cached #{single_selector}"
+            return cached
+          else
+            q = filter(uniq: true) do |view|
+              sbvws = all_subviews_for(view)
 
+              if RMQ.is_blank?(working_selectors)
+                sbvws
+              else
+                sbvws.inject([]) do |out, subview|
+                  out << subview if match(subview, working_selectors)
+                  out
+                end
+              end
+            end # filter
+
+            single_selected.rmq_data.query_cache[single_selector] = q
+            return q
+          end
+        #end
+      end
+    end
+
+    # Repeating this inline for performance, TODO, measure and refactor
     filter(uniq: true) do |view|
       sbvws = all_subviews_for(view)
 
@@ -107,7 +146,6 @@ class RMQ
         end
       end
     end # filter
-
   end
 
   def find!(*args) # Do not alias this, strange bugs happen where classes don't have methods

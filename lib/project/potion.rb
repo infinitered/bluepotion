@@ -14,6 +14,8 @@ module Potion
   BaseAdapter = Android::Widget::BaseAdapter
   Dialog = Android::App::Dialog
   EditorInfo = Android::View::Inputmethod::EditorInfo
+  System = Java::Lang::System
+  DecimalFormat =	Java::Text::DecimalFormat
 
   # Layouts
   LayoutInflater = Android::View::LayoutInflater
@@ -45,6 +47,9 @@ module Potion
   # This is needed since you can't access constants of interfaces
   # Basically is Android::Provider::MediaStore::Images::Media::INTERNAL_CONTENT_URI
   INTERNAL_CONTENT_URI = Potion::Uri.parse("content://media/internal/images/media")
+  PHONE_CONTENT_URI = Potion::Uri.parse("content://com.android.contacts/data/phones")
+
+  Handler = Android::Os::Handler
 end
 
 #

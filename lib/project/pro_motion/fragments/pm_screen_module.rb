@@ -55,12 +55,41 @@
       @_rmq_data ||= RMQScreenData.new
     end
 
+    def dummy_workaround_for_kind_of
+    end
+
+    def onDestroy
+      #return super # disable rmq cleaning while debugging, but still super
+      mp "onDestroy screen: #{self.class}", debugging_only: true
+      self.cleanup
+      super
+    end
+
+    def cleanup
+      find.all.cleanup
+      find.children.remove
+      if @_rmq_data
+        @_rmq_data.cleanup
+        @_rmq_data = nil
+      end
+    end
+
     def stylesheet
       self.rmq.stylesheet
     end
 
     def stylesheet=(value)
       self.rmq.stylesheet = value
+    end
+
+    def find(*working_selectors) # I do not call rmq below for performance reasons
+      crmq = (rmq_data.cached_rmq ||= RMQ.create_with_selectors([], self))
+
+      if working_selectors.length == 0
+        crmq
+      else
+        RMQ.create_with_selectors(working_selectors, self, crmq)
+      end
     end
 
     def rmq(*working_selectors)
@@ -117,13 +146,17 @@
       self.rmq.build(view_or_class, style, opts).get
     end
 
-    # temporary stand-in for Java's R class
+    def log_tree
+      rmq.log_tree
+    end
+
+    # temporary stand-in for Java's R class, TODO remove this
     def r(resource_type, resource_name)
       resources.getIdentifier(resource_name.to_s, resource_type.to_s,
                               activity.getApplicationInfo.packageName)
     end
 
-    def show_toast(message)
+    def show_toast(message) # TODO, remove this, use app.toast
       Android::Widget::Toast.makeText(activity, message, Android::Widget::Toast::LENGTH_SHORT).show
     end
 
@@ -204,6 +237,8 @@
         case mode
         when :adjust_resize
           Android::View::WindowManager::LayoutParams::SOFT_INPUT_ADJUST_RESIZE
+        when :adjust_pan
+          Android::View::WindowManager::LayoutParams::SOFT_INPUT_ADJUST_PAN
         end
       activity.getWindow().setSoftInputMode(mode_const)
     end
@@ -211,6 +246,12 @@
     def hide_keyboard
       input_manager = activity.getSystemService(Android::Content::Context::INPUT_METHOD_SERVICE)
       input_manager.hideSoftInputFromWindow(view.getWindowToken(), 0)
+    end
+
+    def show_keyboard
+      field = activity.getCurrentFocus()
+      input_manager = activity.getSystemService(Android::Content::Context::INPUT_METHOD_SERVICE)
+      input_manager.showSoftInput(field, Android::View::InputMethod::InputMethodManager::SHOW_FORCED)
     end
 
     def action_bar

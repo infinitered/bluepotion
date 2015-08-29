@@ -37,11 +37,24 @@ class RMQ
 
   def apply_style(*style_names)
     if style_names
-      selected.each do |selected_view|
-        style_names.each do |style_name|
-          apply_style_to_view selected_view, style_name
+      if style_names.length == 1 && selected.length == 1
+        apply_style_to_view selected.first, style_names.first
+      else
+        selected.each do |selected_view|
+          style_names.each do |style_name|
+            apply_style_to_view selected_view, style_name
+          end
         end
       end
+
+      # TODO, remove this hack once RMA is fixed
+      #tproc = proc do |style_name|
+        #apply_style_to_view @apply_style_selected_view, style_name
+      #end
+      #selected.each do |selected_view|
+        #@apply_style_selected_view = selected_view
+        #style_names.each &tproc
+      #end
     end
     self
   end
@@ -49,12 +62,15 @@ class RMQ
 
   def apply_style_to_view(view, style_name)
     #begin
-      styler = self.styler_for(view)
-      self.stylesheet.send(style_name, styler)
-      styler.finalize
+      if sheet = self.stylesheet
+        styler = self.styler_for(view)
+        sheet.send(style_name, styler)
+        styler.finalize
+        styler.cleanup
 
-      view.rmq_data.styles << style_name unless view.rmq_data.has_style?(style_name)
-      view.rmq_style_applied
+        view.rmq_data.styles << style_name unless view.rmq_data.has_style?(style_name)
+        view.rmq_style_applied
+      end
     #rescue NoMethodError => e
       #if e.message =~ /.*#{style_name.to_s}.*/
         #$stderr.puts "\n[RMQ ERROR]  style_name :#{style_name} doesn't exist for a #{view.class.name}. Add 'def #{style_name}(st)' to #{stylesheet.class.name} class\n\n"
@@ -78,7 +94,14 @@ class RMQ
     out.flatten!.uniq
   end
 
-
+  def reapply_styles
+    selected.each do |selected_view|
+      selected_view.rmq_data.styles.each do |style_name|
+        apply_style_to_view selected_view, style_name
+      end
+    end
+    self
+  end
 
 end
 

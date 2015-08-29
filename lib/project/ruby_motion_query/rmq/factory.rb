@@ -22,11 +22,16 @@ class RMQ
     #
     # @return [RMQ]
     def create_with_selectors(working_selectors, originated_from, working_parent_rmq = nil)
-      q = RMQ.new
-      q.originated_from = originated_from
-      q.parent_rmq = working_parent_rmq
-      q.selectors = working_selectors
-      q
+      #if working_parent_rmq && (working_parent_rmq.selectors.length == 1)
+        #working_parent_rmq.selectors[0].rmq(working_selectors)
+      #else
+        q = RMQ.new
+        q.originated_from = originated_from
+
+        q.parent_rmq = working_parent_rmq
+        q.selectors = working_selectors
+        q
+      #end
     end
 
     # This is used internally, to get a new rmq instance, just call "rmq" in your view or controller or

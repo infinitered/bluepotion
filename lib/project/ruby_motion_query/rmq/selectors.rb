@@ -18,18 +18,19 @@ class RMQ
     #    return true unless view.rmq_data.has_tag?
 
     new_selectors.each do |selector|
-      if selector.is_a?(Java::Lang::Integer)
+      if selector.is_a?(Symbol)
+        rd = view.rmq_data
+        if (rd.has_style?(selector)) || rd.has_tag?(selector)
+          out = true
+          break
+        end
+      elsif selector.is_a?(Java::Lang::Integer)
         if view.id == selector
           out = true
           break
         end
       elsif selector == :tagged
         if view.rmq_data.has_tag?
-          out = true
-          break
-        end
-      elsif selector.is_a?(Symbol)
-        if (view.rmq_data.has_style?(selector)) || view.rmq_data.has_tag?(selector)
           out = true
           break
         end

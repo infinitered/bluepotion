@@ -49,6 +49,17 @@ class HomeScreenStylesheet < ApplicationStylesheet
     st.text = "Open table screen"
   end
 
+  def open_example_custom_cells(st)
+    standard_button(st)
+    st.text = "Open table with custom cells"
+  end
+
+  def open_example_partial_list_xml(st)
+    standard_button(st)
+    st.text = "Open XML with embedded ListView"
+    st.background_color = color.blue_steel
+  end
+
   def countdown_button(st)
     standard_button(st)
     st.background_color = color.light_blue
@@ -56,9 +67,23 @@ class HomeScreenStylesheet < ApplicationStylesheet
     st.text = "Run Countdown"
   end
 
+  def benchmarks_button(st)
+    standard_button(st)
+    st.background_color = color.light_blue
+    st.color = color.black
+    st.text = "Benchmarks"
+  end
+
   def calendar(st)
     st.layout = {w: :full, h: 400}
     st.background_color = color.black
+  end
+
+  def benchmark_style_1(st)
+  end
+  def benchmark_style_2(st)
+  end
+  def benchmark_style_3(st)
   end
 
 end

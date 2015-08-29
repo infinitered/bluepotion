@@ -7,9 +7,4 @@ class ExampleTableScreenStylesheet < ApplicationStylesheet
     st.background_color = color.white
   end
 
-  def hello_label(st)
-    standard_text_view st
-    st.text = "Table goes here"
-  end
-
 end

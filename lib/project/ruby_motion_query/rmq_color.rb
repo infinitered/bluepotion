@@ -92,7 +92,7 @@ end
 class RMQColorFactory
 
   class << self
-    def build(params, dummy=nil) # Dummy works around RM bug
+    def build(params, dummy=nil, dummy_2=nil) # Dummy works around RM bug
       return RMQColor if params.empty?
       return from_rgba(*params) if params.count > 1
 
@@ -114,7 +114,8 @@ class RMQColorFactory
     end
 
     def from_rgba(r, g, b, a)
-      RMQColor.argb(a, r, b, g)
+      android_a = a * 255
+      RMQColor.argb(android_a, r, g, b)
     end
   end
 
