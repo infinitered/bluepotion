@@ -16,6 +16,7 @@ module Potion
   EditorInfo = Android::View::Inputmethod::EditorInfo
   System = Java::Lang::System
   DecimalFormat =	Java::Text::DecimalFormat
+  Collections =	Java::Util::Collections
 
   # Layouts
   LayoutInflater = Android::View::LayoutInflater
