@@ -12,6 +12,16 @@ class RMQViewStyler
     @corner_radius = nil
   end
 
+  def reset(view)
+    @view = view
+    @needs_finalize = false
+    @bg_color = nil
+    @corner_radius = nil
+    @layout_params = nil
+    @margin = nil
+    @padding = nil
+  end
+
   def cleanup
     @layout_params = nil
     @needs_finalize = nil

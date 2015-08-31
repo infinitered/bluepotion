@@ -21,21 +21,13 @@ class RMQ
   end
 
   def styler_for(view)
-    context = RMQ.app.context
-    styler = case view
-      when Android::Widget::RelativeLayout  then RMQRelativeLayoutStyler.new(view, context)
-      when Android::Widget::LinearLayout    then RMQLinearLayoutStyler.new(view, context)
-      when Android::Widget::TextView        then RMQTextViewStyler.new(view, context)
-      when Android::Widget::ImageView       then RMQImageViewStyler.new(view, context)
-      when Android::Widget::ImageButton     then RMQImageButtonStyler.new(view, context)
-      when Android::Widget::Button          then RMQButtonStyler.new(view, context)
-    else
-      RMQViewStyler.new(view, context)
-    end
+    styler = RMQ.styler_pool[view.class] || RMQ.styler_pool[:view_styler]
+    styler.reset(view)
     styler
   end
 
   def apply_style(*style_names)
+
     if style_names
       if style_names.length == 1 && selected.length == 1
         apply_style_to_view selected.first, style_names.first
@@ -61,15 +53,17 @@ class RMQ
   alias :apply_styles :apply_style
 
   def apply_style_to_view(view, style_name)
-    #begin
-      if sheet = self.stylesheet
-        styler = self.styler_for(view)
-        sheet.send(style_name, styler)
-        styler.finalize
-        styler.cleanup
 
-        view.rmq_data.styles << style_name unless view.rmq_data.has_style?(style_name)
-        view.rmq_style_applied
+    #begin
+      if sheet = self.stylesheet # 0.18 +0.02
+        styler = self.styler_for(view) # 0.34 +0.16 -0.10
+        sheet.send(style_name, styler) # 0.37 +0.03
+        styler.finalize # +0.04
+        #styler.cleanup # +0.02
+
+        view.rmq_data.add_to_styles(style_name)
+        view.rmq_style_applied # +0.03
+        #return if $return
       end
     #rescue NoMethodError => e
       #if e.message =~ /.*#{style_name.to_s}.*/
@@ -101,6 +95,25 @@ class RMQ
       end
     end
     self
+  end
+
+  class << self
+    attr_reader :styler_pool
+
+    def create_styler_pool
+      return @styler_pool if @styler_pool
+
+      context = RMQ.app.context
+      @styler_pool = {
+        Android::Widget::RelativeLayout => RMQRelativeLayoutStyler.new(nil, context),
+        Android::Widget::LinearLayout => RMQLinearLayoutStyler.new(nil, context),
+        Android::Widget::TextView => RMQTextViewStyler.new(nil, context),
+        Android::Widget::ImageView => RMQImageViewStyler.new(nil, context),
+        Android::Widget::ImageButton => RMQImageButtonStyler.new(nil, context),
+        Android::Widget::Button => RMQButtonStyler.new(nil, context),
+        view_styler: RMQViewStyler.new(nil, context)
+      }
+    end
   end
 
 end

@@ -140,6 +140,11 @@ class HomeScreen < PMScreen
       i.send(:to_int)
     end
 
+    h = []
+    benchmark.run_single("h = []", "h << 12", iterations) do
+      h << 12
+    end
+
     benchmark.run_single("", "find(:benchmarks_button).length", iterations) do
       find(:benchmarks_button).length
     end

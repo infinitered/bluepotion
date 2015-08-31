@@ -19,7 +19,7 @@ class Benchmark
       end_time = Time.milliseconds_since_epoch
 
       total_time = end_time - start_time
-      per_item = total_time / iterations.to_f
+      per_item = total_time.to_f / iterations.to_f
       out =  "\nBenchmark  Started at: #{decimal_formatter.format(start_time)}"
       out << "\n  Iterations: #{decimal_formatter.format(iterations)}"
       out << "\n  Setup: #{setup_desc}\n  Code: #{code_desc}"
