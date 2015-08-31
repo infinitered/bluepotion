@@ -1,5 +1,15 @@
 class String
   # REMOVE when RubyMotion adds this
+  def <(value)
+    (self <=> value) == -1
+  end
+
+  # REMOVE when RubyMotion adds this
+  def >(value)
+    (self <=> value) == 1
+  end
+
+  # REMOVE when RubyMotion adds this
   def rjust(number_of_characters)
     if self.length < number_of_characters
       out = " " * (number_of_characters - self.length)
