@@ -18,7 +18,7 @@ class PMWebScreen < PMScreen
 
     # By default some URLs try to launch a browser. Very unlikely that this is
     # the behaviour we'll want in an app.   So we use this to stop
-    #@webview.webViewClient = PMWebClient.new
+    @webview.webViewClient = PMWebClient.new
 
     accept_cookies
   end
@@ -38,6 +38,24 @@ class PMWebScreen < PMScreen
 
   def url=(url_str)
     self.webView.loadUrl(url_str)
+  end
+
+end
+
+class PMWebClient < Android::Webkit::WebViewClient
+  ACTION_VIEW = "android.intent.action.VIEW"
+
+  def shouldOverrideUrlLoading(view, url)
+
+    if url.startsWith("tel:")
+      app.launch(tel: url)
+    elsif url.startsWith("https://www.google.com/maps")
+      app.launch(map: url)
+    else
+      view.loadUrl(url)
+    end
+
+    true # when return true, stop loading URL from happening
   end
 
 end
