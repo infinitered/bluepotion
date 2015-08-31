@@ -19,6 +19,10 @@ class HomeScreen < PMScreen
 
     append(Potion::TextView,  :hello_label).data("Hello BluePotion!")
 
+    append(Potion::Button, :benchmarks_button).on(:tap) do
+      run_benchmarks
+    end
+
     append(Potion::Button, :drink_button).on(:tap) do |sender|
       show_weather_in_sf
     end
@@ -60,9 +64,6 @@ class HomeScreen < PMScreen
       end
     end
 
-    append(Potion::Button, :benchmarks_button).on(:tap) do
-      run_benchmarks
-    end
 
     #append(Potion::CalendarView, :calendar)
 
@@ -129,6 +130,21 @@ class HomeScreen < PMScreen
       rmq
     end
 
+    i = 12
+    benchmark.run_single("i = 12", "i.to_int", iterations) do
+      i.to_int
+    end
+
+    i = 12
+    benchmark.run_single("i = 12", "i.send(:to_int)", iterations) do
+      i.send(:to_int)
+    end
+
+    h = []
+    benchmark.run_single("h = []", "h << 12", iterations) do
+      h << 12
+    end
+
     benchmark.run_single("", "find(:benchmarks_button).length", iterations) do
       find(:benchmarks_button).length
     end
@@ -164,10 +180,10 @@ class HomeScreen < PMScreen
       q.apply_style(:benchmark_style_1, :benchmark_style_2, :benchmark_style_3)
     end
 
-    #q = find.all
-    #benchmark.run_single("q = find.all", "q.reapply_styles", iterations) do
-      #q.reapply_styles
-    #end
+    q = find.all
+    benchmark.run_single("q = find.all", "q.reapply_styles", iterations) do
+      q.reapply_styles
+    end
 
     #app.toast out
   end
