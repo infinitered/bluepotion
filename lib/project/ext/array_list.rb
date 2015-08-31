@@ -31,11 +31,11 @@ class Java::Util::ArrayList
     self
   end
 
-  def sort_by(&block)
+  def sort_with(&block)
     self.dup.insertionsort!(&block)
   end
 
-  def sort_by!(&block)
+  def sort_with!(&block)
     insertionsort!(&block)
     self
   end
