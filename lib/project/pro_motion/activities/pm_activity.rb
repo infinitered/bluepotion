@@ -45,9 +45,11 @@
     end
 
     def onDestroy
+      on_destroy
       clear_references
       super
     end
+    def on_destroy; end
 
     def clear_references
     end
