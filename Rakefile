@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-$:.unshift("/Library/RubyMotion3.13/lib")
+$:.unshift("/Library/RubyMotion/lib")
 require 'motion/project/template/android'
 
 require 'bundler'
