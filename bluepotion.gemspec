@@ -14,6 +14,7 @@ Gem::Specification.new do |spec|
   files = []
   files << 'README.md'
   files.concat(Dir.glob('lib/**/*.rb'))
+  files.concat(Dir.glob('lib/**/*.java'))
   files.concat(Dir.glob('templates/**/*.rb'))
   spec.files         = files
 
