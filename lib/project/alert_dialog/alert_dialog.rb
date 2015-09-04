@@ -35,12 +35,12 @@ class AlertDialog < Android::App::DialogFragment
 
     @callback = block
 
-    self.show if @options[:show]
+    self.show_dialog if @options[:show]
     self
   end
 
-  def show(activity=rmq.activity)
-    super(activity.fragmentManager, "alert_dialog")
+  def show_dialog(activity=rmq.activity)
+    show(activity.fragmentManager, "alert_dialog".toString)
   end
 
   def onCreateDialog(saved_instance_state)
