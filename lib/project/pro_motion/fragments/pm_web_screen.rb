@@ -23,6 +23,11 @@ class PMWebScreen < PMScreen
     accept_cookies
   end
 
+  # def on_key_down(key_code, event)
+
+  # end
+
+
   def open_url(url)
     @webview.loadUrl(url)
   end

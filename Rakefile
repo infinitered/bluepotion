@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-$:.unshift("/Library/RubyMotion/lib")
+#$:.unshift("/Library/RubyMotion/lib")
+# Currently only working with 3.13
+$:.unshift("/Library/RubyMotion3.13/lib")
 require 'motion/project/template/android'
 
 require 'bundler'
