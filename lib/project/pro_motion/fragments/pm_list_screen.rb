@@ -76,7 +76,9 @@
     def update_table_data
       # base adapters must reacquire their data from the PMListScreen "delegate"
       if adapter.instance_of?(PMCursorAdapter)
-        # TODO:  Reload for PMCursorAdapter
+        # TODO: Perhaps not the best method, but it works
+        @adapter = PMCursorAdapter.new(table_data).tap { |a| a.screen = self }
+        add_adapter
       elsif adapter.is_a?(PMBaseAdapter)
         td = table_data
         adapter.data = td && td.first && td.first[:cells]

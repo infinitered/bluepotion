@@ -1,6 +1,10 @@
 class RMQViewData
   attr_accessor :events, :built, :is_screen_root_view, :screen, :cached_rmq #, :cache_queries
 
+  def initialize
+    @styles = []
+  end
+
   def screen_root_view?
     !@is_screen_root_view.nil?
   end
@@ -15,7 +19,7 @@ class RMQViewData
     @events = nil
     @screen = nil
     @_tags = nil
-    @_styles = nil
+    @styles = nil
     @_validation_errors = nil
     @validation_errors = nil
     @is_screen_root_view = false
@@ -90,26 +94,34 @@ class RMQViewData
   end
 
   def style_name
-    self.styles.first
+    @styles.first
   end
 
   # Sets first style name, this is only here for backwards compatibility and as
   # a convenience method
   def style_name=(value)
-    self.styles[0] = value
+    @styles[0] = value
   end
 
   #view.rmq_data.styles
   def styles
-    @_styles ||= []
+    @styles
+  end
+
+  def add_to_styles(style_name)
+    return if style_name == @last_style_applied
+    @last_style_applied = style_name
+    unless @styles.include?(style_name)
+      @styles.add style_name
+    end
   end
 
   #view.rmq_data.has_style?(:style_name_here)
   def has_style?(name = nil)
     if name
-      self.styles.include?(name)
+      @styles.include?(name)
     else
-      RMQ.is_blank?(@_styles)
+      RMQ.is_blank?(@styles)
     end
   end
 

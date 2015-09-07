@@ -12,6 +12,7 @@
       self.class.current_application = self
 
       @context = self
+      RMQ.create_styler_pool
 
       @home_screen_class = self.class.home_screen_class
       self.on_create if respond_to?(:on_create)

@@ -32,6 +32,10 @@
       on_start if respond_to?(:on_start)
     end
 
+    def onNewIntent(intent)
+      on_new_intent(intent) if respond_to?(:on_new_intent)
+    end
+
     def onResume
       super
       on_resume
@@ -45,9 +49,11 @@
     end
 
     def onDestroy
+      on_destroy
       clear_references
       super
     end
+    def on_destroy; end
 
     def clear_references
     end
