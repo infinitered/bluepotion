@@ -1,6 +1,8 @@
 # Finding it more and more easy to just derive from PMScreen
 class PMWebScreen < PMScreen
   attr_accessor :webview
+  ACTION_DOWN = Android::View::KeyEvent::ACTION_DOWN
+  KEYCODE_BACK = Android::View::KeyEvent::KEYCODE_BACK
 
   def screen_setup
     web_view_setup
@@ -23,9 +25,18 @@ class PMWebScreen < PMScreen
     accept_cookies
   end
 
-  # def on_key_down(key_code, event)
+  # swallow back presses and goback on web
+  def on_key_down(key_code, event)
+    call_super = true
+    if (event.action == ACTION_DOWN) && key_code == KEYCODE_BACK
+      if @webview.canGoBack
+        @webview.goBack
+        call_super = false
+      end
+    end
 
-  # end
+    call_super
+  end
 
 
   def open_url(url)
