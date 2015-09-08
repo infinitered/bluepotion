@@ -4,11 +4,11 @@ class PMWebScreen < PMScreen
   ACTION_DOWN = Android::View::KeyEvent::ACTION_DOWN
   KEYCODE_BACK = Android::View::KeyEvent::KEYCODE_BACK
 
-  def screen_setup
-    web_view_setup
-  end
+  # def screen_setup
+  #   web_view_setup
+  # end
 
-  def web_view_setup
+  def add_web_view
     # SPECIAL NOTE: Must create from activity, not from context (breaks dialogs)
     @webview = Android::Webkit::WebView.new(find.activity)
     append(@webview)
@@ -23,6 +23,8 @@ class PMWebScreen < PMScreen
     @webview.webViewClient = PMWebClient.new
 
     accept_cookies
+
+    @webview
   end
 
   # swallow back presses and goback on web
@@ -40,6 +42,7 @@ class PMWebScreen < PMScreen
 
 
   def open_url(url)
+    add_web_view
     @webview.loadUrl(url)
   end
 
