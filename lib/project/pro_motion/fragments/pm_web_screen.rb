@@ -40,8 +40,6 @@ class PMWebScreen < PMScreen
       end
     end
 
-    mp "call_super is #{call_super}"
-
     call_super
   end
 
