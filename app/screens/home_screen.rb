@@ -12,10 +12,6 @@ class HomeScreen < PMScreen
     #Potion::RelativeLayout.new(self.activity)
   end
 
-  def on_key_down(key_code, event)
-    mp key_code
-  end
-
   def on_load
     mp "HomeScreen on_load", debugging_only: true
 

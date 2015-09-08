@@ -37,6 +37,8 @@ class PMWebScreen < PMScreen
       end
     end
 
+    mp "call_super is #{call_super}"
+
     call_super
   end
 
@@ -71,7 +73,7 @@ class PMWebClient < Android::Webkit::WebViewClient
     elsif url.startsWith("https://www.google.com/maps")
       app.launch(map: url)
     else
-      view.loadUrl(url)
+      view.loadUrl(url) if view
     end
 
     true # when return true, stop loading URL from happening
