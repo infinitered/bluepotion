@@ -1,6 +1,6 @@
 # Finding it more and more easy to just derive from PMScreen
 class PMWebScreen < PMScreen
-  attr_accessor :webview
+  attr_accessor :webview, :back_for_webview
   ACTION_DOWN = Android::View::KeyEvent::ACTION_DOWN
   KEYCODE_BACK = Android::View::KeyEvent::KEYCODE_BACK
 
@@ -18,6 +18,9 @@ class PMWebScreen < PMScreen
     settings.javaScriptEnabled = true
     settings.supportZoom = false
 
+    # Make the back button the device go back a screen on the webview
+    @back_for_webview = true
+
     # By default some URLs try to launch a browser. Very unlikely that this is
     # the behaviour we'll want in an app.   So we use this to stop
     @webview.webViewClient = PMWebClient.new
@@ -31,7 +34,7 @@ class PMWebScreen < PMScreen
   def on_key_down(key_code, event)
     call_super = true
     if (event.action == ACTION_DOWN) && key_code == KEYCODE_BACK
-      if @webview.canGoBack
+      if @webview.canGoBack && @back_for_webview
         @webview.goBack
         call_super = false
       end
