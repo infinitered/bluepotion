@@ -1,16 +1,14 @@
 class Java::Util::ArrayList
 
   # REMOVE when RubyMotion adds this
+  # Updated for 4.0 to always return a new object.  This oddly seems to matter as things HipByte
+  # seems to have aggressively updated their JNI reference cleanups.
   def uniq
-    if self.length <= 1
-      self
-    else
-      h = {}
-      self.each do |el|
-        h[el] = nil
-      end
-      h.keys
+    h = {}
+    self.each do |el|
+      h[el] = nil
     end
+    h.keys
   end
 
   # REMOVE when RubyMotion adds this
