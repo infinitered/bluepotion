@@ -1,8 +1,8 @@
 GIT
   remote: git://github.com/HipByte/motion-gradle.git
-  revision: 0519b8f9c6f341a26ea0c23383e8b6d25308774f
+  revision: 835f8c0b2ac13e4760a87c90c132350de6e44bab
   specs:
-    motion-gradle (1.3.0)
+    motion-gradle (1.4.0)
 
 PATH
   remote: .
@@ -12,12 +12,12 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    PackingPeanut (1.0.0)
+    PackingPeanut (1.1.0)
       moran
-    moran (0.5)
+    moran (0.6.5)
       motion-gradle
-    motion-async (0.5)
-    newclear (1.2)
+    motion-async (0.6)
+    newclear (1.3)
       reset-sim
     rake (10.4.2)
     reset-sim (1.0)
