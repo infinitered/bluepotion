@@ -33,10 +33,20 @@ class Time
       '%Y'  =>  'yyyy'
     }
 
-    converted = str.toString
-    converter.each do |k,v|
-      converted = converted.replaceAll(k, v)
+    # TODO: RM 4.0 Workaround
+    rm4 = [str.toString]
+    converter.each do |k, v|
+      rm4 << rm4.last.replaceAll(k, v)
     end
+    converted = rm4.last
+    rm4.clear
+    # -- can't wait to nuke that code
+
+    # What it used to be:
+    # converted = str.toString
+    # converter.each do |k,v|
+    #   converted = converted.replaceAll(k, v)
+    # end
 
     formatter = Java::Text::SimpleDateFormat.new(converted)
     formatter.format(self).to_s
