@@ -23,14 +23,17 @@ class Time
       #Ruby => Android
       '%A'  =>  'EEEE',
       '%b'  =>  'MMM',
+      '%B'  =>  'MMMM',
       '%-e' =>  'd',
       '%-l' =>  'h',
+      '%I' =>   'h',
       '%P'  =>  'a',
       '%M'  =>  'mm',
-      '%P'  =>  'a',
+      '%p'  =>  'a',
       '%m'  =>  'MM',
       '%d'  =>  'dd',
-      '%Y'  =>  'yyyy'
+      '%Y'  =>  'yyyy',
+      '%Z'  =>  'z'
     }
 
     # TODO: RM 4.0 Workaround
