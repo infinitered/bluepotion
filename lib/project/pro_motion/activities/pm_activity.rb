@@ -71,6 +71,13 @@
       super
     end
 
+    def onKeyDown(key_code, event)
+      if self.fragment
+        # share onKeyDown with super?
+        super if self.fragment.on_key_down(key_code, event)
+      end
+    end
+
     def onBackPressed
       super
       finish if fragmentManager.getBackStackEntryCount == 0
