@@ -66,8 +66,7 @@ class AlertDialog < Android::App::DialogFragment
     input = Potion::EditText.new(activity)
     input.singleLine = true
     input.id = @text_view_id = Potion::ViewIdGenerator.generate
-    # possible input types - future feature
-    #input.inputType = (Android::Text::InputType.TYPE_CLASS_TEXT | Android::Text::InputType.TYPE_TEXT_VARIATION_PASSWORD)
+    input.inputType = Android::Text::InputType.const_get(@options[:type]) if @options.key?(:type)
     input
   end
 
