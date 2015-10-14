@@ -14,6 +14,11 @@
 # app.alert(title: "What's your name?", style: :input) do |choice, input_text|
 #  mp "User clicked #{choice} and typed #{input_text}"
 # end
+#
+# Example of alert with input and type
+# app.alert(title: "What's your name?", style: :input, type: 'TYPE_CLASS_NUMBER') do |choice, input_text|
+#  mp "User clicked #{choice} and typed #{input_text}"
+# end
 
 # Generic AlertDialog
 class AlertDialog < Android::App::DialogFragment
