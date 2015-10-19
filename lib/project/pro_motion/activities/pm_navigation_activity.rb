@@ -24,11 +24,9 @@
     end
 
     def open_fragment(frag, options={})
-      if(options && options.length > 0)
-        options.each do |k, v| # set fragment options
-          if frag.respond_to?("#{k}=")
-            frag.send("#{k}=", v)
-          end
+      options.each do |k, v| # set fragment options
+        if frag.respond_to?("#{k}=")
+          frag.send("#{k}=", v)
         end
       end
       mp "open fragment: #{frag.inspect}"
