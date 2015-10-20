@@ -24,6 +24,11 @@
     end
 
     def open_fragment(frag, options={})
+      options.each do |k, v| # set fragment options
+        if frag.respond_to?("#{k}=")
+          frag.send("#{k}=", v)
+        end
+      end
       mp "open fragment: #{frag.inspect}"
       mgr = fragmentManager.beginTransaction
       mgr.replace(@fragment_container.getId, frag, "screen-#{fragmentManager.getBackStackEntryCount + 1}")
