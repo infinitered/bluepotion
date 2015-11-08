@@ -43,6 +43,22 @@
         #getActivity().getActionBar().setTitle("abc")
       end
 
+      def back_button(val)
+        @allow_back_button = val
+      end
+
+      def allow_back_button
+        if @allow_back_button.nil?
+          true
+        else
+          @allow_back_button
+        end
+      end
+
+      def allow_back_button=(val)
+        @allow_back_button = val
+      end
+
       private
 
       def deduce_resource_id
@@ -50,6 +66,8 @@
         resource.underscore.to_sym
       end
     end
+
+
 
     def rmq_data
       @_rmq_data ||= RMQScreenData.new

@@ -79,8 +79,9 @@
     end
 
     def onBackPressed
-      # super
-      # finish if fragmentManager.getBackStackEntryCount == 0
+      return if find.screen.class.allow_back_button == false
+      super
+      finish if fragmentManager.getBackStackEntryCount == 0
     end
 
     def open(screen, options={})
