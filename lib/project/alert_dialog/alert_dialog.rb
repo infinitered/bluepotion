@@ -14,6 +14,11 @@
 # app.alert(title: "What's your name?", style: :input) do |choice, input_text|
 #  mp "User clicked #{choice} and typed #{input_text}"
 # end
+#
+# Example of alert with input and type
+# app.alert(title: "What's your name?", style: :input, type: 'TYPE_CLASS_NUMBER') do |choice, input_text|
+#  mp "User clicked #{choice} and typed #{input_text}"
+# end
 
 # Generic AlertDialog
 class AlertDialog < Android::App::DialogFragment
@@ -66,8 +71,7 @@ class AlertDialog < Android::App::DialogFragment
     input = Potion::EditText.new(activity)
     input.singleLine = true
     input.id = @text_view_id = Potion::ViewIdGenerator.generate
-    # possible input types - future feature
-    #input.inputType = (Android::Text::InputType.TYPE_CLASS_TEXT | Android::Text::InputType.TYPE_TEXT_VARIATION_PASSWORD)
+    input.inputType = Android::Text::InputType.const_get(@options[:type]) if @options.key?(:type)
     input
   end
 
