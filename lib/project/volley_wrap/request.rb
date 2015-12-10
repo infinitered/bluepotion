@@ -87,6 +87,10 @@ module VW
           params[key].keys.each do |inner_key|
             new_params["#{key}[#{inner_key}]"] = params[key][inner_key].to_s
           end
+        elsif params[key].is_a?(Array)
+          params[key].each_with_index do |value, index|
+            new_params["#{key}[#{index}]"] = value.to_s
+          end
         else
           new_params[key.to_s] = params[key].to_s
         end
