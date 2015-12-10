@@ -8,6 +8,8 @@ class RMQ
         handle_change(view, args, &block)
       when :done
         handle_done(view, &block)
+      when :focus
+        handle_focus(view, &block)
       else
         raise "[RMQ ERROR] Unrecognized event: #{event}"
       end
@@ -31,6 +33,10 @@ class RMQ
     # Seek bar change
     if view.respond_to? :setOnSeekBarChangeListener
       view.onSeekBarChangeListener = RMQSeekChange.new(args, &block)
+    elsif view.respond_to? :setOnCheckedChangeListener
+      view.onCheckedChangeListener = RMQCheckedChange.new(&block)
+    elsif view.respond_to? :setOnItemSelectedListener
+      view.onItemSelectedListener = RMQSelectChange.new(&block)
     # Text change
     elsif view.respond_to? :addTextChangedListener
       view.addTextChangedListener(RMQTextChange.new(&block))
@@ -46,6 +52,11 @@ class RMQ
     end
   end
 
+  def handle_focus(view, &block)
+    if view.respond_to? :setOnFocusChangeListener
+      view.onFocusChangeListener = RMQFocusListener.new(&block)
+    end
+  end
 end
 
 
