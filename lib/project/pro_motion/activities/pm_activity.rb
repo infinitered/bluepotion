@@ -79,6 +79,7 @@
     end
 
     def onBackPressed
+      return if find.screen.class.allow_back_button == false
       super
       finish if fragmentManager.getBackStackEntryCount == 0
     end
