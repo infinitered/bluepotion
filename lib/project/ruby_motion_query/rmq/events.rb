@@ -42,6 +42,10 @@ class RMQ
       view.addTextChangedListener(RMQTextChange.new(&block))
     elsif view.respond_to? :setOnValueChangedListener
       view.onValueChangedListener = RMQNumberPickerChange.new(&block)
+    elsif view.respond_to? :setOnDateChanged
+      view.onDateChanged = RMQDateListener.new(&block)
+    elsif view.respond_to? :setOnTimeChanged
+      view.onTimeChanged = RMQTimeListener.new(&block)
     end
   end
 
