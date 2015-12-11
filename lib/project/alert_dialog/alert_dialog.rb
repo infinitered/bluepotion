@@ -35,6 +35,7 @@ class AlertDialog < Android::App::DialogFragment
       positive_button_handler: self,
       negative_button_handler: self,
       style: nil,
+      cancelable: true,
       show: true
     }.merge(options)
 
@@ -57,8 +58,8 @@ class AlertDialog < Android::App::DialogFragment
     # Add buttons if they are set
     builder.setPositiveButton(@options[:positive_button], @options[:positive_button_handler]) if @options[:positive_button]
     builder.setNegativeButton(@options[:negative_button], @options[:negative_button_handler]) if @options[:negative_button]
-    builder.setCancelable false
-    # Add custom view?
+    builder.setCancelable @options[:cancelable]
+    
     @options[:view] = simple_text_view if @options[:style] == :input
     @options[:view] = prepare_view if self.respond_to?(:prepare_view)
     builder.view = @options[:view] if @options[:view]
