@@ -57,13 +57,16 @@ class AlertDialog < Android::App::DialogFragment
     # Add buttons if they are set
     builder.setPositiveButton(@options[:positive_button], @options[:positive_button_handler]) if @options[:positive_button]
     builder.setNegativeButton(@options[:negative_button], @options[:negative_button_handler]) if @options[:negative_button]
-
+    builder.setCancelable false
     # Add custom view?
     @options[:view] = simple_text_view if @options[:style] == :input
+    @options[:view] = prepare_view if self.respond_to?(:prepare_view)
     builder.view = @options[:view] if @options[:view]
 
     # DONE!
-    builder.create
+    dialog = builder.create
+    on_dialog_created(dialog) if self.respond_to? :on_dialog_created
+    dialog
   end
 
   def simple_text_view
