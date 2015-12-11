@@ -1,5 +1,9 @@
 class PotionDateTimePicker
 
+  def self.show(opts={}, &block)
+    picker = PotionDateTimePicker.new(opts, &block)
+  end
+
   def initialize(opts={}, &block)
     @date = opts.fetch(:date, Time.new)
     @is_date = opts.fetch(:type, :date) == :date
