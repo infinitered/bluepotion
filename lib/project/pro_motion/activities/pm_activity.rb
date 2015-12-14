@@ -79,6 +79,9 @@
     end
 
     def onBackPressed
+      if find.screen.respond_to? :on_back_pressed
+        find.screen.on_back_pressed
+      end
       return if find.screen.class.allow_back_button == false
       super
       finish if fragmentManager.getBackStackEntryCount == 0
