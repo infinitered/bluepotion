@@ -1,8 +1,9 @@
 GIT
-  remote: git://github.com/HipByte/motion-gradle.git
-  revision: 0519b8f9c6f341a26ea0c23383e8b6d25308774f
+  remote: git://github.com/darinwilson/moran.git
+  revision: fcfff1e2fcd5db995498c1133d0155c014fc7218
   specs:
-    motion-gradle (1.3.0)
+    moran (0.8)
+      motion-gradle (~> 2.0)
 
 PATH
   remote: .
@@ -12,15 +13,14 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    PackingPeanut (1.0.0)
+    PackingPeanut (1.2.0)
       moran
-    moran (0.5)
-      motion-gradle
-    motion-async (0.5)
-    newclear (1.2)
+    motion-async (0.6)
+    motion-gradle (2.0.1)
+    newclear (1.3)
       reset-sim
     rake (10.4.2)
-    reset-sim (1.0)
+    reset-sim (1.1.1)
 
 PLATFORMS
   ruby
@@ -28,8 +28,11 @@ PLATFORMS
 DEPENDENCIES
   PackingPeanut
   bluepotion!
-  moran
+  moran!
   motion-async
-  motion-gradle!
+  motion-gradle (~> 2.0.0)
   newclear
   rake
+
+BUNDLED WITH
+   1.10.6
