@@ -30,17 +30,17 @@ Motion::Project::App.setup do |app|
 
   app.gradle do
     # Google's networking API for Android
-    dependency "com.mcxiaoke.volley", :artifact => "library", :version => "1.0.10"
+    dependency "com.mcxiaoke.volley:library:1.0.10"
 
     # support lib
-    dependency "com.android.support", artifact: "support-v4", version: "18.0.+"
+    dependency "com.android.support:support-v4:18.0.+"
 
     # pull to refresh
     dependency 'in.srain.cube:ultra-ptr:1.0.10'
 
     # Google's Android Play Services
-    #dependency 'com.android.support', :artifact => 'appcompat-v7', :version => '21.0.3'
-    #dependency "com.google.android.gms", :artifact => "play-services-maps", :version => "7.3.0"
+    #dependency 'com.android.support:appcompat-v7:21.0.3'
+    #dependency "com.google.android.gms:play-services-maps:7.3.0"
   end
 
   # TODO, figure out why fragments are being recreated when we allow landscape orientation
