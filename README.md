@@ -5,7 +5,7 @@
 BluePotion
 -----------
 
-BluePotion is maintained by ![Infinite Red](http://infinite.red), a web and mobile development company based in Portland, OR and San Francisco, CA.
+BluePotion is maintained by [Infinite Red](http://infinite.red), a web and mobile development company based in Portland, OR and San Francisco, CA.
 
 ## Prerequisites
 
