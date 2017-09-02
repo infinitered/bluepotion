@@ -43,6 +43,10 @@ class PMWebScreen < PMScreen
     call_super
   end
 
+  def load_data(data)
+    add_web_view
+    @webview.loadData(data, "text/html; charset=utf-8", "UTF-8")
+  end
 
   def open_url(url)
     add_web_view
