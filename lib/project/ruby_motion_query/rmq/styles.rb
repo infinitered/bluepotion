@@ -107,6 +107,8 @@ class RMQ
       @styler_pool = {
         Android::Widget::RelativeLayout => RMQRelativeLayoutStyler.new(nil, context),
         Android::Widget::LinearLayout => RMQLinearLayoutStyler.new(nil, context),
+        Android::Widget::EditText => RMQEditTextStyler.new(nil, context),
+        Android::Widget::ScrollView => RMQScrollViewStyler.new(nil, context),
         Android::Widget::TextView => RMQTextViewStyler.new(nil, context),
         Android::Widget::ImageView => RMQImageViewStyler.new(nil, context),
         Android::Widget::ImageButton => RMQImageButtonStyler.new(nil, context),

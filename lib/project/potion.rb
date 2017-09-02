@@ -34,6 +34,7 @@ module Potion
   CalendarView = Android::Widget::CalendarView
   Toast = Android::Widget::Toast
   ListView = Android::Widget::ListView
+  ScrollView = Android::Widget::ScrollView
 
   # Graphics
   Color = Android::Graphics::Color
