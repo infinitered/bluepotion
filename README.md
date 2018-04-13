@@ -1,3 +1,7 @@
+**PROJECT STATUS: Inactive**
+
+This project is no longer being maintained. If you'd like to take it over, please file an issue and let us know. 
+
 <p align="center"><img src="http://s3.amazonaws.com/ir_public/projects/redpotion/BluePotion_logo_500w.png" alt="logo" width="250px"></p>
 
 <br />
@@ -16,11 +20,7 @@ BluePotion is maintained by [Infinite Red](http://infinite.red), a web and mobil
 
 ## Warning, BluePotion is an alpha release.
 
-BluePotion is the Android version of [RedPotion](http://redpotion.org). We're spending a lot of time working on it right now. It's currently in Alpha.
-
-We are building RMQ Android, ProMotion Android, and BluePotion all at once, and they all are inside BluePotion.
-
-We're supporting Android XML layouts, using RMQ stylesheets the standard Android way, and eventually an exact copy of RedPotion's layout system.
+BluePotion is the Android version of [RedPotion](http://redpotion.org). It's currently in Alpha.
 
 Many things work, but there is a lot to do, so use it at your own risk.
 
